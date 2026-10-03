@@ -1,0 +1,31 @@
+@extends('layouts.app')
+
+@section('title', ($document->title ?? 'Terms of Service') . ' — Vynqo Android App')
+@section('meta_description', $document->summary ?? 'Official Terms of Service for the Vynqo Android Application (com.vynqo.app).')
+
+@section('content')
+<!-- Hero Section -->
+<section class="py-16 sm:py-24 bg-white border-b border-slate-100 hero-glow-bg">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-indigo-50 border border-indigo-100 text-brand-700 text-xs font-semibold">
+            <span>⚖️ Terms of Use</span>
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
+            {{ $document->title ?? 'Terms of Service' }}
+        </h1>
+        <p class="text-slate-600 text-sm max-w-2xl mx-auto">
+            {{ $document->subtitle ?? 'Legal agreement for using the Vynqo Android Application and associated online services.' }}
+        </p>
+        <p class="text-xs text-slate-500 font-mono">
+            App: <strong>Vynqo (com.vynqo.app)</strong> • Version: <strong>v{{ $document->version ?? '1.0.0' }}</strong> • Effective Date: <strong>{{ $document->effective_date ?? 'October 3, 2026' }}</strong>
+        </p>
+    </div>
+</section>
+
+<!-- Terms Content from Database -->
+<section class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-slate-700 leading-relaxed legal-content">
+        {!! $document->content !!}
+    </div>
+</section>
+@endsection

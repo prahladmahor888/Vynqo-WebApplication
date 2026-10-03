@@ -1,0 +1,14 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /login
+
+Allow: /
+Allow: /features
+Allow: /download
+Allow: /contact
+Allow: /privacy-policy
+Allow: /terms-of-service
+Allow: /community-guidelines
+Allow: /security
+
+Sitemap: https://vynqo.prahlix.com/sitemap.xml
