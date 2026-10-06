@@ -11,4 +11,4 @@ Allow: /terms-of-service
 Allow: /community-guidelines
 Allow: /security
 
-Sitemap: https://vynqo.prahlix.com/sitemap.xml
+Sitemap: https://sangfy.prahlix.com/sitemap.xml

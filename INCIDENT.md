@@ -1,4 +1,4 @@
-# Vynqo Incident Response & Security Playbook
+# Sangfy Incident Response & Security Playbook
 
 This document defines the emergency procedures, secret rotation steps, session revocation, and notification obligations in case of a security event.
 
@@ -52,6 +52,6 @@ php artisan cache:clear
 ---
 
 ## 4. Emergency Contacts
-- **Security Lead:** security@vynqo.com
-- **Technical Support:** support@vynqo.com
-- **System Admin Team:** admin@vynqo.com
+- **Security Lead:** security@sangfy.prahlix.com
+- **Technical Support:** support@sangfy.prahlix.com
+- **System Admin Team:** admin@prahlix.com

@@ -1,6 +1,6 @@
-# 🌐 Vynqo Official Website & Release Portal (Laravel)
+# 🌐 Sangfy Official Website & Release Portal (Laravel)
 
-Official lightweight, secure, and privacy-first web application for **Vynqo — Social Media Feed, 24h Stories, Nearby Discovery & End-to-End Encrypted HD Calling** (`com.vynqo.app`).
+Official lightweight, secure, and privacy-first web application for **Sangfy — Social Media Feed, 24h Stories, Nearby Discovery & End-to-End Encrypted HD Calling** (`com.prahlix.sangfy`).
 
 ---
 
@@ -31,7 +31,7 @@ Official lightweight, secure, and privacy-first web application for **Vynqo — 
 ### 1. Requirements
 - PHP 8.2+ with SQLite extension enabled
 - Composer
-- Node.js & NPM (optional, Tailwind CDN & custom CSS are pre-configured)
+- Local Tailwind CSS & Poppins font pre-bundled
 
 ### 2. Environment & Database Setup
 ```bash
@@ -63,7 +63,7 @@ php artisan tinker
 \App\Models\AppRelease::create([
     'version_name' => 'v1.0.5',
     'version_code' => 105,
-    'apk_file_path' => 'downloads/vynqo-release.apk',
+    'apk_file_path' => 'downloads/sangfy-release.apk',
     'file_size' => '43.2 MB',
     'sha256_checksum' => 'YOUR_SHA256_HASH_HERE',
     'changelog' => "- Feature: New dark mode themes\n- Fix: Faster Agora RTC connect",
@@ -71,4 +71,4 @@ php artisan tinker
     'is_latest' => true,
 ]);
 ```
-Place your signed APK file in `public/downloads/vynqo-release.apk`.
+Place your signed APK file in `public/downloads/sangfy-release.apk`.

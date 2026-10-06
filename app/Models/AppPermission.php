@@ -36,7 +36,7 @@ class AppPermission extends Model
     }
 
     /**
-     * Default list of official Android permissions for Vynqo.
+     * Default list of official Android permissions for Sangfy.
      */
     public static function getDefaultPermissions(): array
     {

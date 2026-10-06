@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admin Portal Login — Vynqo')
+@section('title', 'Admin Portal Login — Sangfy')
 
 @section('content')
 <section class="min-h-[75vh] flex items-center justify-center py-16 bg-slate-50 hero-glow-bg">
@@ -11,7 +11,7 @@
             
             <div class="text-center space-y-2">
                 <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-purple-50 border border-purple-100 shadow-inner mb-2">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="Vynqo Logo" class="w-9 h-9 object-contain">
+                    <img src="{{ $siteLogo ?? asset('assets/images/logo.png') }}" alt="{{ $siteName ?? 'Sangfy' }} Logo" class="w-9 h-9 object-contain">
                 </div>
                 <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Admin Portal</h1>
                 <p class="text-xs text-slate-500">Sign in to manage APK releases, database metrics, and legal policies.</p>
@@ -52,7 +52,7 @@
                     <span class="text-slate-400">Encrypted AES-256</span>
                 </div>
 
-                <button type="submit" class="w-full py-3 px-4 text-sm font-bold text-white btn-vynqo rounded-lg shadow-md transition hover:shadow-lg">
+                <button type="submit" class="w-full py-3 px-4 text-sm font-bold text-white btn-sangfy rounded-lg shadow-md transition hover:shadow-lg">
                     Sign In to Admin Dashboard
                 </button>
             </form>

@@ -37,20 +37,20 @@ class DownloadController extends Controller
             $release->increment('download_count');
         }
 
-        $apkRelativePath = $release ? $release->apk_file_path : 'downloads/vynqo-release.apk';
+        $apkRelativePath = $release ? $release->apk_file_path : 'downloads/sangfy-release.apk';
         $apkFullPath = public_path($apkRelativePath);
 
         // If file doesn't exist, create an authentic release bundle file
         if (!File::exists($apkFullPath)) {
             File::ensureDirectoryExists(dirname($apkFullPath));
-            $dummyApkContent = "PK\x03\x04" . "VYNQO_OFFICIAL_ANDROID_APPLICATION_RELEASE_PACKAGE\n"
+            $dummyApkContent = "PK\x03\x04" . "SANGFY_OFFICIAL_ANDROID_APPLICATION_RELEASE_PACKAGE\n"
                 . "Version: " . ($release->version_name ?? 'v1.0.0') . "\n"
                 . "Build: " . ($release->version_code ?? '100') . "\n"
                 . "Security: AES-256-GCM + Agora RTC Signed Package\n";
             File::put($apkFullPath, $dummyApkContent);
         }
 
-        $filename = 'vynqo-' . ($release->version_name ?? 'v1.0.0') . '.apk';
+        $filename = 'sangfy-' . ($release->version_name ?? 'v1.0.0') . '.apk';
 
         return response()->download($apkFullPath, $filename, [
             'Content-Type' => 'application/vnd.android.package-archive',

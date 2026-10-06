@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Admin Dashboard Overview — Vynqo')
+@section('title', 'Admin Dashboard Overview — Sangfy')
 @section('page_title', 'Dashboard Overview')
 
 @section('content')
@@ -18,12 +18,12 @@
                 <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-purple-100 text-brand-800 font-mono">Super Admin</span>
             </h1>
             <p class="text-xs sm:text-sm text-slate-500">
-                Real-time management for Vynqo Android App (<code class="font-mono text-slate-700 font-bold">com.vynqo.app</code>), live release binaries, compliance policies, and user inquiries.
+                Real-time management for Sangfy Android App (<code class="font-mono text-slate-700 font-bold">com.prahlix.sangfy</code>), live release binaries, compliance policies, and user inquiries.
             </p>
         </div>
 
         <div class="flex items-center gap-2.5">
-            <a href="{{ route('admin.release') }}" class="px-4 py-2.5 text-xs font-bold text-white btn-vynqo rounded-xl shadow-sm flex items-center gap-2">
+            <a href="{{ route('admin.release') }}" class="px-4 py-2.5 text-xs font-bold text-white btn-sangfy rounded-xl shadow-sm flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                 <span>Upload New Build</span>
             </a>
@@ -144,7 +144,7 @@
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
                             <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Live Active Release in Database</span>
                         </div>
-                        <span class="text-xs font-mono text-slate-400">App ID: com.vynqo.app</span>
+                        <span class="text-xs font-mono text-slate-400">App ID: com.prahlix.sangfy</span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
@@ -180,7 +180,7 @@
                         </div>
 
                         <div class="flex items-center gap-2">
-                            <a href="{{ route('admin.release') }}" class="px-4 py-2 text-xs font-bold text-white btn-vynqo rounded-lg shadow-xs">
+                            <a href="{{ route('admin.release') }}" class="px-4 py-2 text-xs font-bold text-white btn-sangfy rounded-lg shadow-xs">
                                 Edit Release & Upload APK
                             </a>
                             <a href="{{ route('download.apk') }}" class="px-4 py-2 text-xs font-bold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700 transition">
@@ -248,11 +248,50 @@
         <!-- Right Column: Shortcuts & System Status (4 Cols) -->
         <div class="lg:col-span-4 space-y-6">
             
+            <!-- Real-Time Traffic & Analytics Widget -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <h3 class="text-xs font-bold uppercase text-slate-900 tracking-wider">Live Traffic Pulse</h3>
+                    </div>
+                    <a href="{{ route('admin.traffic') }}" class="text-xs font-bold text-brand-600 hover:underline">
+                        Analytics Hub &rarr;
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="p-3 bg-purple-50/60 rounded-xl border border-purple-100 text-center">
+                        <span class="text-[10px] font-bold uppercase text-brand-700 block">Today Views</span>
+                        <span class="text-xl font-black text-slate-900 font-mono">{{ number_format($trafficStats['todayViews'] ?? 0) }}</span>
+                    </div>
+                    <div class="p-3 bg-pink-50/60 rounded-xl border border-pink-100 text-center">
+                        <span class="text-[10px] font-bold uppercase text-pink-700 block">Unique Visitors</span>
+                        <span class="text-xl font-black text-slate-900 font-mono">{{ number_format($trafficStats['uniqueVisitors'] ?? 0) }}</span>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <a href="{{ route('admin.traffic') }}" class="w-full py-2 px-3 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition flex items-center justify-center gap-1.5 shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        <span>Open Full Traffic Report</span>
+                    </a>
+                </div>
+            </div>
+
             <!-- Quick Hub Navigation -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-3">
                 <h3 class="text-xs font-bold uppercase text-slate-900 tracking-wider">Quick Actions Hub</h3>
                 
                 <div class="space-y-2 text-xs">
+                    <a href="{{ route('admin.settings.index') }}" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-purple-50 border border-slate-200/80 hover:border-purple-200 transition group">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-base">🖼️</span>
+                            <span class="font-bold text-slate-800 group-hover:text-brand-700">Site Settings &amp; Logo</span>
+                        </div>
+                        <span class="text-slate-400 group-hover:text-brand-600">&rarr;</span>
+                    </a>
+
                     <a href="{{ route('admin.release') }}" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-purple-50 border border-slate-200/80 hover:border-purple-200 transition group">
                         <div class="flex items-center gap-2.5">
                             <span class="text-base">📦</span>

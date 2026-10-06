@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'About Us — Why We Built Vynqo')
-@section('meta_description', 'Learn why Vynqo was built: to give everyone a simple, private, and ad-free messaging app where your personal conversations stay truly yours.')
+@section('title', 'About Us — Why We Built Sangfy')
+@section('meta_description', 'Learn why Sangfy was built: to give everyone a simple, private, and ad-free messaging app where your personal conversations stay truly yours.')
 
 @section('content')
 <!-- Hero Section -->
@@ -14,7 +14,7 @@
             Your Private Conversations Belong Only to You
         </h1>
         <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            We built Vynqo because we believe staying in touch with friends and family should be simple, fast, and completely free from ads and surveillance.
+            We built Sangfy because we believe staying in touch with friends and family should be simple, fast, and completely free from ads and surveillance.
         </p>
     </div>
 </section>
@@ -43,7 +43,7 @@
                     </li>
                     <li class="flex items-start gap-2.5">
                         <span class="text-emerald-500 font-bold text-base">✓</span>
-                        <span><strong>Total Privacy:</strong> Only you and your friends can read your messages. Even Vynqo cannot see them.</span>
+                        <span><strong>Total Privacy:</strong> Only you and your friends can read your messages. Even Sangfy cannot see them.</span>
                     </li>
                     <li class="flex items-start gap-2.5">
                         <span class="text-emerald-500 font-bold text-base">✓</span>
@@ -67,7 +67,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             
-            <div class="vynqo-card p-6 space-y-3">
+            <div class="sangfy-card p-6 space-y-3">
                 <div class="w-10 h-10 rounded-md bg-indigo-50 border border-indigo-100 flex items-center justify-center text-brand-600 font-bold text-lg">
                     🔒
                 </div>
@@ -77,7 +77,7 @@
                 </p>
             </div>
 
-            <div class="vynqo-card p-6 space-y-3">
+            <div class="sangfy-card p-6 space-y-3">
                 <div class="w-10 h-10 rounded-md bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-lg">
                     ⚡
                 </div>
@@ -87,7 +87,7 @@
                 </p>
             </div>
 
-            <div class="vynqo-card p-6 space-y-3">
+            <div class="sangfy-card p-6 space-y-3">
                 <div class="w-10 h-10 rounded-md bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 font-bold text-lg">
                     🛡️
                 </div>
@@ -97,7 +97,7 @@
                 </p>
             </div>
 
-            <div class="vynqo-card p-6 space-y-3">
+            <div class="sangfy-card p-6 space-y-3">
                 <div class="w-10 h-10 rounded-md bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 font-bold text-lg">
                     👥
                 </div>
@@ -116,7 +116,7 @@
 <section class="py-16 bg-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
         <h3 class="text-2xl sm:text-3xl font-bold text-slate-900">Join thousands of happy users</h3>
-        <p class="text-sm text-slate-600 max-w-lg mx-auto">Download Vynqo today and enjoy a clean, fast, and private messaging experience.</p>
+        <p class="text-sm text-slate-600 max-w-lg mx-auto">Download Sangfy today and enjoy a clean, fast, and private messaging experience.</p>
         <div class="flex items-center justify-center gap-4">
             <a href="{{ route('download.apk') }}" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 rounded-md shadow-sm transition">
                 Download Free App for Android

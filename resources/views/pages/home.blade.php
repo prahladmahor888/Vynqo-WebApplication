@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Vynqo — Social Media, Stories, Nearby People & Private HD Calling')
-@section('meta_description', 'Official Vynqo Android App. Share image/video posts, post 24h stories, discover nearby people with custom filters, and enjoy end-to-end encrypted messaging and HD calls with zero ads.')
+@section('title', 'Sangfy — Social Media, Stories, Nearby People & Private HD Calling')
+@section('meta_description', 'Official Sangfy Android App. Share image/video posts, post 24h stories, discover nearby people with custom filters, and enjoy end-to-end encrypted messaging and HD calls with zero ads.')
 
 @section('content')
 <!-- Hero Section -->
@@ -14,8 +14,8 @@
                 
                 <!-- Status Badge with Heart Logo & Live Download Counter -->
                 <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-purple-50 border border-purple-200/80 text-brand-700 text-xs font-semibold shadow-xs">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="Vynqo Icon" class="w-4 h-4 object-contain">
-                    <span>The Social App Built for Real Connection</span>
+                    <img src="{{ $siteLogo ?? asset('assets/images/logo.png') }}" alt="{{ $siteName ?? 'Sangfy' }} Icon" class="w-4 h-4 object-contain">
+                    <span>{{ $siteSettings['hero_badge_text'] ?? 'The Social App Built for Real Connection' }}</span>
                     <span class="text-purple-300">•</span>
                     <span>{{ $latestRelease->version_name ?? 'v1.0.0' }}</span>
                     <span class="text-purple-300">•</span>
@@ -27,23 +27,33 @@
 
                 <!-- Headline -->
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
-                    Share Moments.<br>
-                    <span class="gradient-text">Discover Nearby & Chat Privately.</span>
+                    @if(!empty($siteSettings['hero_title']))
+                        {!! nl2br(e($siteSettings['hero_title'])) !!}
+                    @else
+                        Share Moments.<br>
+                        <span class="gradient-text">Discover Nearby & Chat Privately.</span>
+                    @endif
                 </h1>
 
                 <!-- Subtitle -->
                 <p class="text-base sm:text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                    Post photos & videos, share 24-hour stories, find genuine people nearby on your own terms, and enjoy end-to-end encrypted chats & free HD video calls.
+                    {{ $siteSettings['hero_subtitle'] ?? 'Post photos & videos, share 24-hour stories, find genuine people nearby on your own terms, and enjoy end-to-end encrypted chats & free HD video calls.' }}
                 </p>
 
                 <!-- Action CTAs -->
                 <div class="space-y-3">
                     <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                        <a href="{{ route('download.apk') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-4 text-base font-bold text-white btn-vynqo rounded-md shadow-md transition hover:shadow-lg group">
-                            <svg class="w-5 h-5 text-white group-hover:-translate-y-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                            <span>Download Free for Android</span>
-                            <span class="text-xs bg-white/20 px-2 py-0.5 rounded font-normal text-white">{{ $latestRelease->file_size ?? '30 MB' }}</span>
-                        </a>
+                        @if(($siteSettings['direct_apk_enabled'] ?? '1') == '1')
+                            <a href="{{ route('download.apk') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-4 text-base font-bold text-white btn-sangfy rounded-md shadow-md transition hover:shadow-lg group">
+                                <svg class="w-5 h-5 text-white group-hover:-translate-y-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span>{{ $siteSettings['hero_cta_text'] ?? 'Download Free for Android' }}</span>
+                                <span class="text-xs bg-white/20 px-2 py-0.5 rounded font-normal text-white">{{ $latestRelease->file_size ?? '30 MB' }}</span>
+                            </a>
+                        @else
+                            <a href="{{ route('download.page') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-4 text-base font-bold text-white btn-sangfy rounded-md shadow-md transition hover:shadow-lg group">
+                                <span>Get {{ $siteName ?? 'Sangfy' }} App</span>
+                            </a>
+                        @endif
                         
                         <a href="{{ route('features') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-md transition hover:border-slate-400">
                             <span>Explore All Features</span>
@@ -113,8 +123,8 @@
                                 <!-- Top Bar with Logo -->
                                 <div class="flex items-center justify-between pb-2 border-b border-slate-800">
                                     <div class="flex items-center gap-1.5">
-                                        <img src="{{ asset('assets/images/logo.png') }}" alt="Vynqo" class="w-6 h-6 object-contain">
-                                        <span class="font-extrabold text-sm text-white">Vynqo</span>
+                                        <img src="{{ $siteLogo ?? asset('assets/images/logo.png') }}" alt="{{ $siteName ?? 'Sangfy' }}" class="w-6 h-6 object-contain">
+                                        <span class="font-extrabold text-sm text-white">{{ $siteName ?? 'Sangfy' }}</span>
                                     </div>
                                     <div class="flex items-center gap-2 text-sm text-slate-300">
                                         <button class="hover:text-pink-400">🔍</button>
@@ -370,19 +380,19 @@
     </div>
 </section>
 
-<!-- Core App Features Grid (Strictly Vynqo Social Media + Messaging) -->
+<!-- Core App Features Grid (Strictly Sangfy Social Media + Messaging) -->
 <section class="py-20 bg-white border-b border-slate-200">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <h2 class="text-xs font-bold uppercase tracking-widest text-brand-600">All-in-One Social & Chat</h2>
-            <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Everything You Can Do in Vynqo</h3>
+            <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Everything You Can Do in Sangfy</h3>
             <p class="text-slate-600 text-base">From sharing daily moments to meeting people nearby and private video calling.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($features as $feature)
-                <div class="vynqo-card p-6 flex flex-col justify-between group">
+                <div class="sangfy-card p-6 flex flex-col justify-between group">
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <div class="w-10 h-10 rounded-md bg-purple-50 border border-purple-100 flex items-center justify-center text-brand-600 font-bold group-hover:scale-105 transition">
@@ -428,9 +438,9 @@
                 
                 <div class="md:col-span-8 space-y-3 text-left">
                     <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-50 text-brand-700 text-xs font-bold uppercase tracking-wide border border-purple-200">
-                        Official Android App (com.vynqo.app)
+                        Official Android App (com.prahlix.sangfy)
                     </span>
-                    <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Install Vynqo on Your Android Phone</h3>
+                    <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Install Sangfy on Your Android Phone</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">
                         Get the latest release <strong>{{ $latestRelease->version_name ?? 'v1.0.0' }}</strong> ({{ $latestRelease->file_size ?? '30 MB' }}). Join <strong>{{ number_format($latestRelease->download_count ?? 1250) }}+ users</strong> sharing photos, 24h stories, and enjoying free private HD calls.
                     </p>
@@ -442,7 +452,7 @@
                 </div>
 
                 <div class="md:col-span-4 flex flex-col items-stretch sm:items-end justify-center space-y-3">
-                    <a href="{{ route('download.apk') }}" class="w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-bold text-white btn-vynqo rounded-md shadow-md transition hover:shadow-lg">
+                    <a href="{{ route('download.apk') }}" class="w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-bold text-white btn-sangfy rounded-md shadow-md transition hover:shadow-lg">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                         <span>Download Free APK</span>
                     </a>
@@ -463,7 +473,7 @@
         <div class="text-center mb-14 space-y-2">
             <h2 class="text-xs font-bold uppercase tracking-widest text-brand-600">Common Questions</h2>
             <h3 class="text-3xl font-extrabold text-slate-900 tracking-tight">Frequently Asked Questions</h3>
-            <p class="text-slate-600 text-sm">Everything you need to know about using Vynqo.</p>
+            <p class="text-slate-600 text-sm">Everything you need to know about using Sangfy.</p>
         </div>
 
         <div class="space-y-4" x-data="{ activeAccordion: 0 }">

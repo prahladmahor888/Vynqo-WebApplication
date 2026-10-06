@@ -36,7 +36,7 @@ class ReleaseManagerController extends Controller
 
         $currentRelease = AppRelease::where('is_latest', true)->latest('id')->first();
 
-        $filePath = $currentRelease ? $currentRelease->apk_file_path : 'downloads/vynqo-release.apk';
+        $filePath = $currentRelease ? $currentRelease->apk_file_path : 'downloads/sangfy-release.apk';
         $fileSize = $currentRelease ? $currentRelease->file_size : '30 MB';
         $checksum = $currentRelease ? $currentRelease->sha256_checksum : 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
 
@@ -53,7 +53,7 @@ class ReleaseManagerController extends Controller
             $uploadedFile = $request->file('apk_file');
             
             // Save binary to downloads folder
-            $filename = 'vynqo-release.apk';
+            $filename = 'sangfy-release.apk';
             $destinationDir = public_path('downloads');
             File::ensureDirectoryExists($destinationDir);
             

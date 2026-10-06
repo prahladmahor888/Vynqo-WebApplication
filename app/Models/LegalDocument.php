@@ -48,11 +48,11 @@ class LegalDocument extends Model
         $data = $defaults[$slug] ?? [
             'slug' => $slug,
             'title' => ucfirst($slug) . ' Policy',
-            'subtitle' => 'Official policy documentation for the Vynqo Android App.',
+            'subtitle' => 'Official policy documentation for the Sangfy Android App.',
             'version' => '1.0.0',
             'effective_date' => 'October 3, 2026',
-            'summary' => 'Official Vynqo legal and compliance document.',
-            'content' => '<p>Official policy documentation for the Vynqo Android App.</p>',
+            'summary' => 'Official Sangfy legal and compliance document.',
+            'content' => '<p>Official policy documentation for the Sangfy Android App.</p>',
             'is_active' => true,
         ];
 
@@ -68,10 +68,10 @@ class LegalDocument extends Model
             'privacy' => [
                 'slug' => 'privacy',
                 'title' => 'Official Privacy Policy & Data Safety',
-                'subtitle' => 'Official Data Safety, Device Permissions, and Privacy Policy for the Vynqo Android Application (com.vynqo.app).',
+                'subtitle' => 'Official Data Safety, Device Permissions, and Privacy Policy for the Sangfy Android Application (com.prahlix.sangfy).',
                 'version' => '1.0.0',
                 'effective_date' => 'September 17, 2026',
-                'summary' => 'Official Legal Privacy Policy for Vynqo Social Platform. Complete disclosure on data collection, device permissions, end-to-end encryption, and account deletion rights.',
+                'summary' => 'Official Legal Privacy Policy for Sangfy Social Platform. Complete disclosure on data collection, device permissions, end-to-end encryption, and account deletion rights.',
                 'content' => <<<'HTML'
 <div class="space-y-10 text-slate-700">
     <!-- Section 1 -->
@@ -79,7 +79,7 @@ class LegalDocument extends Model
         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
             <span>1. INTRODUCTION &amp; PREAMBLE</span>
         </h2>
-        <p>This Privacy Policy ("Policy") governs the collection, processing, storage, and protection of personal data by <strong>Vynqo</strong> ("we," "our," or "the Platform") concerning users ("you" or "User") accessing or utilizing the Vynqo mobile application, website, and related services.</p>
+        <p>This Privacy Policy ("Policy") governs the collection, processing, storage, and protection of personal data by <strong>Sangfy</strong> ("we," "our," or "the Platform") concerning users ("you" or "User") accessing or utilizing the Sangfy mobile application, website, and related services.</p>
         <p>By creating an account, accessing, or using the Platform, you acknowledge that you have read, understood, and agreed to the practices described herein. If you do not agree with this Policy, you must immediately discontinue use of the Platform.</p>
     </div>
 
@@ -216,7 +216,7 @@ class LegalDocument extends Model
         <p>We reserve the right to modify this Policy periodically. Material revisions will be reflected by updating the "Effective Date" at the top of this document. Continued use of the Platform after such modifications constitutes acceptance of the revised Policy.</p>
         <p class="pt-1">For questions, privacy inquiries, or data requests, please contact:</p>
         <ul class="list-disc list-inside space-y-1.5 text-xs text-slate-700 pl-2">
-            <li><strong class="text-slate-900">Email:</strong> <a href="mailto:support@vynqo.app" class="text-brand-600 font-semibold underline">support@vynqo.app</a> / <a href="mailto:support@vynqo.prahlix.com" class="text-brand-600 font-semibold underline">support@vynqo.prahlix.com</a></li>
+            <li><strong class="text-slate-900">Email:</strong> <a href="mailto:support@sangfy.prahlix.com" class="text-brand-600 font-semibold underline">support@sangfy.prahlix.com</a></li>
             <li><strong class="text-slate-900">In-App Support:</strong> <code>Settings &gt; Help &amp; Support</code></li>
         </ul>
     </div>
@@ -227,10 +227,10 @@ HTML,
             'guidelines' => [
                 'slug' => 'guidelines',
                 'title' => 'Community Guidelines & Enforcement Policy',
-                'subtitle' => 'Official Community Standards, Safety Rules, and Violation Enforcement Policy for Vynqo.',
+                'subtitle' => 'Official Community Standards, Safety Rules, and Violation Enforcement Policy for Sangfy.',
                 'version' => '1.0.0',
                 'effective_date' => 'September 17, 2026',
-                'summary' => 'Complete safety and conduct guidelines for Vynqo. Rules on anti-harassment, content moderation, minor protection, and the 4-tier enforcement matrix.',
+                'summary' => 'Complete safety and conduct guidelines for Sangfy. Rules on anti-harassment, content moderation, minor protection, and the 4-tier enforcement matrix.',
                 'content' => <<<'HTML'
 <div class="space-y-10 text-slate-700">
     <!-- Section 1 -->
@@ -238,7 +238,7 @@ HTML,
         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
             <span>1. MISSION STATEMENT &amp; SCOPE</span>
         </h2>
-        <p>At <strong>Vynqo</strong>, our objective is to provide a creative, safe, respectful, and authentic social space. These Community Guidelines define acceptable and prohibited conduct across all platform features, including public feeds, video reels, stories, comments, private messaging, audio/video calls, and nearby discovery.</p>
+        <p>At <strong>Sangfy</strong>, our objective is to provide a creative, safe, respectful, and authentic social space. These Community Guidelines define acceptable and prohibited conduct across all platform features, including public feeds, video reels, stories, comments, private messaging, audio/video calls, and nearby discovery.</p>
         <p>Every user is required to abide by these rules. Failure to comply will result in automated and manual disciplinary penalties under our Enforcement Matrix.</p>
     </div>
 
@@ -278,7 +278,7 @@ HTML,
 
             <h3 class="text-sm font-bold text-slate-900 pt-2">2.5. Child Protection &amp; Minor Safety</h3>
             <p class="text-xs text-slate-700 bg-rose-50 border border-rose-200 p-3.5 rounded-xl">
-                Vynqo enforces an absolute zero-tolerance policy against Child Sexual Abuse Material (CSAM), grooming, sexual exploitation, or endangerment of minors. Detected violations trigger immediate permanent account termination, device hardware blacklisting, and reporting to legal authorities and NCMEC.
+                Sangfy enforces an absolute zero-tolerance policy against Child Sexual Abuse Material (CSAM), grooming, sexual exploitation, or endangerment of minors. Detected violations trigger immediate permanent account termination, device hardware blacklisting, and reporting to legal authorities and NCMEC.
             </p>
         </div>
     </div>
@@ -339,7 +339,7 @@ HTML,
         <ul class="list-disc list-inside space-y-1.5 text-xs text-slate-700 pl-2">
             <li><strong class="text-slate-900">Report Content:</strong> Tap the three-dots menu (<code>...</code>) on any post or reel &gt; Select <strong>Report</strong> &gt; Choose violation category.</li>
             <li><strong class="text-slate-900">Report User:</strong> Open the user's profile &gt; Tap the menu &gt; Select <strong>Report User</strong> or <strong>Block User</strong>.</li>
-            <li><strong class="text-slate-900">Urgent Safety Desk:</strong> Email our safety desk directly at <a href="mailto:safety@vynqo.app" class="text-brand-600 font-semibold underline">safety@vynqo.app</a> / <a href="mailto:safety@vynqo.prahlix.com" class="text-brand-600 font-semibold underline">safety@vynqo.prahlix.com</a>.</li>
+            <li><strong class="text-slate-900">Urgent Safety Desk:</strong> Email our safety desk directly at <a href="mailto:safety@sangfy.prahlix.com" class="text-brand-600 font-semibold underline">safety@sangfy.prahlix.com</a>.</li>
         </ul>
     </div>
 
@@ -348,7 +348,7 @@ HTML,
         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
             <span>5. APPEALS &amp; DISPUTES</span>
         </h2>
-        <p>If you believe disciplinary action was taken on your account in error, you may submit a formal appeal to <a href="mailto:appeals@vynqo.app" class="text-brand-600 font-semibold underline">appeals@vynqo.app</a> with your registered username and evidence. Appeals are reviewed within 48 business hours. Final decisions regarding zero-tolerance violations are non-negotiable.</p>
+        <p>If you believe disciplinary action was taken on your account in error, you may submit a formal appeal to <a href="mailto:appeals@sangfy.prahlix.com" class="text-brand-600 font-semibold underline">appeals@sangfy.prahlix.com</a> with your registered username and evidence. Appeals are reviewed within 48 business hours. Final decisions regarding zero-tolerance violations are non-negotiable.</p>
     </div>
 </div>
 HTML,
@@ -357,7 +357,7 @@ HTML,
             'terms' => [
                 'slug' => 'terms',
                 'title' => 'Terms of Service',
-                'subtitle' => 'Legal agreement for using the Vynqo Android App and web services.',
+                'subtitle' => 'Legal agreement for using the Sangfy Android App and web services.',
                 'version' => '1.0.0',
                 'effective_date' => 'October 3, 2026',
                 'summary' => 'Standard user terms, account eligibility (13+), user-generated content ownership, and termination policies.',
@@ -365,15 +365,15 @@ HTML,
 <div class="space-y-10">
     <div class="space-y-3">
         <h2 class="text-xl font-bold text-slate-900">1. Acceptance of Terms</h2>
-        <p>By creating an account or downloading the Vynqo Android App (<code>com.vynqo.app</code>), you agree to be bound by these Terms of Service. If you do not agree, please do not use the application.</p>
+        <p>By creating an account or downloading the Sangfy Android App (<code>com.prahlix.sangfy</code>), you agree to be bound by these Terms of Service. If you do not agree, please do not use the application.</p>
     </div>
     <div class="space-y-3">
         <h2 class="text-xl font-bold text-slate-900">2. Eligibility</h2>
-        <p>You must be at least 13 years old (or the minimum legal age in your country) to create an account and use Vynqo.</p>
+        <p>You must be at least 13 years old (or the minimum legal age in your country) to create an account and use Sangfy.</p>
     </div>
     <div class="space-y-3">
         <h2 class="text-xl font-bold text-slate-900">3. User Content Ownership</h2>
-        <p>You retain full ownership and copyright of the photos, videos, stories, and text you post on Vynqo. You grant Vynqo a non-exclusive, royalty-free license solely to host, display, and transmit your content as directed by your privacy settings.</p>
+        <p>You retain full ownership and copyright of the photos, videos, stories, and text you post on Sangfy. You grant Sangfy a non-exclusive, royalty-free license solely to host, display, and transmit your content as directed by your privacy settings.</p>
     </div>
     <div class="space-y-3">
         <h2 class="text-xl font-bold text-slate-900">4. Account Termination</h2>
@@ -386,7 +386,7 @@ HTML,
             'security' => [
                 'slug' => 'security',
                 'title' => 'Security & Privacy Architecture',
-                'subtitle' => 'Technical overview of Vynqo’s End-to-End Encryption and Zero-Knowledge principles.',
+                'subtitle' => 'Technical overview of Sangfy’s End-to-End Encryption and Zero-Knowledge principles.',
                 'version' => '1.0.0',
                 'effective_date' => 'October 3, 2026',
                 'summary' => 'Technical specifications of Signal Protocol E2EE messaging, Agora RTC point-to-point SRTP audio/video encryption, and local device biometric locks.',
@@ -394,7 +394,7 @@ HTML,
 <div class="space-y-10">
     <div class="space-y-3">
         <h2 class="text-xl font-bold text-slate-900">1. Cryptographic Foundation</h2>
-        <p>Vynqo 1-on-1 private messaging is built using the Signal Protocol cryptographic standard (Double Ratchet Algorithm, Curve25519, AES-256-GCM, and SHA-256). No intermediary, including Vynqo servers, holds the private keys.</p>
+        <p>Sangfy 1-on-1 private messaging is built using the Signal Protocol cryptographic standard (Double Ratchet Algorithm, Curve25519, AES-256-GCM, and SHA-256). No intermediary, including Sangfy servers, holds the private keys.</p>
     </div>
     <div class="space-y-3">
         <h2 class="text-xl font-bold text-slate-900">2. Agora RTC Real-Time Calling Security</h2>

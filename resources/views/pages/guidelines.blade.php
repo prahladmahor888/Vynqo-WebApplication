@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', ($document->title ?? 'Community Guidelines & Safety Standards') . ' — Vynqo')
-@section('meta_description', $document->summary ?? 'Vynqo Community Guidelines and Safety Standards for feed posts, stories, nearby discovery, and private chats.')
+@section('title', ($document->title ?? 'Community Guidelines & Safety Standards') . ' — Sangfy')
+@section('meta_description', $document->summary ?? 'Sangfy Community Guidelines and Safety Standards for feed posts, stories, nearby discovery, and private chats.')
 
 @section('content')
 <!-- Hero Section -->
@@ -17,7 +17,7 @@
             {{ $document->subtitle ?? 'Our safety policies and standards for feed posts, 24h stories, nearby radar, and private communication.' }}
         </p>
         <div class="flex flex-wrap items-center justify-center gap-3 text-xs text-slate-500 font-mono pt-1">
-            <span>App: <strong>Vynqo (com.vynqo.app)</strong></span>
+            <span>App: <strong>Sangfy (com.prahlix.sangfy)</strong></span>
             <span>•</span>
             <span>Version: <strong>v{{ $document->version ?? '1.0.0' }}</strong></span>
             <span>•</span>
@@ -44,7 +44,7 @@
             <a href="{{ route('contact') }}" class="px-5 py-2.5 text-xs font-bold text-slate-800 bg-white border border-slate-200 rounded-md hover:bg-slate-100 transition shadow-xs">
                 Contact Safety Team
             </a>
-            <a href="{{ route('download.page') }}" class="px-5 py-2.5 text-xs font-bold text-white btn-vynqo rounded-md shadow-xs">
+            <a href="{{ route('download.page') }}" class="px-5 py-2.5 text-xs font-bold text-white btn-sangfy rounded-md shadow-xs">
                 Download Official App
             </a>
         </div>

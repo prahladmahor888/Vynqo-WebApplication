@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
-@section('title', 'Contact & Android App Support — Vynqo')
-@section('meta_description', 'Official support portal for the Vynqo Android App (com.vynqo.app). Get help with app installation, camera/microphone permissions, notifications, or account support.')
+@section('title', 'Contact & Android App Support — Sangfy')
+@section('meta_description', 'Official support portal for the Sangfy Android App (com.prahlix.sangfy). Get help with app installation, camera/microphone permissions, notifications, or account support.')
 
 @section('content')
 <!-- Hero Section -->
 <section class="py-16 sm:py-24 bg-white border-b border-slate-100 hero-glow-bg">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-indigo-50 border border-indigo-100 text-brand-700 text-xs font-semibold">
-            <span>📩 Official Android App Support</span>
+            <span>📩 {{ $siteSettings['support_badge_text'] ?? 'Official Android App Support' }}</span>
         </div>
         <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-            How Can We Help You?
+            {{ $siteSettings['support_title'] ?? 'How Can We Help You?' }}
         </h1>
         <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Need help with your Vynqo Android App (<code class="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded text-slate-800">com.vynqo.app</code>), have feedback, or want to report an issue? Our team is here to assist.
+            {{ $siteSettings['support_subtitle'] ?? ('Need help with your ' . ($siteName ?? 'Sangfy') . ' Android App (' . ($siteSettings['android_package_name'] ?? 'com.prahlix.sangfy') . '), have feedback, or want to report an issue? Our team is here to assist.') }}
         </p>
     </div>
 </section>
@@ -27,13 +27,13 @@
                 <div class="font-bold text-slate-900 flex items-center gap-1.5">
                     <span>🔔 Notification Help</span>
                 </div>
-                <p class="text-slate-600">On Android 13+, ensure you have allowed notifications in <em>Settings &gt; Apps &gt; Vynqo &gt; Notifications</em>.</p>
+                <p class="text-slate-600">On Android 13+, ensure you have allowed notifications in <em>Settings &gt; Apps &gt; {{ $siteName ?? 'Sangfy' }} &gt; Notifications</em>.</p>
             </div>
             <div class="p-4 bg-white rounded-lg border border-slate-200 space-y-1">
                 <div class="font-bold text-slate-900 flex items-center gap-1.5">
                     <span>🎙️ Call & Mic Access</span>
                 </div>
-                <p class="text-slate-600">For crystal-clear Agora RTC HD calling, enable Microphone & Camera permissions when prompted.</p>
+                <p class="text-slate-600">For crystal-clear HD calling, enable Microphone & Camera permissions when prompted.</p>
             </div>
             <div class="p-4 bg-white rounded-lg border border-slate-200 space-y-1">
                 <div class="font-bold text-slate-900 flex items-center gap-1.5">
@@ -61,37 +61,61 @@
                 </div>
 
                 <div class="space-y-4">
-                    <div class="vynqo-card p-5 space-y-2">
+                    <div class="sangfy-card p-5 space-y-2">
                         <div class="font-bold text-slate-900 text-sm flex items-center gap-2">
-                            <span>💬 Android App Support</span>
+                            <span>💬 Customer & Technical Support</span>
                         </div>
-                        <p class="text-xs text-slate-500">For account help, installation bugs, or APK assistance.</p>
-                        <a href="mailto:support@vynqo.com" class="text-xs font-semibold text-brand-600 hover:underline">support@vynqo.com</a>
+                        <p class="text-xs text-slate-500">For account help, installation bugs, or app assistance.</p>
+                        <a href="mailto:{{ $siteSettings['contact_email'] ?? 'support@sangfy.prahlix.com' }}" class="text-xs font-semibold text-brand-600 hover:underline">{{ $siteSettings['contact_email'] ?? 'support@sangfy.prahlix.com' }}</a>
+                        @if(!empty($siteSettings['support_hours']))
+                            <div class="text-[11px] text-slate-400 mt-1">🕒 {{ $siteSettings['support_hours'] }}</div>
+                        @endif
                     </div>
 
-                    <div class="vynqo-card p-5 space-y-2">
+                    @if(!empty($siteSettings['contact_phone']))
+                    <div class="sangfy-card p-5 space-y-2">
+                        <div class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                            <span>📞 Direct Helpline</span>
+                        </div>
+                        <p class="text-xs text-slate-500">Speak directly to our customer assistance desk.</p>
+                        <a href="tel:{{ $siteSettings['contact_phone'] }}" class="text-xs font-semibold text-brand-600 hover:underline">{{ $siteSettings['contact_phone'] }}</a>
+                    </div>
+                    @endif
+
+                    @if(!empty($siteSettings['company_address']))
+                    <div class="sangfy-card p-5 space-y-2">
+                        <div class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                            <span>📍 Registered Office</span>
+                        </div>
+                        <p class="text-xs text-slate-600 whitespace-pre-line">{{ $siteSettings['company_address'] }}</p>
+                    </div>
+                    @endif
+
+                    <div class="sangfy-card p-5 space-y-2">
                         <div class="font-bold text-slate-900 text-sm flex items-center gap-2">
                             <span>🛡️ Privacy & Security Desk</span>
                         </div>
                         <p class="text-xs text-slate-500">For data deletion requests and vulnerability disclosures.</p>
-                        <a href="mailto:privacy@vynqo.com" class="text-xs font-semibold text-brand-600 hover:underline">privacy@vynqo.com</a>
+                        <a href="mailto:{{ $siteSettings['privacy_email'] ?? ($siteSettings['contact_email'] ?? 'privacy@sangfy.prahlix.com') }}" class="text-xs font-semibold text-brand-600 hover:underline">{{ $siteSettings['privacy_email'] ?? ($siteSettings['contact_email'] ?? 'privacy@sangfy.prahlix.com') }}</a>
                     </div>
 
-                    <div class="vynqo-card p-5 space-y-2">
+                    @if(!empty($siteSettings['safety_email']))
+                    <div class="sangfy-card p-5 space-y-2">
                         <div class="font-bold text-slate-900 text-sm flex items-center gap-2">
                             <span>🚩 Content Safety & Appeals</span>
                         </div>
                         <p class="text-xs text-slate-500">Report community violations, scams, or abuse appeals.</p>
-                        <a href="mailto:safety@vynqo.com" class="text-xs font-semibold text-brand-600 hover:underline">safety@vynqo.com</a>
+                        <a href="mailto:{{ $siteSettings['safety_email'] }}" class="text-xs font-semibold text-brand-600 hover:underline">{{ $siteSettings['safety_email'] }}</a>
                     </div>
+                    @endif
                 </div>
             </div>
 
             <!-- Right Contact Form -->
             <div class="lg:col-span-7">
                 <div class="bg-white border border-slate-200 rounded-lg p-6 sm:p-8 shadow-sm">
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Send us a message</h3>
-                    <p class="text-xs text-slate-500 mb-6">Our Android support engineering team responds within 24 business hours.</p>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">{{ $siteSettings['contact_form_title'] ?? 'Send us a message' }}</h3>
+                    <p class="text-xs text-slate-500 mb-6">{{ $siteSettings['contact_form_subtitle'] ?? 'Our Android support engineering team responds within 24 business hours.' }}</p>
 
                     @if ($errors->any())
                         <div class="mb-6 p-4 bg-rose-50 border border-rose-200 rounded-md text-xs text-rose-700 space-y-1">

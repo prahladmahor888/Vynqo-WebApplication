@@ -1,6 +1,10 @@
-/* Vynqo Clean White & Purple-Pink Gradient Aesthetic */
+/* Sangfy Clean White & Purple-Pink Gradient Aesthetic */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+[x-cloak] {
+    display: none !important;
+}
 
 :root {
     --brand-primary: #7c3aed;
@@ -16,7 +20,7 @@
 }
 
 body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: var(--slate-body);
     background-color: var(--bg-canvas);
     -webkit-font-smoothing: antialiased;
@@ -24,13 +28,13 @@ body {
 }
 
 /* Gradient Primary Button & Accents */
-.btn-vynqo {
+.btn-sangfy {
     background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #ec4899 100%);
     color: #ffffff;
     transition: all 0.25s ease;
 }
 
-.btn-vynqo:hover {
+.btn-sangfy:hover {
     opacity: 0.95;
     box-shadow: 0 8px 20px -4px rgba(168, 85, 247, 0.35);
     transform: translateY(-1px);
@@ -44,14 +48,14 @@ body {
 }
 
 /* Crisp 1px border cards with subtle hover lift */
-.vynqo-card {
+.sangfy-card {
     background-color: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 0.5rem; /* 8px low border-radius per plan */
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.vynqo-card:hover {
+.sangfy-card:hover {
     border-color: #cbd5e1;
     box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Explore Communities & Rooms — Vynqo')
-@section('meta_description', 'Discover vibrant public and private community rooms on Vynqo. Join gaming lobbies, technology discussions, photography clubs, and travel groups without sharing your phone number.')
+@section('title', 'Explore Communities & Rooms — Sangfy')
+@section('meta_description', 'Discover vibrant public and private community rooms on Sangfy. Join gaming lobbies, technology discussions, photography clubs, and travel groups without sharing your phone number.')
 
 @section('content')
 <!-- Hero Section -->
@@ -44,7 +44,7 @@
                     x-transition:enter="transition ease-out duration-200"
                     x-transition:enter-start="opacity-0 scale-95"
                     x-transition:enter-end="opacity-100 scale-100"
-                    class="vynqo-card p-6 flex flex-col justify-between group space-y-4"
+                    class="sangfy-card p-6 flex flex-col justify-between group space-y-4"
                 >
                     <div class="space-y-3">
                         <div class="flex items-center justify-between">
@@ -89,11 +89,11 @@
 <section class="py-16 bg-slate-50 text-center">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Want to create your own Community Room?</h3>
-        <p class="text-sm text-slate-600 max-w-lg mx-auto">Download Vynqo now and start custom public or private groups with up to 50,000 members and live HD voice lounges.</p>
+        <p class="text-sm text-slate-600 max-w-lg mx-auto">Download Sangfy now and start custom public or private groups with up to 50,000 members and live HD voice lounges.</p>
         <div>
             <a href="{{ route('download.apk') }}" class="inline-flex items-center gap-2 px-8 py-3.5 text-base font-bold text-white bg-brand-600 hover:bg-brand-700 rounded-md shadow-sm transition hover:shadow">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                <span>Download Vynqo to Join</span>
+                <span>Download Sangfy to Join</span>
             </a>
         </div>
     </div>

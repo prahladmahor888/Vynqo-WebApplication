@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactInquiryReceived;
 use App\Models\ContactMessage;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -27,7 +31,7 @@ class ContactController extends Controller
             'message' => 'required|string|max:2500',
         ]);
 
-        ContactMessage::create([
+        $messageRecord = ContactMessage::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'subject' => $validated['subject'],
@@ -36,6 +40,19 @@ class ContactController extends Controller
             'is_resolved' => false,
         ]);
 
-        return redirect()->route('contact')->with('success', 'Thank you for reaching out! Your message has been received by the Vynqo team. We will respond via email within 24 hours.');
+        // Send Email notification to configured recipient (Default: sangfy@prahlix.com)
+        $receiverEmail = SiteSetting::get('support_receiver_email', 'sangfy@prahlix.com');
+        if (!empty($receiverEmail)) {
+            try {
+                Mail::to($receiverEmail)->send(new ContactInquiryReceived($messageRecord));
+            } catch (\Throwable $e) {
+                Log::warning('Contact Inquiry email dispatch failed: ' . $e->getMessage(), [
+                    'message_id' => $messageRecord->id,
+                    'receiver' => $receiverEmail,
+                ]);
+            }
+        }
+
+        return redirect()->route('contact')->with('success', 'Thank you for reaching out! Your message has been received by the Sangfy team. We will respond via email within 24 hours.');
     }
 }

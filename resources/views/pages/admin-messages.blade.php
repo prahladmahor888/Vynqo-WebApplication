@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'User Support & Inquiries — Vynqo Admin')
+@section('title', 'User Support & Inquiries — Sangfy Admin')
 @section('page_title', 'User Inquiries')
 
 @section('content')
@@ -61,6 +61,11 @@
                         </div>
 
                         <div class="flex items-center justify-end gap-2 pt-2">
+                            <a href="mailto:{{ $msg->email }}?subject=Re: {{ rawurlencode($msg->subject) }}" class="px-3 py-1.5 text-xs font-semibold text-brand-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg transition inline-flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                <span>Reply to User</span>
+                            </a>
+
                             <form action="{{ route('admin.messages.toggle', $msg->id) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-100 transition">

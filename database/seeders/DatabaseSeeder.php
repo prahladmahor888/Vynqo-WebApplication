@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             AppReleaseSeeder::class,
             LegalDocumentSeeder::class,
             AppPermissionSeeder::class,
+            SiteSettingSeeder::class,
         ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AppPermission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PermissionManagerController extends Controller
 {
@@ -12,6 +13,13 @@ class PermissionManagerController extends Controller
      */
     public function index()
     {
+        // Auto-seed default permissions if table is empty
+        if (AppPermission::count() === 0) {
+            foreach (AppPermission::getDefaultPermissions() as $perm) {
+                AppPermission::create($perm);
+            }
+        }
+
         $permissions = AppPermission::orderBy('order_index')->orderBy('id')->get();
         return view('pages.admin-permissions', compact('permissions'));
     }
@@ -25,17 +33,18 @@ class PermissionManagerController extends Controller
             'name' => 'required|string|max:100',
             'code' => 'nullable|string|max:150',
             'icon' => 'nullable|string|max:50',
-            'category' => 'required|string|max:100',
-            'badge' => 'required|string|max:50',
+            'category' => 'nullable|string|max:100',
+            'badge' => 'nullable|string|max:50',
             'purpose' => 'required|string',
-            'is_required' => 'boolean',
-            'is_active' => 'boolean',
             'order_index' => 'nullable|integer',
         ]);
 
-        $validated['icon'] = $validated['icon'] ?: '🔒';
-        $validated['is_required'] = $request->boolean('is_required');
-        $validated['is_active'] = $request->boolean('is_active', true);
+        $validated['icon'] = !empty(trim($validated['icon'] ?? '')) ? trim($validated['icon']) : '🔒';
+        $validated['category'] = !empty(trim($validated['category'] ?? '')) ? trim($validated['category']) : 'General';
+        $validated['badge'] = !empty(trim($validated['badge'] ?? '')) ? trim($validated['badge']) : 'Feature-Based';
+        $validated['code'] = !empty(trim($validated['code'] ?? '')) ? trim($validated['code']) : ('android.permission.' . strtoupper(Str::slug($validated['name'], '_')));
+        $validated['is_required'] = $request->has('is_required') || $request->input('is_required') == '1';
+        $validated['is_active'] = $request->has('is_active') || $request->input('is_active') == '1';
         $validated['order_index'] = (int) ($validated['order_index'] ?? 0);
 
         AppPermission::create($validated);
@@ -52,22 +61,36 @@ class PermissionManagerController extends Controller
             'name' => 'required|string|max:100',
             'code' => 'nullable|string|max:150',
             'icon' => 'nullable|string|max:50',
-            'category' => 'required|string|max:100',
-            'badge' => 'required|string|max:50',
+            'category' => 'nullable|string|max:100',
+            'badge' => 'nullable|string|max:50',
             'purpose' => 'required|string',
-            'is_required' => 'boolean',
-            'is_active' => 'boolean',
             'order_index' => 'nullable|integer',
         ]);
 
-        $validated['icon'] = $validated['icon'] ?: '🔒';
-        $validated['is_required'] = $request->boolean('is_required');
-        $validated['is_active'] = $request->boolean('is_active');
-        $validated['order_index'] = (int) ($validated['order_index'] ?? 0);
+        $validated['icon'] = !empty(trim($validated['icon'] ?? '')) ? trim($validated['icon']) : ($permission->icon ?: '🔒');
+        $validated['category'] = !empty(trim($validated['category'] ?? '')) ? trim($validated['category']) : 'General';
+        $validated['badge'] = !empty(trim($validated['badge'] ?? '')) ? trim($validated['badge']) : 'Feature-Based';
+        $validated['code'] = !empty(trim($validated['code'] ?? '')) ? trim($validated['code']) : ('android.permission.' . strtoupper(Str::slug($validated['name'], '_')));
+        $validated['is_required'] = $request->has('is_required') || $request->input('is_required') == '1';
+        $validated['is_active'] = $request->has('is_active') || $request->input('is_active') == '1';
+        $validated['order_index'] = (int) ($validated['order_index'] ?? $permission->order_index ?? 0);
 
         $permission->update($validated);
 
         return redirect()->route('admin.permissions.index')->with('success', "Permission '{$permission->name}' updated successfully!");
+    }
+
+    /**
+     * Reset permissions to Android defaults.
+     */
+    public function reset()
+    {
+        AppPermission::truncate();
+        foreach (AppPermission::getDefaultPermissions() as $perm) {
+            AppPermission::create($perm);
+        }
+
+        return redirect()->route('admin.permissions.index')->with('success', 'All Android app permissions reset to official defaults successfully.');
     }
 
     /**

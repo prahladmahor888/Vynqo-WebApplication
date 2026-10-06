@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') — Vynqo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>@yield('title') — {{ $siteName ?? 'Sangfy' }}</title>
+    <link rel="icon" type="image/png" href="{{ $siteFavicon ?? asset('assets/images/favicon.png') }}">
+    <script src="{{ asset('assets/js/tailwind.js') }}"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Poppins', sans-serif; }
         .bg-grid-pattern {
             background-size: 32px 32px;
             background-image: 
@@ -27,8 +28,8 @@
     <div class="max-w-md w-full bg-slate-900/90 border border-slate-800 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-2xl text-center space-y-6">
         
         <!-- Logo Icon -->
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 text-white shadow-lg shadow-purple-500/30 mx-auto">
-            <span class="text-2xl font-black">V</span>
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 border border-slate-700/50 p-2 text-white shadow-lg shadow-purple-500/20 mx-auto">
+            <img src="{{ $siteLogo ?? asset('assets/images/logo.png') }}" alt="{{ $siteName ?? 'Sangfy' }} Logo" class="w-full h-full object-contain">
         </div>
 
         <div class="space-y-2">

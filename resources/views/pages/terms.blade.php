@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', ($document->title ?? 'Terms of Service') . ' — Vynqo Android App')
-@section('meta_description', $document->summary ?? 'Official Terms of Service for the Vynqo Android Application (com.vynqo.app).')
+@section('title', ($document->title ?? 'Terms of Service') . ' — Sangfy Android App')
+@section('meta_description', $document->summary ?? 'Official Terms of Service for the Sangfy Android Application (com.prahlix.sangfy).')
 
 @section('content')
 <!-- Hero Section -->
@@ -14,10 +14,10 @@
             {{ $document->title ?? 'Terms of Service' }}
         </h1>
         <p class="text-slate-600 text-sm max-w-2xl mx-auto">
-            {{ $document->subtitle ?? 'Legal agreement for using the Vynqo Android Application and associated online services.' }}
+            {{ $document->subtitle ?? 'Legal agreement for using the Sangfy Android Application and associated online services.' }}
         </p>
         <p class="text-xs text-slate-500 font-mono">
-            App: <strong>Vynqo (com.vynqo.app)</strong> • Version: <strong>v{{ $document->version ?? '1.0.0' }}</strong> • Effective Date: <strong>{{ $document->effective_date ?? 'October 3, 2026' }}</strong>
+            App: <strong>Sangfy (com.prahlix.sangfy)</strong> • Version: <strong>v{{ $document->version ?? '1.0.0' }}</strong> • Effective Date: <strong>{{ $document->effective_date ?? 'October 3, 2026' }}</strong>
         </p>
     </div>
 </section>

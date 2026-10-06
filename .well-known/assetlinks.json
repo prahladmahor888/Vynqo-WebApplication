@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.prahlix.vynqo",
+      "sha256_cert_fingerprints": [
+        "FF:19:64:87:5B:64:91:21:FC:91:1F:52:30:43:6F:A8:36:D3:13:C9:5B:79:A4:75:21:C2:D2:4D:BE:B2:3F:08"
+      ]
+    }
+  }
+]

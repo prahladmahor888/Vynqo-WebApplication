@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', ($document->title ?? 'Privacy Policy & Android Data Safety') . ' — Vynqo')
-@section('meta_description', $document->summary ?? 'Official Privacy Policy & Data Safety for the Vynqo Android App (com.vynqo.app).')
+@section('title', ($document->title ?? 'Privacy Policy & Android Data Safety') . ' — Sangfy')
+@section('meta_description', $document->summary ?? 'Official Privacy Policy & Data Safety for the Sangfy Android App (com.prahlix.sangfy).')
 
 @section('content')
 <!-- Hero Section -->
@@ -11,13 +11,13 @@
             <span>🛡️ Android App Data Safety & Privacy</span>
         </div>
         <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-            {{ $document->title ?? 'Vynqo Privacy Policy' }}
+            {{ $document->title ?? 'Sangfy Privacy Policy' }}
         </h1>
         <p class="text-slate-600 text-sm max-w-2xl mx-auto">
-            {{ $document->subtitle ?? 'Official Data Safety, Device Permissions, and Privacy Policy for the Vynqo Android Application.' }}
+            {{ $document->subtitle ?? 'Official Data Safety, Device Permissions, and Privacy Policy for the Sangfy Android Application.' }}
         </p>
         <div class="flex flex-wrap items-center justify-center gap-3 text-xs text-slate-500 font-mono pt-1">
-            <span>App: <strong>Vynqo (com.vynqo.app)</strong></span>
+            <span>App: <strong>Sangfy (com.prahlix.sangfy)</strong></span>
             <span>•</span>
             <span>Version: <strong>v{{ $document->version ?? '1.0.0' }}</strong></span>
             <span>•</span>
@@ -38,7 +38,7 @@
                     <span>📱 Live Android Device Runtime Permissions</span>
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 </h2>
-                <p class="text-xs text-slate-500">Dynamically synced permissions active in the Vynqo Android App</p>
+                <p class="text-xs text-slate-500">Dynamically synced permissions active in the Sangfy Android App</p>
             </div>
             <span class="text-xs font-mono font-bold px-2.5 py-1 rounded bg-white text-brand-700 border border-slate-200">
                 {{ count($permissions) }} Active Permissions
@@ -82,13 +82,13 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
         <h3 class="text-base font-bold text-slate-900">Questions or Data Deletion Requests?</h3>
         <p class="text-xs text-slate-500">
-            You can delete your account directly within the Vynqo Android App under <em>Settings &rarr; Account &rarr; Delete Account</em>, or contact our Data Privacy Officer.
+            You can delete your account directly within the Sangfy Android App under <em>Settings &rarr; Account &rarr; Delete Account</em>, or contact our Data Privacy Officer.
         </p>
         <div class="pt-2 flex items-center justify-center gap-4">
             <a href="{{ route('contact') }}" class="px-5 py-2.5 text-xs font-bold text-slate-800 bg-white border border-slate-200 rounded-md hover:bg-slate-100 transition shadow-xs">
                 Contact Privacy Desk
             </a>
-            <a href="{{ route('download.page') }}" class="px-5 py-2.5 text-xs font-bold text-white btn-vynqo rounded-md shadow-xs">
+            <a href="{{ route('download.page') }}" class="px-5 py-2.5 text-xs font-bold text-white btn-sangfy rounded-md shadow-xs">
                 Download Official APK
             </a>
         </div>

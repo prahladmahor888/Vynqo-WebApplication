@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit ' . ($document->title ?? 'Legal Policy') . ' — Vynqo Admin')
+@section('title', 'Edit ' . ($document->title ?? 'Legal Policy') . ' — Sangfy Admin')
 @section('page_title', 'Edit ' . ($document->title ?? 'Legal Policy'))
 
 @section('content')
@@ -83,7 +83,7 @@
                     Cancel
                 </a>
 
-                <button type="submit" class="px-8 py-3 text-sm font-bold text-white btn-vynqo rounded-xl shadow-md transition hover:shadow-lg">
+                <button type="submit" class="px-8 py-3 text-sm font-bold text-white btn-sangfy rounded-xl shadow-md transition hover:shadow-lg">
                     Save Policy to Database
                 </button>
             </div>

@@ -62,7 +62,7 @@ class HomeController extends Controller
         $faqs = [
             [
                 'question' => 'How does the "Find Nearby People" feature work?',
-                'answer' => 'When you open Nearby Discovery, Vynqo finds other active users around your approximate area based on your preferred distance radius (e.g. 1 km to 25 km). Your exact GPS address is NEVER shared — only your approximate distance is displayed.',
+                'answer' => 'When you open Nearby Discovery, Sangfy finds other active users around your approximate area based on your preferred distance radius (e.g. 1 km to 25 km). Your exact GPS address is NEVER shared — only your approximate distance is displayed.',
             ],
             [
                 'question' => 'Can I hide my location or turn off Nearby Discovery?',
@@ -77,11 +77,11 @@ class HomeController extends Controller
                 'answer' => 'You can post photo or video stories to share with your friends. Stories stay live for exactly 24 hours and then vanish automatically.',
             ],
             [
-                'question' => 'Is Vynqo free and does it have ads?',
-                'answer' => 'Vynqo is 100% free to download and use for posts, stories, nearby discovery, and unlimited HD calls. There are ZERO ads and we never sell your personal data.',
+                'question' => 'Is Sangfy free and does it have ads?',
+                'answer' => 'Sangfy is 100% free to download and use for posts, stories, nearby discovery, and unlimited HD calls. There are ZERO ads and we never sell your personal data.',
             ],
             [
-                'question' => 'How can I download and install Vynqo on my Android phone?',
+                'question' => 'How can I download and install Sangfy on my Android phone?',
                 'answer' => 'Simply tap "Download Free for Android" on this website to get the official APK file, tap to install, pick your username, and start exploring!',
             ],
         ];

@@ -37,7 +37,7 @@ class AppRelease extends Model
             ?? new self([
                 'version_name' => 'v0',
                 'version_code' => 0,
-                'apk_file_path' => 'downloads/vynqo-release.apk',
+                'apk_file_path' => 'downloads/sangfy-release.apk',
                 'file_size' => '30 MB',
                 'sha256_checksum' => 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
                 'changelog' => "• Image & Video Feed post sharing with captions, likes and comments\n• 24-Hour disappearing Stories\n• 'Find Nearby People' radar with distance & interest filters\n• High-definition 1080p voice and video calling via Agora RTC\n• End-to-End Encrypted 1-on-1 private messaging and view-once media\n• Location privacy controls & Ghost Mode",

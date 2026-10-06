@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('version_name');             // e.g. "v1.0.4"
             $table->integer('version_code');            // e.g. 104
-            $table->string('apk_file_path');            // e.g. "downloads/vynqo-release.apk"
+            $table->string('apk_file_path');            // e.g. "downloads/sangfy-release.apk"
             $table->string('file_size');                // e.g. "42.8 MB"
             $table->string('sha256_checksum')->nullable();
             $table->text('changelog')->nullable();      // Markdown formatted release notes

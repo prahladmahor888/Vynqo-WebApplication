@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', ($document->title ?? 'Security & Privacy Architecture') . ' — Vynqo')
-@section('meta_description', $document->summary ?? 'Learn how Vynqo protects your chats and calls with automatic privacy locks, zero company access, and open security standards.')
+@section('title', ($document->title ?? 'Security & Privacy Architecture') . ' — Sangfy')
+@section('meta_description', $document->summary ?? 'Learn how Sangfy protects your chats and calls with automatic privacy locks, zero company access, and open security standards.')
 
 @section('content')
 <!-- Hero Section -->
@@ -11,7 +11,7 @@
             <span>🛡️ Security & Cryptographic Trust</span>
         </div>
         <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-            {{ $document->title ?? 'How Vynqo Keeps Your Conversations Safe' }}
+            {{ $document->title ?? 'How Sangfy Keeps Your Conversations Safe' }}
         </h1>
         <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
             {{ $document->subtitle ?? 'Your privacy is protected by mathematics. We design our software so that we cannot read your chats, listen to your calls, or sell your data.' }}

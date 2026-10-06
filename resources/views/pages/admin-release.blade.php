@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'APK & Release Manager — Vynqo Admin')
+@section('title', 'APK & Release Manager — Sangfy Admin')
 @section('page_title', 'APK & Release Manager')
 
 @section('content')
@@ -14,7 +14,7 @@
                 <span>Active Database Releases</span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                Vynqo APK & Release Manager
+                Sangfy APK & Release Manager
             </h1>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">
                 Enter your release version and build code manually. APK file size and SHA-256 checksum are <strong>automatically calculated</strong>.
@@ -183,7 +183,7 @@
                 <div class="text-xs text-slate-500">
                     File size and SHA256 checksum are automatically recorded upon saving.
                 </div>
-                <button type="submit" class="px-8 py-3 text-sm font-bold text-white btn-vynqo rounded-xl shadow-md transition hover:shadow-lg">
+                <button type="submit" class="px-8 py-3 text-sm font-bold text-white btn-sangfy rounded-xl shadow-md transition hover:shadow-lg">
                     Save Release to Database
                 </button>
             </div>
