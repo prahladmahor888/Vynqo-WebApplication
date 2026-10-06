@@ -107,6 +107,8 @@
                         <p class="text-xs text-slate-500">Report community violations, scams, or abuse appeals.</p>
                         <a href="mailto:{{ $siteSettings['safety_email'] }}" class="text-xs font-semibold text-brand-600 hover:underline">{{ $siteSettings['safety_email'] }}</a>
                     </div>
+                    @endif
+
                     <div class="sangfy-card p-5 space-y-3">
                         <div class="font-bold text-slate-900 text-sm flex items-center gap-2">
                             <span>🌐 Social &amp; Community Channels</span>

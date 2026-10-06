@@ -362,6 +362,22 @@
         </div>
     </footer>
 
+    <script>
+        // Global client-side throttle to prevent rapid multi-clicks on download triggers
+        document.addEventListener('click', function (e) {
+            var btn = e.target.closest('a[href*="/download/apk"]');
+            if (!btn) return;
+            if (btn.dataset.isDownloading === '1') {
+                e.preventDefault();
+                return false;
+            }
+            btn.dataset.isDownloading = '1';
+            setTimeout(function () {
+                delete btn.dataset.isDownloading;
+            }, 1000);
+        });
+    </script>
+
     @stack('scripts')
 </body>
 </html>

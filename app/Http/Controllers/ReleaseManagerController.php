@@ -54,8 +54,9 @@ class ReleaseManagerController extends Controller
         if ($request->hasFile('apk_file')) {
             $uploadedFile = $request->file('apk_file');
             
-            // Save binary to downloads folder
-            $filename = 'sangfy-release.apk';
+            // Dynamic versioned APK filename
+            $cleanVer = preg_replace('/[^a-zA-Z0-9\.\-_]/', '', $versionName);
+            $filename = 'sangfy_' . ($cleanVer ?: 'release') . '.apk';
             $destinationDir = public_path('downloads');
             File::ensureDirectoryExists($destinationDir);
             

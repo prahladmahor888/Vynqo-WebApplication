@@ -32,18 +32,37 @@ class AppRelease extends Model
      */
     public static function getLatestRelease()
     {
-        return self::where('is_latest', true)->latest('id')->first()
-            ?? self::latest('id')->first()
-            ?? new self([
-                'version_name' => 'v0',
-                'version_code' => 0,
-                'apk_file_path' => 'downloads/sangfy-release.apk',
-                'file_size' => '30 MB',
-                'sha256_checksum' => 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
-                'changelog' => "• Image & Video Feed post sharing with captions, likes and comments\n• 24-Hour disappearing Stories\n• 'Find Nearby People' radar with distance & interest filters\n• High-definition 1080p voice and video calling via Agora RTC\n• End-to-End Encrypted 1-on-1 private messaging and view-once media\n• Location privacy controls & Ghost Mode",
-                'min_android_version' => 'Android 8.0 (Oreo)+',
-                'download_count' => 1250,
-                'is_latest' => true,
-            ]);
+        $release = self::where('is_latest', true)->latest('id')->first()
+            ?? self::latest('id')->first();
+
+        if (!$release) {
+            try {
+                $release = self::create([
+                    'version_name' => 'v1.0.0',
+                    'version_code' => 100,
+                    'apk_file_path' => 'downloads/sangfy-release.apk',
+                    'file_size' => '30 MB',
+                    'sha256_checksum' => 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+                    'changelog' => "• Image & Video Feed post sharing with captions, likes and comments\n• 24-Hour disappearing Stories\n• 'Find Nearby People' radar with distance & interest filters\n• High-definition 1080p voice and video calling via Agora RTC\n• End-to-End Encrypted 1-on-1 private messaging and view-once media\n• Location privacy controls & Ghost Mode",
+                    'min_android_version' => 'Android 8.0 (Oreo)+',
+                    'download_count' => 1250,
+                    'is_latest' => true,
+                ]);
+            } catch (\Throwable $e) {
+                $release = new self([
+                    'version_name' => 'v1.0.0',
+                    'version_code' => 100,
+                    'apk_file_path' => 'downloads/sangfy-release.apk',
+                    'file_size' => '30 MB',
+                    'sha256_checksum' => 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+                    'changelog' => "• Image & Video Feed post sharing with captions, likes and comments\n• 24-Hour disappearing Stories\n• 'Find Nearby People' radar with distance & interest filters\n• High-definition 1080p voice and video calling via Agora RTC\n• End-to-End Encrypted 1-on-1 private messaging and view-once media\n• Location privacy controls & Ghost Mode",
+                    'min_android_version' => 'Android 8.0 (Oreo)+',
+                    'download_count' => 1250,
+                    'is_latest' => true,
+                ]);
+            }
+        }
+
+        return $release;
     }
 }
