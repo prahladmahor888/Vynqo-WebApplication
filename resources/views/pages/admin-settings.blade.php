@@ -40,22 +40,22 @@
     <!-- Live Logo Preview & Overview Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        <!-- Main Logo Preview Card -->
-        <div class="md:col-span-2 bg-slate-900 text-white p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-800 text-xs">
-                <span class="text-purple-400 font-bold uppercase tracking-wider flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+        <!-- Main Logo Preview Card (Pure White Theme) -->
+        <div class="md:col-span-2 bg-white text-slate-900 p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 text-xs">
+                <span class="text-brand-700 font-bold uppercase tracking-wider flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
                     Live Header Preview
                 </span>
-                <span class="text-slate-400 font-mono text-[11px] truncate max-w-[200px]" title="{{ $settings['site_logo'] ?? 'assets/images/logo.png' }}">
+                <span class="text-slate-500 font-mono text-[11px] truncate max-w-[200px]" title="{{ $settings['site_logo'] ?? 'assets/images/logo.png' }}">
                     Logo: {{ $settings['site_logo'] ?? 'assets/images/logo.png' }}
                 </span>
             </div>
 
             <!-- Simulated Header Bar -->
-            <div class="p-4 bg-white/95 backdrop-blur-md rounded-xl border border-slate-700/50 flex items-center justify-between text-slate-900 shadow-inner">
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-slate-900 shadow-2xs">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-purple-50 p-1.5 flex items-center justify-center border border-purple-100">
+                    <div class="w-10 h-10 rounded-xl bg-white p-1.5 flex items-center justify-center border border-slate-200 shadow-xs">
                         <img src="{{ $logoUrl }}" :src="logoPreviewUrl || '{{ $logoUrl }}'" onerror="this.onerror=null;this.src='{{ asset('assets/images/logo.png') }}';" alt="Logo Preview" class="w-full h-full object-contain">
                     </div>
                     <div>
@@ -73,21 +73,21 @@
 
             <!-- Multi-surface background test -->
             <div class="pt-2">
-                <span class="text-xs text-slate-400 block mb-2 font-medium">Logo Contrast Check across Different Surfaces:</span>
+                <span class="text-xs text-slate-500 block mb-2 font-medium">Logo Contrast Check across Different Surfaces:</span>
                 <div class="grid grid-cols-3 gap-3 text-center text-xs">
                     <!-- Light Background -->
-                    <div class="p-4 bg-white rounded-xl border border-slate-200 flex flex-col items-center justify-center gap-2">
+                    <div class="p-4 bg-white rounded-xl border border-slate-200 flex flex-col items-center justify-center gap-2 shadow-2xs">
                         <img src="{{ $logoUrl }}" :src="logoPreviewUrl || '{{ $logoUrl }}'" onerror="this.onerror=null;this.src='{{ asset('assets/images/logo.png') }}';" alt="Logo on Light" class="h-10 w-10 object-contain">
                         <span class="text-[10px] font-bold text-slate-700">Light BG</span>
                     </div>
                     <!-- Dark Background -->
-                    <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 flex flex-col items-center justify-center gap-2">
+                    <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 flex flex-col items-center justify-center gap-2">
                         <img src="{{ $logoUrl }}" :src="logoPreviewUrl || '{{ $logoUrl }}'" onerror="this.onerror=null;this.src='{{ asset('assets/images/logo.png') }}';" alt="Logo on Dark" class="h-10 w-10 object-contain">
                         <span class="text-[10px] font-bold text-slate-300">Dark BG</span>
                     </div>
                     <!-- Gradient Brand Background -->
-                    <div class="p-4 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex flex-col items-center justify-center gap-2">
-                        <img src="{{ $logoUrl }}" :src="logoPreviewUrl || '{{ $logoUrl }}'" onerror="this.onerror=null;this.src='{{ asset('assets/images/logo.png') }}';" alt="Logo on Gradient" class="h-10 w-10 object-contain drop-shadow-sm">
+                    <div class="p-4 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex flex-col items-center justify-center gap-2 shadow-2xs">
+                        <img src="{{ $logoUrl }}" :src="logoPreviewUrl || '{{ $logoUrl }}'" onerror="this.onerror=null;this.src='{{ asset('assets/images/logo.png') }}';" alt="Logo on Gradient" class="h-10 w-10 object-contain drop-shadow-xs">
                         <span class="text-[10px] font-bold text-white">Brand Gradient</span>
                     </div>
                 </div>
@@ -468,6 +468,27 @@
                             <span>▶️</span> YouTube Channel URL
                         </label>
                         <input type="url" name="social_youtube" value="{{ old('social_youtube', $settings['social_youtube'] ?? 'https://youtube.com/@sangfyapp') }}" placeholder="https://youtube.com/@yourchannel" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
+                            <span>👾</span> Discord Community URL
+                        </label>
+                        <input type="url" name="social_discord" value="{{ old('social_discord', $settings['social_discord'] ?? 'https://discord.gg/sangfy') }}" placeholder="https://discord.gg/invitecode" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
+                            <span>📘</span> Facebook Page URL
+                        </label>
+                        <input type="url" name="social_facebook" value="{{ old('social_facebook', $settings['social_facebook'] ?? 'https://facebook.com/sangfyapp') }}" placeholder="https://facebook.com/yourpage" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
+                            <span>💼</span> LinkedIn Page URL
+                        </label>
+                        <input type="url" name="social_linkedin" value="{{ old('social_linkedin', $settings['social_linkedin'] ?? 'https://linkedin.com/company/sangfy') }}" placeholder="https://linkedin.com/company/yourbrand" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div class="sm:col-span-2">

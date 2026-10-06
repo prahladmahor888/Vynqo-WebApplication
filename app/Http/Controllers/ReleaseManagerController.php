@@ -15,8 +15,10 @@ class ReleaseManagerController extends Controller
     {
         $currentRelease = AppRelease::getLatestRelease();
         $allReleases = AppRelease::latest('id')->get();
+        $totalAllDownloads = AppRelease::sum('download_count') ?: ($currentRelease->download_count ?? 1250);
+        $totalReleasesCount = AppRelease::count();
 
-        return view('pages.admin-release', compact('currentRelease', 'allReleases'));
+        return view('pages.admin-release', compact('currentRelease', 'allReleases', 'totalAllDownloads', 'totalReleasesCount'));
     }
 
     /**
@@ -87,6 +89,16 @@ class ReleaseManagerController extends Controller
             'download_count' => $currentRelease ? $currentRelease->download_count : 1250,
             'is_latest' => true,
         ]);
+
+        if ($request->ajax() || $request->expectsJson() || $request->wantsJson()) {
+            session()->flash('success', "Release saved successfully! Version: {$release->version_name} (Code: {$release->version_code}), Automatic File Size: {$release->file_size}. Database updated.");
+            return response()->json([
+                'success' => true,
+                'message' => "Release saved successfully! Version: {$release->version_name} (Code: {$release->version_code}), Automatic File Size: {$release->file_size}. Database updated.",
+                'redirect' => route('admin.release'),
+                'release' => $release,
+            ]);
+        }
 
         return redirect()->route('admin.release')->with('success', "Release saved successfully! Version: {$release->version_name} (Code: {$release->version_code}), Automatic File Size: {$release->file_size}. Database updated.");
     }

@@ -74,7 +74,7 @@
                     <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider">Document Content (HTML / Structured)</label>
                     <span class="text-xs text-slate-400">Supports standard HTML elements & Tailwind classes</span>
                 </div>
-                <textarea name="content" rows="18" required class="w-full font-mono text-xs px-4 py-3 rounded-xl border border-slate-300 bg-slate-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 leading-relaxed">{{ old('content', $document->content) }}</textarea>
+                <textarea name="content" rows="18" required class="w-full font-mono text-xs px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 leading-relaxed custom-scrollbar">{{ old('content', $document->content) }}</textarea>
                 @error('content') <span class="text-xs text-rose-600">{{ $message }}</span> @enderror
             </div>
 

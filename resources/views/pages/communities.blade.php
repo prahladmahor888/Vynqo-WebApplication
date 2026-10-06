@@ -91,8 +91,8 @@
         <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Want to create your own Community Room?</h3>
         <p class="text-sm text-slate-600 max-w-lg mx-auto">Download Sangfy now and start custom public or private groups with up to 50,000 members and live HD voice lounges.</p>
         <div>
-            <a href="{{ route('download.apk') }}" class="inline-flex items-center gap-2 px-8 py-3.5 text-base font-bold text-white bg-brand-600 hover:bg-brand-700 rounded-md shadow-sm transition hover:shadow">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            <a href="{{ route('download.apk') }}" class="inline-flex items-center gap-2 px-8 py-3.5 text-base font-bold text-white btn-sangfy rounded-xl shadow-md transition hover:shadow-lg">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                 <span>Download Sangfy to Join</span>
             </a>
         </div>

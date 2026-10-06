@@ -36,28 +36,28 @@
 
                 <!-- Dual Download CTAs: Direct APK & Play Store -->
                 <div class="w-full md:w-auto flex flex-col sm:flex-row md:flex-col gap-3">
-                    @if(($siteSettings['direct_apk_enabled'] ?? '1') === '1')
+                    @if(($siteSettings['direct_apk_enabled'] ?? '1') == '1' || ($siteSettings['direct_apk_enabled'] ?? '1') === true || ($siteSettings['direct_apk_enabled'] ?? '1') === 'true')
                     <a href="{{ route('download.apk') }}" class="inline-flex items-center justify-center gap-3 px-7 py-3.5 text-sm font-bold text-white btn-sangfy rounded-xl shadow-md transition hover:shadow-lg">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                         <span>Direct Download APK ({{ $latestRelease->file_size ?? '30 MB' }})</span>
                     </a>
                     @endif
 
-                    @if(($siteSettings['play_store_enabled'] ?? '1') === '1')
-                    <a href="{{ $siteSettings['play_store_url'] ?? 'https://play.google.com/store/apps/details?id=' . ($siteSettings['android_package_name'] ?? 'com.prahlix.sangfy') }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2.5 px-6 py-3 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-xl border border-slate-700 transition shadow-xs">
-                        <svg class="w-4 h-4" viewBox="0 0 512 512">
+                    @if(($siteSettings['play_store_enabled'] ?? '1') == '1' || ($siteSettings['play_store_enabled'] ?? '1') === true || ($siteSettings['play_store_enabled'] ?? '1') === 'true')
+                    <a href="{{ $siteSettings['play_store_url'] ?? 'https://play.google.com/store/apps/details?id=' . ($siteSettings['android_package_name'] ?? 'com.prahlix.sangfy') }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-xs font-bold text-slate-800 bg-white hover:bg-slate-50 rounded-xl border border-slate-300 hover:border-purple-300 transition shadow-xs group">
+                        <svg class="w-4 h-4 group-hover:scale-110 transition-transform" viewBox="0 0 512 512">
                             <path fill="#4caf50" d="M363.8 238.1l-246.5-142.3c-10.2-5.9-22.9-5.9-33.1 0-10.2 5.9-16.5 16.8-16.5 28.6v284.6c0 11.8 6.3 22.7 16.5 28.6 5.1 2.9 10.8 4.4 16.5 4.4s11.5-1.5 16.5-4.4l246.6-142.3c10.2-5.9 16.5-16.8 16.5-28.6s-6.4-22.7-16.5-28.6z"/>
                             <path fill="#00bcd4" d="M67.7 124.4c-1.5 2.6-2.3 5.5-2.3 8.6v245.9c0 3.1.8 6 2.3 8.6l143.5-131.6-143.5-131.5z"/>
                             <path fill="#ffb300" d="M380.3 227.2l-52.6-30.4-44.5 40.8 44.5 40.8 52.6-30.4c6.7-3.9 10.8-11 10.8-18.8s-4.1-14.9-10.8-22z"/>
                             <path fill="#e91e63" d="M211.2 247.6l72 66-72 66 148.6-85.8-148.6-46.2z"/>
                         </svg>
-                        <span>Get on Google Play Store</span>
+                        <span class="group-hover:text-brand-600 transition">Get on Google Play Store</span>
                     </a>
                     @endif
 
                     <div class="text-[11px] text-slate-500 text-center flex items-center justify-center gap-1.5 font-medium">
                         <svg class="w-3.5 h-3.5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                        <span>{{ number_format($latestRelease->download_count ?? 1250) }} Verified Downloads</span>
+                        <span>{{ number_format($totalPublicDownloads ?? $latestRelease->download_count ?? 1250) }} Verified Downloads (All Versions)</span>
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                                 <span x-text="copied ? '✓ Copied!' : 'Copy'"></span>
                             </button>
                         </div>
-                        <div class="bg-slate-900 text-emerald-400 p-2.5 rounded font-mono text-[11px] break-all">
+                        <div class="bg-slate-50 text-brand-700 p-2.5 rounded-lg font-mono text-[11px] break-all border border-slate-200">
                             {{ $latestRelease->sha256_checksum ?? 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' }}
                         </div>
                     </div>

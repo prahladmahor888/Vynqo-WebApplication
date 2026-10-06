@@ -69,19 +69,24 @@
         <!-- Metric 2: Total Downloads -->
         <div class="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs hover:border-purple-300 transition">
             <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase text-slate-500 tracking-wider">APK Downloads</span>
+                <span class="text-xs font-bold uppercase text-slate-500 tracking-wider">All-Time Downloads</span>
                 <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-base font-bold">📥</span>
             </div>
             <div class="mt-3">
                 <div class="text-2xl font-black text-slate-900 font-mono">{{ number_format($totalDownloads) }}</div>
-                <div class="text-xs text-slate-500 mt-1 font-medium">
-                    Tracked Android Downloads
+                <div class="text-xs text-slate-500 mt-1 font-medium flex items-center gap-1">
+                    <span class="text-emerald-600 font-bold">All {{ $totalReleases }} Releases</span>
+                    <span>•</span>
+                    <span>{{ number_format($latestRelease->download_count ?? 1250) }} on Active</span>
                 </div>
             </div>
-            <div class="mt-4 pt-3 border-t border-slate-100">
-                <a href="{{ route('download.page') }}" target="_blank" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 flex items-center justify-between">
-                    <span>Public Download Page</span>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                <a href="{{ route('admin.release') }}" class="text-xs font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1">
+                    <span>Version Breakdown</span>
                     <span>&rarr;</span>
+                </a>
+                <a href="{{ route('download.page') }}" target="_blank" class="text-xs font-semibold text-slate-400 hover:text-emerald-600" title="Open Public Download Page">
+                    <span>Public &nearr;</span>
                 </a>
             </div>
         </div>
@@ -134,56 +139,56 @@
         <!-- Left Column: Active Release Box & Legal Table (8 Cols) -->
         <div class="lg:col-span-8 space-y-6">
             
-            <!-- Live Active Release Hero Card -->
-            <div class="bg-slate-900 text-white rounded-2xl p-6 sm:p-7 border border-slate-800 shadow-xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+            <!-- Live Active Release Hero Card (Pure White Theme) -->
+            <div class="bg-white text-slate-900 rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-80 h-80 bg-purple-50 rounded-full blur-3xl pointer-events-none -z-0"></div>
                 
                 <div class="relative z-10 space-y-4">
-                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
                         <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Live Active Release in Database</span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-700">Live Active Release in Database</span>
                         </div>
-                        <span class="text-xs font-mono text-slate-400">App ID: com.prahlix.sangfy</span>
+                        <span class="text-xs font-mono text-slate-500">App ID: com.prahlix.sangfy</span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
                         <div>
-                            <span class="text-xs text-slate-400 block">Version & Code</span>
-                            <span class="text-xl font-bold text-white font-mono">{{ $latestRelease->version_name ?? 'v1.0.0' }}</span>
-                            <span class="text-xs text-purple-300 font-mono block">Build Code #{{ $latestRelease->version_code ?? 100 }}</span>
+                            <span class="text-xs text-slate-500 block">Version &amp; Code</span>
+                            <span class="text-xl font-bold text-slate-900 font-mono">{{ $latestRelease->version_name ?? 'v1.0.0' }}</span>
+                            <span class="text-xs text-brand-600 font-mono block">Build Code #{{ $latestRelease->version_code ?? 100 }}</span>
                         </div>
 
                         <div>
-                            <span class="text-xs text-slate-400 block">Package Size</span>
-                            <span class="text-xl font-bold text-emerald-400 font-mono">{{ $latestRelease->file_size ?? '30 MB' }}</span>
-                            <span class="text-xs text-slate-400 block">Universal APK Binary</span>
+                            <span class="text-xs text-slate-500 block">Package Size</span>
+                            <span class="text-xl font-bold text-emerald-600 font-mono">{{ $latestRelease->file_size ?? '30 MB' }}</span>
+                            <span class="text-xs text-slate-500 block">Universal APK Binary</span>
                         </div>
 
                         <div>
-                            <span class="text-xs text-slate-400 block">Target OS</span>
-                            <span class="text-base font-bold text-slate-200">Android 8.0 - 15</span>
-                            <span class="text-xs text-slate-400 block">API 26 to API 35</span>
+                            <span class="text-xs text-slate-500 block">Target OS</span>
+                            <span class="text-base font-bold text-slate-800">Android 8.0 - 15</span>
+                            <span class="text-xs text-slate-500 block">API 26 to API 35</span>
                         </div>
                     </div>
 
                     <div class="pt-2">
-                        <span class="text-xs text-slate-400 block mb-1 font-semibold">Active Changelog & Features:</span>
-                        <div class="text-xs text-slate-300 bg-slate-800/80 p-3.5 rounded-xl font-mono whitespace-pre-line border border-slate-700/60 leading-relaxed max-h-36 overflow-y-auto">
+                        <span class="text-xs text-slate-600 block mb-1 font-semibold">Active Changelog &amp; Features:</span>
+                        <div class="text-xs text-slate-700 bg-slate-50 p-3.5 rounded-xl font-mono whitespace-pre-line border border-slate-200 leading-relaxed max-h-52 overflow-y-auto custom-scrollbar">
 {{ $latestRelease->changelog ?? '• Image & Video Feed Posts\n• 24h Stories\n• Nearby Radar\n• Free HD Calls' }}
                         </div>
                     </div>
 
-                    <div class="pt-3 flex flex-wrap items-center justify-between gap-4 border-t border-slate-800">
-                        <div class="text-xs text-slate-400 font-mono">
-                            SHA256: <code class="text-slate-300 font-mono">{{ substr($latestRelease->sha256_checksum ?? 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 0, 24) }}...</code>
+                    <div class="pt-3 flex flex-wrap items-center justify-between gap-4 border-t border-slate-100">
+                        <div class="text-xs text-slate-500 font-mono">
+                            SHA256: <code class="text-slate-800 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200 font-mono">{{ substr($latestRelease->sha256_checksum ?? 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 0, 24) }}...</code>
                         </div>
 
                         <div class="flex items-center gap-2">
                             <a href="{{ route('admin.release') }}" class="px-4 py-2 text-xs font-bold text-white btn-sangfy rounded-lg shadow-xs">
-                                Edit Release & Upload APK
+                                Edit Release &amp; Upload APK
                             </a>
-                            <a href="{{ route('download.apk') }}" class="px-4 py-2 text-xs font-bold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700 transition">
+                            <a href="{{ route('download.apk') }}" class="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-200 transition">
                                 Test Download
                             </a>
                         </div>
@@ -270,6 +275,26 @@
                         <span class="text-xl font-black text-slate-900 font-mono">{{ number_format($trafficStats['uniqueVisitors'] ?? 0) }}</span>
                     </div>
                 </div>
+
+                @if(!empty($trafficStats['countries']) && $trafficStats['countries']->isNotEmpty())
+                    <div class="pt-1">
+                        <div class="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1.5 flex items-center justify-between">
+                            <span>Top Locations</span>
+                            <span>Hits</span>
+                        </div>
+                        <div class="space-y-1">
+                            @foreach($trafficStats['countries']->take(3) as $c)
+                                <div class="flex items-center justify-between text-xs py-1 px-2 rounded-lg bg-slate-50 border border-slate-100">
+                                    <span class="flex items-center gap-1.5 font-medium text-slate-700 truncate">
+                                        <span>{{ $c->flag }}</span>
+                                        <span class="truncate">{{ $c->country }}</span>
+                                    </span>
+                                    <span class="font-mono font-bold text-slate-900 text-[11px]">{{ number_format($c->total) }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
 
                 <div class="pt-1">
                     <a href="{{ route('admin.traffic') }}" class="w-full py-2 px-3 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition flex items-center justify-center gap-1.5 shadow-2xs">

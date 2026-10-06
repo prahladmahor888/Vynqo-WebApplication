@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('path', 255)->default('/');
             $table->string('method', 10)->default('GET');
             $table->string('ip_address', 45)->nullable();
+            $table->string('country', 100)->nullable();
+            $table->string('country_code', 10)->nullable();
+            $table->string('city', 100)->nullable();
+            $table->string('region', 100)->nullable();
             $table->string('device_type', 30)->default('Desktop'); // Mobile, Tablet, Desktop, Bot
             $table->string('platform', 50)->nullable(); // Android, iOS, Windows, Mac, Linux
             $table->string('browser', 50)->nullable(); // Chrome, Safari, Firefox, Edge
@@ -28,6 +32,7 @@ return new class extends Migration
             // Indexes for fast analytics queries
             $table->index('path');
             $table->index('device_type');
+            $table->index('country');
             $table->index('created_at');
         });
     }

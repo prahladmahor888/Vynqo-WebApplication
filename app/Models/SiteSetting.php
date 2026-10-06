@@ -63,6 +63,10 @@ class SiteSetting extends Model
             'social_telegram' => 'https://t.me/sangfyapp',
             'social_youtube' => 'https://youtube.com/@sangfyapp',
             'social_github' => 'https://github.com/prahlix/sangfy',
+            'social_discord' => 'https://discord.gg/sangfy',
+            'social_facebook' => 'https://facebook.com/sangfyapp',
+            'social_linkedin' => 'https://linkedin.com/company/sangfy',
+            'social_whatsapp' => '',
 
             // 7. SEO & Analytics
             'meta_title' => 'Sangfy — Social Media, Stories, Nearby People & Private HD Calling',

@@ -23,11 +23,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Share latest release data and dynamic site branding settings globally across all Blade views
+        // Share latest release data, grand total downloads, and dynamic site branding settings globally across all Blade views
         View::composer('*', function ($view) {
             try {
                 if (Schema::hasTable('app_releases')) {
                     $latestRelease = AppRelease::getLatestRelease();
+                    $totalPublicDownloads = AppRelease::sum('download_count') ?: ($latestRelease->download_count ?? 1250);
+                    $allReleases = AppRelease::latest('id')->get();
                 } else {
                     $latestRelease = new AppRelease([
                         'version_name' => 'v1.0.0',
@@ -35,9 +37,11 @@ class AppServiceProvider extends ServiceProvider
                         'apk_file_path' => 'downloads/sangfy-release.apk',
                         'file_size' => '30 MB',
                         'min_android_version' => 'Android 8.0 (Oreo)+',
-                        'download_count' => 1050,
+                        'download_count' => 1250,
                         'is_latest' => true,
                     ]);
+                    $totalPublicDownloads = 1250;
+                    $allReleases = collect([$latestRelease]);
                 }
             } catch (\Exception $e) {
                 $latestRelease = new AppRelease([
@@ -46,9 +50,11 @@ class AppServiceProvider extends ServiceProvider
                     'apk_file_path' => 'downloads/sangfy-release.apk',
                     'file_size' => '30 MB',
                     'min_android_version' => 'Android 8.0 (Oreo)+',
-                    'download_count' => 1050,
+                    'download_count' => 1250,
                     'is_latest' => true,
                 ]);
+                $totalPublicDownloads = 1250;
+                $allReleases = collect([$latestRelease]);
             }
 
             $siteSettings = SiteSetting::getAll();
@@ -58,6 +64,9 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with([
                 'latestRelease' => $latestRelease,
+                'totalDownloads' => $totalPublicDownloads,
+                'totalPublicDownloads' => $totalPublicDownloads,
+                'allReleases' => $allReleases,
                 'siteSettings' => $siteSettings,
                 'siteLogo' => $siteLogo,
                 'siteFavicon' => $siteFavicon,

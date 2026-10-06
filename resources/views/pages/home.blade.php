@@ -21,7 +21,7 @@
                     <span class="text-purple-300">•</span>
                     <span class="text-emerald-700 font-bold flex items-center gap-1">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                        {{ number_format($latestRelease->download_count ?? 1250) }} Downloads
+                        {{ number_format($totalPublicDownloads ?? $latestRelease->download_count ?? 1250) }} Downloads
                     </span>
                 </div>
 
@@ -65,7 +65,7 @@
                     <div class="flex items-center justify-center lg:justify-start gap-3 text-xs text-slate-500 font-medium">
                         <span class="flex items-center gap-1.5 font-bold text-slate-800">
                             <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                            {{ number_format($latestRelease->download_count ?? 1250) }} Verified Downloads
+                            {{ number_format($totalPublicDownloads ?? $latestRelease->download_count ?? 1250) }}+ Verified Downloads
                         </span>
                         <span>•</span>
                         <span>Android 8.0 to 15 Ready</span>
@@ -442,12 +442,12 @@
                     </span>
                     <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Install Sangfy on Your Android Phone</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">
-                        Get the latest release <strong>{{ $latestRelease->version_name ?? 'v1.0.0' }}</strong> ({{ $latestRelease->file_size ?? '30 MB' }}). Join <strong>{{ number_format($latestRelease->download_count ?? 1250) }}+ users</strong> sharing photos, 24h stories, and enjoying free private HD calls.
+                        Get the latest release <strong>{{ $latestRelease->version_name ?? 'v1.0.0' }}</strong> ({{ $latestRelease->file_size ?? '30 MB' }}). Join <strong>{{ number_format($totalPublicDownloads ?? $latestRelease->download_count ?? 1250) }}+ users</strong> sharing photos, 24h stories, and enjoying free private HD calls.
                     </p>
                     <div class="pt-2 flex flex-wrap gap-4 text-xs text-slate-600 font-medium">
                         <span>✓ Works on Android 8.0 to Android 15</span>
                         <span>✓ 100% Free • No Ads</span>
-                        <span class="text-emerald-700 font-bold">✓ {{ number_format($latestRelease->download_count ?? 1250) }} Verified Installs</span>
+                        <span class="text-emerald-700 font-bold">✓ {{ number_format($totalPublicDownloads ?? $latestRelease->download_count ?? 1250) }} Verified Installs</span>
                     </div>
                 </div>
 

@@ -118,7 +118,7 @@
         <h3 class="text-2xl sm:text-3xl font-bold text-slate-900">Join thousands of happy users</h3>
         <p class="text-sm text-slate-600 max-w-lg mx-auto">Download Sangfy today and enjoy a clean, fast, and private messaging experience.</p>
         <div class="flex items-center justify-center gap-4">
-            <a href="{{ route('download.apk') }}" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 rounded-md shadow-sm transition">
+            <a href="{{ route('download.apk') }}" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-bold text-white btn-sangfy rounded-xl shadow-md transition hover:shadow-lg">
                 Download Free App for Android
             </a>
             <a href="{{ route('features') }}" class="inline-flex items-center justify-center px-6 py-3.5 text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-md transition">
