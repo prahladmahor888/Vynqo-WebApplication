@@ -7,6 +7,7 @@
     <meta property="og:title" content="{{ $title }} — Sangfy">
     <meta property="og:description" content="{{ $desc }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -46,7 +47,10 @@
         h1 { font-size: 22px; margin-bottom: 8px; }
         p { color: #9CA3AF; font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
         .btn {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             background: linear-gradient(135deg, #6366F1, #A855F7);
             color: #FFF;
             text-decoration: none;
@@ -66,7 +70,10 @@
         </div>
         <h1>{{ $title }}</h1>
         <p>{{ $desc }}</p>
-        <a href="{{ $appUrl }}" class="btn" id="openBtn">Open in {{ $siteName ?? 'Sangfy' }} App 🚀</a>
+        <a href="{{ $appUrl }}" class="btn" id="openBtn">
+            <span>Open in {{ $siteName ?? 'Sangfy' }} App</span>
+            <i class="fa-solid fa-rocket"></i>
+        </a>
     </div>
 
     <script>

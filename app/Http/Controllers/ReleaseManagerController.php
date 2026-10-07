@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AppRelease;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 
 class ReleaseManagerController extends Controller
@@ -15,7 +16,7 @@ class ReleaseManagerController extends Controller
     {
         $currentRelease = AppRelease::getLatestRelease();
         $allReleases = AppRelease::latest('id')->get();
-        $totalAllDownloads = AppRelease::sum('download_count') ?: ($currentRelease->download_count ?? 1250);
+        $totalAllDownloads = AppRelease::getTotalDownloads();
         $totalReleasesCount = AppRelease::count();
 
         return view('pages.admin-release', compact('currentRelease', 'allReleases', 'totalAllDownloads', 'totalReleasesCount'));
@@ -30,6 +31,7 @@ class ReleaseManagerController extends Controller
         $validated = $request->validate([
             'version_name' => 'required|string|max:50',
             'version_code' => 'required|integer|min:1',
+            'download_count' => 'nullable|integer|min:0',
             'file_size' => 'nullable|string|max:50',
             'min_android_version' => 'nullable|string|max:100',
             'changelog' => 'required|string',
@@ -75,6 +77,11 @@ class ReleaseManagerController extends Controller
             $fileSize = trim($validated['file_size']);
         }
 
+        // Determine download count: if specified in request use that, otherwise inherit current release count or default
+        $downloadCount = isset($validated['download_count']) && $validated['download_count'] !== null
+            ? (int) $validated['download_count']
+            : ($currentRelease ? $currentRelease->download_count : 1250);
+
         // Mark previous releases as not latest
         AppRelease::where('is_latest', true)->update(['is_latest' => false]);
 
@@ -87,9 +94,12 @@ class ReleaseManagerController extends Controller
             'sha256_checksum' => $checksum,
             'changelog' => $validated['changelog'],
             'min_android_version' => $validated['min_android_version'] ?: 'Android 8.0 (Oreo)+',
-            'download_count' => $currentRelease ? $currentRelease->download_count : 1250,
+            'download_count' => $downloadCount,
             'is_latest' => true,
         ]);
+
+        Cache::forget('latest_app_release');
+        Cache::forget('total_public_downloads');
 
         if ($request->ajax() || $request->expectsJson() || $request->wantsJson()) {
             session()->flash('success', "Release saved successfully! Version: {$release->version_name} (Code: {$release->version_code}), Automatic File Size: {$release->file_size}. Database updated.");
@@ -102,5 +112,24 @@ class ReleaseManagerController extends Controller
         }
 
         return redirect()->route('admin.release')->with('success', "Release saved successfully! Version: {$release->version_name} (Code: {$release->version_code}), Automatic File Size: {$release->file_size}. Database updated.");
+    }
+
+    /**
+     * Update/Adjust the download count for a specific release build.
+     */
+    public function updateDownloadCount(Request $request, AppRelease $release)
+    {
+        $validated = $request->validate([
+            'download_count' => 'required|integer|min:0',
+        ]);
+
+        $release->update([
+            'download_count' => (int) $validated['download_count'],
+        ]);
+
+        Cache::forget('latest_app_release');
+        Cache::forget('total_public_downloads');
+
+        return redirect()->route('admin.release')->with('success', "Download count for {$release->version_name} successfully updated to " . number_format($release->download_count) . ".");
     }
 }

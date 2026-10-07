@@ -10,7 +10,8 @@
     <div class="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-700 text-xs font-bold uppercase tracking-wide border border-pink-200 mb-2">
-                <span>💬 Help Desk</span>
+                <i class="fa-solid fa-comments"></i>
+                <span>Help Desk</span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">User Inquiries & Support Messages</h1>
             <p class="text-slate-500 text-xs sm:text-sm mt-1">Review contact form submissions, bug reports, and user feedback.</p>
@@ -18,14 +19,15 @@
 
         <div>
             <a href="{{ route('admin.dashboard') }}" class="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition flex items-center gap-1.5">
-                <span>&larr; Back to Dashboard</span>
+                <i class="fa-solid fa-arrow-left text-xs"></i>
+                <span>Back to Dashboard</span>
             </a>
         </div>
     </div>
 
     @if(session('success'))
         <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-2 shadow-xs">
-            <svg class="w-5 h-5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <i class="fa-solid fa-circle-check text-emerald-600 shrink-0 text-base"></i>
             <span class="font-medium">{{ session('success') }}</span>
         </div>
     @endif
@@ -34,7 +36,7 @@
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         @if($messages->isEmpty())
             <div class="p-12 text-center space-y-3">
-                <span class="text-4xl">📬</span>
+                <i class="fa-solid fa-inbox text-4xl text-slate-300"></i>
                 <h3 class="text-lg font-bold text-slate-900">No Inquiries Yet</h3>
                 <p class="text-xs text-slate-500 max-w-sm mx-auto">When users submit messages through the contact form or privacy desk, they will appear here.</p>
             </div>
@@ -61,8 +63,8 @@
                         </div>
 
                         <div class="flex items-center justify-end gap-2 pt-2">
-                            <a href="mailto:{{ $msg->email }}?subject=Re: {{ rawurlencode($msg->subject) }}" class="px-3 py-1.5 text-xs font-semibold text-brand-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg transition inline-flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <a href="mailto:{{ $msg->email }}?subject=Re: {{ rawurlencode($msg->subject) }}" class="px-3 py-1.5 text-xs font-semibold text-brand-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg transition inline-flex items-center gap-1.5">
+                                <i class="fa-solid fa-envelope text-xs"></i>
                                 <span>Reply to User</span>
                             </a>
 

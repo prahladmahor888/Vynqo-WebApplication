@@ -9,8 +9,8 @@
     <!-- Header Breadcrumb & Actions -->
     <div class="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <a href="{{ route('admin.legal.index') }}" class="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 hover:underline mb-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            <a href="{{ route('admin.legal.index') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:underline mb-2">
+                <i class="fa-solid fa-arrow-left"></i>
                 <span>Back to Legal Documents List</span>
             </a>
             <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Edit {{ $document->title ?? 'Legal Policy' }}</h1>
@@ -20,8 +20,9 @@
         <div class="flex items-center gap-2">
             <form action="{{ route('admin.legal.reset', $slug) }}" method="POST" onsubmit="return confirm('Reset this document to official default content?');">
                 @csrf
-                <button type="submit" class="px-4 py-2 text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-xl hover:bg-rose-100 transition">
-                    Reset to Defaults
+                <button type="submit" class="px-4 py-2 text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-xl hover:bg-rose-100 transition inline-flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>Reset to Defaults</span>
                 </button>
             </form>
         </div>
@@ -83,8 +84,9 @@
                     Cancel
                 </a>
 
-                <button type="submit" class="px-8 py-3 text-sm font-bold text-white btn-sangfy rounded-xl shadow-md transition hover:shadow-lg">
-                    Save Policy to Database
+                <button type="submit" class="px-8 py-3 text-sm font-bold text-white btn-sangfy rounded-xl shadow-md transition hover:shadow-lg inline-flex items-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>Save Policy to Database</span>
                 </button>
             </div>
         </form>

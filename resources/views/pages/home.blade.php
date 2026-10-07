@@ -45,26 +45,27 @@
                     <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                         @if(($siteSettings['direct_apk_enabled'] ?? '1') == '1')
                             <a href="{{ route('download.apk') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-4 text-base font-bold text-white btn-sangfy rounded-md shadow-md transition hover:shadow-lg group">
-                                <svg class="w-5 h-5 text-white group-hover:-translate-y-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <i class="fa-solid fa-download text-lg group-hover:-translate-y-0.5 transition"></i>
                                 <span>{{ $siteSettings['hero_cta_text'] ?? 'Download Free for Android' }}</span>
                                 <span class="text-xs bg-white/20 px-2 py-0.5 rounded font-normal text-white">{{ $latestRelease->file_size ?? '30 MB' }}</span>
                             </a>
                         @else
                             <a href="{{ route('download.page') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-4 text-base font-bold text-white btn-sangfy rounded-md shadow-md transition hover:shadow-lg group">
+                                <i class="fa-solid fa-download text-lg"></i>
                                 <span>Get {{ $siteName ?? 'Sangfy' }} App</span>
                             </a>
                         @endif
                         
                         <a href="{{ route('features') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-md transition hover:border-slate-400">
                             <span>Explore All Features</span>
-                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            <i class="fa-solid fa-arrow-right text-slate-400 text-xs"></i>
                         </a>
                     </div>
                     
                     <!-- Verified Social Proof Stats -->
                     <div class="flex items-center justify-center lg:justify-start gap-3 text-xs text-slate-500 font-medium">
                         <span class="flex items-center gap-1.5 font-bold text-slate-800">
-                            <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
                             {{ number_format($totalPublicDownloads ?? $latestRelease->download_count ?? 1250) }}+ Verified Downloads
                         </span>
                         <span>•</span>
@@ -75,16 +76,16 @@
                 <!-- Feature Highlights Badges -->
                 <div class="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs font-semibold text-slate-600">
                     <span class="flex items-center gap-1.5">
-                        <span class="text-pink-500">📸</span> Posts & 24h Stories
+                        <i class="fa-solid fa-camera-retro text-pink-500"></i> Posts & 24h Stories
                     </span>
                     <span class="flex items-center gap-1.5">
-                        <span class="text-emerald-500">📍</span> Find Nearby People
+                        <i class="fa-solid fa-location-dot text-emerald-500"></i> Find Nearby People
                     </span>
                     <span class="flex items-center gap-1.5">
-                        <span class="text-purple-500">🔒</span> End-to-End Encrypted
+                        <i class="fa-solid fa-shield-halved text-purple-500"></i> End-to-End Encrypted
                     </span>
                     <span class="flex items-center gap-1.5">
-                        <span class="text-indigo-500">📞</span> Free HD Calls
+                        <i class="fa-solid fa-phone-volume text-indigo-500"></i> Free HD Calls
                     </span>
                 </div>
             </div>
@@ -95,10 +96,22 @@
                     
                     <!-- Tab Selector Switcher -->
                     <div class="flex items-center justify-center p-1 bg-slate-100 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600">
-                        <button @click="tab = 'feed'" :class="tab === 'feed' ? 'bg-white text-brand-700 shadow-xs' : 'hover:text-slate-900'" class="flex-1 py-1.5 rounded-md transition text-center">📸 Feed</button>
-                        <button @click="tab = 'nearby'" :class="tab === 'nearby' ? 'bg-white text-brand-700 shadow-xs' : 'hover:text-slate-900'" class="flex-1 py-1.5 rounded-md transition text-center">📍 Nearby</button>
-                        <button @click="tab = 'chat'" :class="tab === 'chat' ? 'bg-white text-brand-700 shadow-xs' : 'hover:text-slate-900'" class="flex-1 py-1.5 rounded-md transition text-center">💬 Chat</button>
-                        <button @click="tab = 'call'" :class="tab === 'call' ? 'bg-white text-brand-700 shadow-xs' : 'hover:text-slate-900'" class="flex-1 py-1.5 rounded-md transition text-center">📞 Call</button>
+                        <button @click="tab = 'feed'" :class="tab === 'feed' ? 'bg-white text-brand-700 shadow-xs' : 'hover:text-slate-900'" class="flex-1 py-1.5 rounded-md transition text-center flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-images text-xs"></i>
+                            <span>Feed</span>
+                        </button>
+                        <button @click="tab = 'nearby'" :class="tab === 'nearby' ? 'bg-white text-brand-700 shadow-xs' : 'hover:text-slate-900'" class="flex-1 py-1.5 rounded-md transition text-center flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-location-dot text-xs"></i>
+                            <span>Nearby</span>
+                        </button>
+                        <button @click="tab = 'chat'" :class="tab === 'chat' ? 'bg-white text-brand-700 shadow-xs' : 'hover:text-slate-900'" class="flex-1 py-1.5 rounded-md transition text-center flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-comments text-xs"></i>
+                            <span>Chat</span>
+                        </button>
+                        <button @click="tab = 'call'" :class="tab === 'call' ? 'bg-white text-brand-700 shadow-xs' : 'hover:text-slate-900'" class="flex-1 py-1.5 rounded-md transition text-center flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-phone text-xs"></i>
+                            <span>Call</span>
+                        </button>
                     </div>
 
                     <!-- Phone Frame -->
@@ -113,7 +126,7 @@
                                 <span>09:41</span>
                                 <div class="flex items-center gap-1.5">
                                     <span>5G</span>
-                                    <span>📍 Nearby ON</span>
+                                    <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot text-emerald-400"></i> Nearby ON</span>
                                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
                                 </div>
                             </div>
@@ -127,8 +140,8 @@
                                         <span class="font-extrabold text-sm text-white">{{ $siteName ?? 'Sangfy' }}</span>
                                     </div>
                                     <div class="flex items-center gap-2 text-sm text-slate-300">
-                                        <button class="hover:text-pink-400">🔍</button>
-                                        <button class="hover:text-pink-400">🔔</button>
+                                        <button class="hover:text-pink-400 p-1"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                        <button class="hover:text-pink-400 p-1"><i class="fa-solid fa-bell"></i></button>
                                     </div>
                                 </div>
 
@@ -136,7 +149,7 @@
                                 <div class="flex items-center gap-2.5 pb-2 overflow-x-auto border-b border-slate-800/80">
                                     <div class="flex flex-col items-center gap-1 text-[10px] text-slate-300">
                                         <div class="w-11 h-11 rounded-full bg-slate-800 border-2 border-dashed border-pink-500 flex items-center justify-center text-sm font-bold text-pink-400">
-                                            +
+                                            <i class="fa-solid fa-plus text-xs"></i>
                                         </div>
                                         <span>Your Story</span>
                                     </div>
@@ -178,12 +191,15 @@
                                                 <div class="text-[9px] text-slate-400">2 hours ago • Mumbai</div>
                                             </div>
                                         </div>
-                                        <button class="text-xs text-slate-400">•••</button>
+                                        <button class="text-xs text-slate-400"><i class="fa-solid fa-ellipsis"></i></button>
                                     </div>
 
                                     <!-- Post Image Graphic Mockup -->
                                     <div class="rounded-lg h-36 bg-gradient-to-br from-purple-900/60 via-pink-900/40 to-slate-900 flex flex-col items-center justify-center text-center p-3 border border-purple-500/20">
-                                        <span class="text-2xl mb-1">🌅 📸</span>
+                                        <div class="flex items-center gap-2 text-2xl mb-1 text-pink-400">
+                                            <i class="fa-solid fa-mountain-sun"></i>
+                                            <i class="fa-solid fa-camera"></i>
+                                        </div>
                                         <span class="text-[11px] font-semibold text-purple-200">Weekend Sunset & Nature Hike</span>
                                         <span class="text-[9px] text-pink-300">High-Resolution Media Post</span>
                                     </div>
@@ -191,9 +207,9 @@
                                     <!-- Post Actions -->
                                     <div class="flex items-center justify-between pt-1 text-xs">
                                         <div class="flex items-center gap-3">
-                                            <span class="flex items-center gap-1 text-pink-400 font-semibold cursor-pointer">❤️ 1.4k</span>
-                                            <span class="flex items-center gap-1 text-slate-300 cursor-pointer">💬 128</span>
-                                            <span class="text-slate-300 cursor-pointer">↗️</span>
+                                            <span class="flex items-center gap-1.5 text-pink-400 font-semibold cursor-pointer"><i class="fa-solid fa-heart"></i> 1.4k</span>
+                                            <span class="flex items-center gap-1.5 text-slate-300 cursor-pointer"><i class="fa-solid fa-comment"></i> 128</span>
+                                            <span class="text-slate-300 cursor-pointer"><i class="fa-solid fa-share-nodes"></i></span>
                                         </div>
                                         <span class="text-[10px] text-slate-400 font-mono">#photography #nature</span>
                                     </div>
@@ -204,7 +220,7 @@
                             <div x-show="tab === 'nearby'" style="display:none;" class="flex-1 flex flex-col justify-between p-3 space-y-2 overflow-y-auto">
                                 <div class="pb-2 border-b border-slate-800 flex justify-between items-center">
                                     <div>
-                                        <span class="font-bold text-xs text-white">📍 People Nearby</span>
+                                        <span class="font-bold text-xs text-white flex items-center gap-1"><i class="fa-solid fa-location-dot text-pink-500"></i> People Nearby</span>
                                         <span class="text-[10px] text-emerald-400 block">Radius: Within 5 km</span>
                                     </div>
                                     <span class="text-[10px] bg-purple-900/60 border border-purple-500/40 text-purple-300 px-2 py-0.5 rounded-full">Radar Active</span>
@@ -222,7 +238,11 @@
                                                     Riya, 24
                                                     <span class="text-[9px] bg-emerald-950 text-emerald-400 px-1.5 py-0.2 rounded">1.2 km</span>
                                                 </div>
-                                                <div class="text-[10px] text-slate-400">📸 Photography • ☕ Coffee</div>
+                                                <div class="text-[10px] text-slate-400 flex items-center gap-1.5">
+                                                    <span><i class="fa-solid fa-camera text-pink-400 text-[9px]"></i> Photography</span>
+                                                    <span>•</span>
+                                                    <span><i class="fa-solid fa-mug-saucer text-amber-400 text-[9px]"></i> Coffee</span>
+                                                </div>
                                             </div>
                                         </div>
                                         <button class="px-2.5 py-1 rounded bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold text-[11px]">Chat</button>
@@ -239,7 +259,11 @@
                                                     Aman, 26
                                                     <span class="text-[9px] bg-emerald-950 text-emerald-400 px-1.5 py-0.2 rounded">2.4 km</span>
                                                 </div>
-                                                <div class="text-[10px] text-slate-400">💻 Tech & Startups • 🎮 Gaming</div>
+                                                <div class="text-[10px] text-slate-400 flex items-center gap-1.5">
+                                                    <span><i class="fa-solid fa-laptop-code text-cyan-400 text-[9px]"></i> Tech</span>
+                                                    <span>•</span>
+                                                    <span><i class="fa-solid fa-gamepad text-purple-400 text-[9px]"></i> Gaming</span>
+                                                </div>
                                             </div>
                                         </div>
                                         <button class="px-2.5 py-1 rounded bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold text-[11px]">Chat</button>
@@ -256,15 +280,20 @@
                                                     Pooja, 23
                                                     <span class="text-[9px] bg-emerald-950 text-emerald-400 px-1.5 py-0.2 rounded">3.1 km</span>
                                                 </div>
-                                                <div class="text-[10px] text-slate-400">✈️ Travel • 🎧 Music</div>
+                                                <div class="text-[10px] text-slate-400 flex items-center gap-1.5">
+                                                    <span><i class="fa-solid fa-plane text-sky-400 text-[9px]"></i> Travel</span>
+                                                    <span>•</span>
+                                                    <span><i class="fa-solid fa-headphones text-indigo-400 text-[9px]"></i> Music</span>
+                                                </div>
                                             </div>
                                         </div>
                                         <button class="px-2.5 py-1 rounded bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold text-[11px]">Chat</button>
                                     </div>
                                 </div>
 
-                                <div class="bg-slate-800 rounded-lg p-2 text-[10px] text-center text-slate-400 border border-slate-700">
-                                    🛡️ Approximate distance only — Exact GPS is never shared
+                                <div class="bg-slate-800 rounded-lg p-2 text-[10px] text-center text-slate-400 border border-slate-700 flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                                    <span>Approximate distance only — Exact GPS is never shared</span>
                                 </div>
                             </div>
 
@@ -278,30 +307,30 @@
                                         <div>
                                             <div class="font-bold text-xs text-white flex items-center gap-1">
                                                 Riya Sharma
-                                                <span class="text-pink-400 text-[10px]">💜</span>
+                                                <i class="fa-solid fa-heart text-purple-400 text-[10px]"></i>
                                             </div>
-                                            <div class="text-[10px] text-emerald-400">🔒 E2EE Locked</div>
+                                            <div class="text-[10px] text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> E2EE Locked</div>
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-2 text-slate-300">
-                                        <button class="p-1 hover:text-white" title="Voice Call">📞</button>
-                                        <button class="p-1 hover:text-white" title="Video Call">📹</button>
+                                        <button class="p-1 hover:text-white" title="Voice Call"><i class="fa-solid fa-phone text-xs"></i></button>
+                                        <button class="p-1 hover:text-white" title="Video Call"><i class="fa-solid fa-video text-xs"></i></button>
                                     </div>
                                 </div>
 
                                 <div class="flex-1 space-y-2 text-xs overflow-y-auto pr-1">
                                     <div class="chat-bubble-in max-w-[85%] p-2.5 text-slate-900 bg-slate-100">
-                                        <p>Hey! Saw your post on the feed. Loved the sunset picture! 🌅</p>
+                                        <p>Hey! Saw your post on the feed. Loved the sunset picture! <i class="fa-solid fa-mountain-sun text-amber-500"></i></p>
                                         <span class="text-[9px] text-slate-500 block text-right mt-1">09:38 AM</span>
                                     </div>
 
                                     <div class="chat-bubble-out max-w-[85%] ml-auto p-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white">
                                         <p>Thank you! Took it yesterday during the hike.</p>
-                                        <span class="text-[9px] text-purple-200 block text-right mt-1">09:39 AM ✓✓</span>
+                                        <span class="text-[9px] text-purple-200 block text-right mt-1">09:39 AM <i class="fa-solid fa-check-double text-[9px]"></i></span>
                                     </div>
 
                                     <div class="chat-bubble-out max-w-[85%] ml-auto p-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white flex items-center gap-2">
-                                        <span class="text-sm">✨</span>
+                                        <i class="fa-solid fa-eye-slash text-base text-pink-300"></i>
                                         <div class="text-left">
                                             <div class="font-bold text-[11px]">Photo (View Once)</div>
                                             <div class="text-[9px] text-purple-200">Disappears after viewing</div>
@@ -310,17 +339,17 @@
                                 </div>
 
                                 <div class="bg-slate-800 rounded-lg p-1.5 flex items-center gap-2 text-xs">
-                                    <span class="text-slate-400 pl-1">😊</span>
-                                    <span class="flex-1 text-slate-400">Encrypted message...</span>
-                                    <button class="w-6 h-6 rounded-md bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white text-xs">➤</button>
+                                    <i class="fa-regular fa-face-smile text-slate-400 pl-1 text-sm"></i>
+                                    <span class="flex-1 text-slate-400 text-[11px]">Encrypted message...</span>
+                                    <button class="w-6 h-6 rounded-md bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white text-xs"><i class="fa-solid fa-paper-plane text-[10px]"></i></button>
                                 </div>
                             </div>
 
                             <!-- TAB 4: HD CALL VIEW -->
                             <div x-show="tab === 'call'" style="display:none;" class="flex-1 flex flex-col justify-between p-4 bg-slate-900 text-center">
                                 <div class="pt-6 space-y-2">
-                                    <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 border-2 border-purple-400 mx-auto flex items-center justify-center text-3xl shadow-lg">
-                                        👩‍💼
+                                    <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 border-2 border-purple-400 mx-auto flex items-center justify-center text-3xl shadow-lg text-white">
+                                        <i class="fa-solid fa-user"></i>
                                     </div>
                                     <h3 class="font-bold text-white text-base">Riya Sharma</h3>
                                     <div class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-[11px] font-medium">
@@ -341,9 +370,9 @@
                                 </div>
 
                                 <div class="flex items-center justify-center gap-5 pb-4">
-                                    <button class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-200 text-sm">🔇</button>
-                                    <button class="w-12 h-12 rounded-full bg-rose-600 flex items-center justify-center text-white text-base font-bold shadow-lg">✕</button>
-                                    <button class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-200 text-sm">🔊</button>
+                                    <button class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-200 text-sm hover:bg-slate-700"><i class="fa-solid fa-microphone-slash"></i></button>
+                                    <button class="w-12 h-12 rounded-full bg-rose-600 flex items-center justify-center text-white text-base font-bold shadow-lg hover:bg-rose-500"><i class="fa-solid fa-phone-slash"></i></button>
+                                    <button class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-200 text-sm hover:bg-slate-700"><i class="fa-solid fa-volume-high"></i></button>
                                 </div>
                             </div>
 
@@ -397,17 +426,17 @@
                         <div class="flex items-center justify-between">
                             <div class="w-10 h-10 rounded-md bg-purple-50 border border-purple-100 flex items-center justify-center text-brand-600 font-bold group-hover:scale-105 transition">
                                 @if($feature['icon'] === 'camera')
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                    <i class="fa-solid fa-camera text-base"></i>
                                 @elseif($feature['icon'] === 'clock')
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <i class="fa-solid fa-hourglass-half text-base"></i>
                                 @elseif($feature['icon'] === 'map-pin')
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                    <i class="fa-solid fa-location-dot text-base"></i>
                                 @elseif($feature['icon'] === 'lock')
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                    <i class="fa-solid fa-lock text-base"></i>
                                 @elseif($feature['icon'] === 'video')
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                    <i class="fa-solid fa-video text-base"></i>
                                 @else
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                    <i class="fa-solid fa-shield-halved text-base"></i>
                                 @endif
                             </div>
                             <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded bg-purple-50 text-brand-700 border border-purple-200/60">
@@ -424,7 +453,7 @@
         <div class="mt-12 text-center">
             <a href="{{ route('features') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-700 transition">
                 <span>See in-depth feature details</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
             </a>
         </div>
     </div>
@@ -445,19 +474,20 @@
                         Get the latest release <strong>{{ $latestRelease->version_name ?? 'v1.0.0' }}</strong> ({{ $latestRelease->file_size ?? '30 MB' }}). Join <strong>{{ number_format($totalPublicDownloads ?? $latestRelease->download_count ?? 1250) }}+ users</strong> sharing photos, 24h stories, and enjoying free private HD calls.
                     </p>
                     <div class="pt-2 flex flex-wrap gap-4 text-xs text-slate-600 font-medium">
-                        <span>✓ Works on Android 8.0 to Android 15</span>
-                        <span>✓ 100% Free • No Ads</span>
-                        <span class="text-emerald-700 font-bold">✓ {{ number_format($totalPublicDownloads ?? $latestRelease->download_count ?? 1250) }} Verified Installs</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i> Works on Android 8.0 to Android 15</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i> 100% Free • No Ads</span>
+                        <span class="text-emerald-700 font-bold flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i> {{ number_format($totalPublicDownloads ?? $latestRelease->download_count ?? 1250) }} Verified Installs</span>
                     </div>
                 </div>
 
                 <div class="md:col-span-4 flex flex-col items-stretch sm:items-end justify-center space-y-3">
-                    <a href="{{ route('download.apk') }}" class="w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-bold text-white btn-sangfy rounded-md shadow-md transition hover:shadow-lg">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    <a href="{{ route('download.apk') }}" class="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 text-base font-bold text-white btn-sangfy rounded-md shadow-md transition hover:shadow-lg">
+                        <i class="fa-solid fa-download text-lg"></i>
                         <span>Download Free APK</span>
                     </a>
-                    <a href="{{ route('download.page') }}" class="text-xs font-semibold text-slate-600 hover:text-brand-600 text-center w-full transition">
-                        Installation Guide & Notes →
+                    <a href="{{ route('download.page') }}" class="text-xs font-semibold text-slate-600 hover:text-brand-600 text-center w-full transition inline-flex items-center justify-center gap-1">
+                        <span>Installation Guide & Notes</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
                     </a>
                 </div>
 
@@ -481,7 +511,7 @@
                 <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
                     <button @click="activeAccordion = activeAccordion === {{ $index }} ? null : {{ $index }}" class="w-full px-6 py-4 text-left flex items-center justify-between font-semibold text-slate-900 hover:text-brand-600 transition">
                         <span class="text-base">{{ $faq['question'] }}</span>
-                        <svg :class="activeAccordion === {{ $index }} ? 'rotate-180 text-brand-600' : 'text-slate-400'" class="w-5 h-5 transform transition-transform duration-200 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        <i :class="activeAccordion === {{ $index }} ? 'rotate-180 text-brand-600' : 'text-slate-400'" class="fa-solid fa-chevron-down transform transition-transform duration-200 flex-shrink-0 text-sm"></i>
                     </button>
                     <div x-show="activeAccordion === {{ $index }}" x-transition class="px-6 pb-4 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
                         {{ $faq['answer'] }}

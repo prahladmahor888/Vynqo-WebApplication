@@ -128,6 +128,58 @@ sudo certbot --nginx -d sangfy.prahlix.com
 
 ---
 
+## ⚡ 6. Background Queue Workers (`jobs`, `job_batches`, `failed_jobs`)
+
+Sangfy utilizes Laravel's database queue connection (`QUEUE_CONNECTION=database`) for asynchronous email delivery, batch document synchronization, and telemetry pruning.
+
+### Option A: Supervisor Process Manager (Recommended for Ubuntu/Debian)
+Create `/etc/supervisor/conf.d/sangfy-worker.conf`:
+```ini
+[program:sangfy-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/sangfy/artisan queue:work database --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+numprocs=2
+redirect_stderr=true
+stdout_logfile=/var/www/sangfy/storage/logs/worker.log
+stopwaitsecs=3600
+```
+
+Start Supervisor:
+```bash
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start sangfy-worker:*
+```
+
+### Option B: Systemd Service
+Create `/etc/systemd/system/sangfy-queue.service`:
+```ini
+[Unit]
+Description=Sangfy Queue Worker
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+Restart=always
+ExecStart=/usr/bin/php /var/www/sangfy/artisan queue:work database --tries=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl enable sangfy-queue
+sudo systemctl start sangfy-queue
+```
+
+---
+
 ## 🔄 Live Deployment Update Script (`deploy.sh`)
 ```bash
 #!/bin/bash
@@ -138,6 +190,7 @@ php artisan optimize:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
+php artisan queue:restart
 sudo systemctl reload php8.2-fpm
 sudo systemctl reload nginx
 echo "🚀 Sangfy (sangfy.prahlix.com) successfully deployed!"

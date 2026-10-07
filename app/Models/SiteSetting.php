@@ -42,13 +42,13 @@ class SiteSetting extends Model
             'support_badge_text' => 'Official Android App Support',
             'support_title' => 'How Can We Help You?',
             'support_subtitle' => 'Need help with your Sangfy Android App, have feedback, or want to report an issue? Our team is here to assist.',
-            'contact_email' => 'support@sangfy.prahlix.com',
+            'contact_email' => 'support@prahlix.com',
             'contact_phone' => '+1 (555) 019-2834',
             'support_hours' => '24/7 Response Desk (within 24 hours)',
-            'company_address' => 'Prahlix Technologies, Silicon Valley & Global',
-            'privacy_email' => 'privacy@sangfy.prahlix.com',
-            'safety_email' => 'safety@sangfy.prahlix.com',
-            'support_receiver_email' => 'sangfy@prahlix.com',
+            'company_address' => 'Prahlix Technologies, Global',
+            'privacy_email' => 'support@prahlix.com',
+            'safety_email' => 'support@prahlix.com',
+            'support_receiver_email' => 'support@prahlix.com',
             'contact_form_title' => 'Send us a message',
             'contact_form_subtitle' => 'Our Android support engineering team responds within 24 business hours.',
 
@@ -75,34 +75,34 @@ class SiteSetting extends Model
             'google_analytics_id' => '',
             'custom_head_code' => '',
 
-            // 8. Footer Content
+            // 8. Bot Protection & Shield Firewall
+            'bot_protection_enabled' => '1',
+            'block_known_scrapers' => '1',
+            'block_exploit_probes' => '1',
+            'block_empty_user_agents' => '1',
+            'honeypot_enabled' => '1',
+            'allow_search_engines' => '1',
+            'max_requests_per_minute' => '60',
+            'ip_whitelist' => '',
+            'ip_blacklist' => '',
+
+            // 9. Footer Content
             'footer_about_text' => 'The official communication platform for the Sangfy Android App (com.prahlix.sangfy). Built for photo/video posts, 24h stories, nearby people discovery, and end-to-end encrypted messaging.',
             'footer_copyright' => '© ' . date('Y') . ' Sangfy App (com.prahlix.sangfy). All rights reserved.',
         ];
     }
 
     /**
-     * Retrieve a setting by key, with default fallback.
+     * Retrieve a setting by key, with default fallback and ultra-fast Cache.
      */
     public static function get(string $key, $default = null)
     {
-        try {
-            if (Schema::hasTable('site_settings')) {
-                $setting = self::where('key', $key)->first();
-                if ($setting && $setting->value !== null && $setting->value !== '') {
-                    return $setting->value;
-                }
-            }
-        } catch (\Throwable $e) {
-            // Fallback gracefully if database or table not ready
-        }
-
-        $defaults = self::defaults();
-        return $defaults[$key] ?? $default;
+        $all = self::getAll();
+        return $all[$key] ?? $default;
     }
 
     /**
-     * Set a setting value by key.
+     * Set a setting value by key and invalidate memory cache.
      */
     public static function set(string $key, ?string $value): void
     {
@@ -110,32 +110,46 @@ class SiteSetting extends Model
             ['key' => $key],
             ['value' => $value]
         );
+
+        \Illuminate\Support\Facades\Cache::forget('site_settings_all');
     }
 
     /**
-     * Get all settings as a key => value array, auto-seeding DB table with any missing keys.
+     * Get all settings as a key => value array with High-Performance Cache (zero DB queries on repeated hits).
      */
     public static function getAll(): array
     {
         $defaults = self::defaults();
-        try {
-            if (Schema::hasTable('site_settings')) {
-                // Ensure every default key exists in the database table
-                $existingKeys = self::pluck('key')->toArray();
-                foreach ($defaults as $k => $v) {
-                    if (!in_array($k, $existingKeys, true)) {
-                        self::create(['key' => $k, 'value' => $v]);
+
+        return \Illuminate\Support\Facades\Cache::remember('site_settings_all', 86400, function () use ($defaults) {
+            try {
+                if (Schema::hasTable('site_settings')) {
+                    // Ensure every default key exists in the database table
+                    $existingKeys = self::pluck('key')->toArray();
+                    foreach ($defaults as $k => $v) {
+                        if (!in_array($k, $existingKeys, true)) {
+                            self::create(['key' => $k, 'value' => $v]);
+                        }
                     }
+
+                    // Auto-migrate legacy emails in database to support@prahlix.com
+                    $legacyEmails = ['support@sangfy.prahlix.com', 'privacy@sangfy.prahlix.com', 'safety@sangfy.prahlix.com', 'sangfy@prahlix.com'];
+                    foreach (['contact_email', 'privacy_email', 'safety_email', 'support_receiver_email'] as $eKey) {
+                        $currentVal = self::where('key', $eKey)->value('value');
+                        if (in_array($currentVal, $legacyEmails, true) || empty($currentVal)) {
+                            self::updateOrCreate(['key' => $eKey], ['value' => 'support@prahlix.com']);
+                        }
+                    }
+
+                    $dbSettings = self::pluck('value', 'key')->toArray();
+                    return array_merge($defaults, array_filter($dbSettings, fn($v) => $v !== null && $v !== ''));
                 }
-
-                $dbSettings = self::pluck('value', 'key')->toArray();
-                return array_merge($defaults, array_filter($dbSettings, fn($v) => $v !== null && $v !== ''));
+            } catch (\Throwable $e) {
+                // Fallback gracefully
             }
-        } catch (\Throwable $e) {
-            // Fallback gracefully
-        }
 
-        return $defaults;
+            return $defaults;
+        });
     }
 
     /**

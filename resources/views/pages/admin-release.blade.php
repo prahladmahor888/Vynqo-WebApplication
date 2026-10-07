@@ -23,7 +23,7 @@
 
         <div class="flex items-center gap-2">
             <a href="{{ route('download.apk') }}" class="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition flex items-center gap-1.5 shadow-2xs">
-                <svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <i class="fa-solid fa-download text-brand-600"></i>
                 <span>Download Active APK</span>
             </a>
         </div>
@@ -32,7 +32,7 @@
     <!-- Alert Messages (Session Success) -->
     @if(session('success'))
         <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-2 shadow-xs">
-            <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <i class="fa-solid fa-circle-check text-emerald-600 shrink-0 text-base"></i>
             <span class="font-medium">{{ session('success') }}</span>
         </div>
     @endif
@@ -40,14 +40,14 @@
     <!-- Dynamic Error Banner (AJAX / Validation) -->
     <div x-show="errorMessage" x-cloak x-transition class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-start justify-between gap-3 shadow-xs">
         <div class="flex items-start gap-2.5">
-            <svg class="w-5 h-5 text-rose-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            <i class="fa-solid fa-triangle-exclamation text-rose-600 shrink-0 mt-0.5 text-base"></i>
             <div>
                 <p class="font-bold text-rose-900">Upload Failed</p>
                 <p class="text-xs text-rose-700 mt-0.5" x-text="errorMessage"></p>
             </div>
         </div>
         <button type="button" @click="errorMessage = ''" class="text-rose-500 hover:text-rose-700 p-1">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            <i class="fa-solid fa-xmark text-sm"></i>
         </button>
     </div>
 
@@ -57,7 +57,7 @@
         <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs space-y-2">
             <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-500">
                 <span>Total All-Time Downloads</span>
-                <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-base font-bold">📥</span>
+                <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-download"></i></span>
             </div>
             <div class="text-3xl font-black text-slate-900 font-mono">
                 {{ number_format($totalAllDownloads ?? 1250) }}
@@ -71,7 +71,7 @@
         <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs space-y-2">
             <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-500">
                 <span>Active Build Downloads</span>
-                <span class="w-8 h-8 rounded-xl bg-purple-50 text-brand-600 flex items-center justify-center text-base font-bold">🚀</span>
+                <span class="w-8 h-8 rounded-xl bg-purple-50 text-brand-600 flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-rocket"></i></span>
             </div>
             <div class="text-3xl font-black text-brand-700 font-mono">
                 {{ number_format($currentRelease->download_count ?? 1250) }}
@@ -86,7 +86,7 @@
         <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs space-y-2">
             <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-500">
                 <span>Releases in Database</span>
-                <span class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-base font-bold">📦</span>
+                <span class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold"><i class="fa-brands fa-android text-base"></i></span>
             </div>
             <div class="text-3xl font-black text-slate-900 font-mono">
                 {{ number_format($totalReleasesCount ?? count($allReleases ?? [])) }}
@@ -144,7 +144,8 @@
                 <p class="text-xs text-slate-500">Enter version & build code — Live upload progress and automatic size & checksum calculation</p>
             </div>
             <span class="text-xs px-2.5 py-1 rounded-full bg-purple-50 text-brand-700 font-semibold border border-purple-100 flex items-center gap-1">
-                <span>⚡</span> Real-time Upload Progress
+                <i class="fa-solid fa-bolt text-amber-500"></i>
+                <span>Real-time Upload Progress</span>
             </span>
         </div>
 
@@ -154,8 +155,8 @@
             <!-- Hidden field to pass auto-calculated size -->
             <input type="hidden" name="file_size" :value="fileSize">
 
-            <!-- Version Name & Build Code -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Version Name, Build Code & Initial Download Count -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <!-- Version Name -->
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
@@ -174,6 +175,16 @@
                     <input type="number" name="version_code" required min="1" :disabled="isUploading" value="{{ old('version_code', $currentRelease->version_code ?? 100) }}" placeholder="e.g. 100" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 font-mono font-bold text-slate-900 disabled:bg-slate-100 disabled:cursor-not-allowed">
                     <p class="text-[11px] text-slate-400 mt-1">Integer build code from Gradle (e.g. 100, 101)</p>
                     @error('version_code') <span class="text-xs text-rose-600 mt-1 block">{{ $message }}</span> @enderror
+                </div>
+
+                <!-- Starting / Base Download Count -->
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
+                        Base Download Count
+                    </label>
+                    <input type="number" name="download_count" min="0" :disabled="isUploading" value="{{ old('download_count', $currentRelease->download_count ?? 1250) }}" placeholder="e.g. 1250" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 font-mono font-bold text-slate-900 disabled:bg-slate-100 disabled:cursor-not-allowed">
+                    <p class="text-[11px] text-slate-400 mt-1">Starting download counter for this release</p>
+                    @error('download_count') <span class="text-xs text-rose-600 mt-1 block">{{ $message }}</span> @enderror
                 </div>
             </div>
 
@@ -206,7 +217,7 @@
                         <template x-if="!fileName">
                             <div class="flex flex-col items-center justify-center space-y-2.5">
                                 <div class="w-14 h-14 rounded-2xl bg-purple-100 text-brand-700 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
-                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                                    <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
                                 </div>
                                 <div>
                                     <p class="text-sm text-slate-800 font-bold">
@@ -222,7 +233,7 @@
                         <template x-if="fileName && !isUploading">
                             <div class="flex flex-col items-center justify-center space-y-2">
                                 <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <i class="fa-solid fa-circle-check text-2xl text-emerald-600"></i>
                                 </div>
                                 <div class="space-y-0.5">
                                     <p class="text-sm font-bold text-slate-900 font-mono" x-text="fileName"></p>
@@ -247,7 +258,7 @@
                 <!-- Selected File Details Banner -->
                 <div x-show="fileName && !isUploading" x-cloak x-transition class="mt-3 p-3.5 rounded-xl bg-gradient-to-r from-purple-50 via-pink-50/50 to-emerald-50 border border-purple-200 flex items-center justify-between text-xs shadow-2xs">
                     <div class="flex items-center gap-2.5 truncate">
-                        <span class="w-6 h-6 rounded-lg bg-purple-600 text-white flex items-center justify-center font-bold text-xs shrink-0">APK</span>
+                        <span class="w-6 h-6 rounded-lg bg-purple-600 text-white flex items-center justify-center font-bold text-xs shrink-0"><i class="fa-brands fa-android text-xs"></i></span>
                         <div class="truncate">
                             <span class="text-slate-600">Selected Binary:</span>
                             <span class="font-mono font-bold text-slate-900 ml-1 truncate" x-text="fileName"></span>
@@ -266,7 +277,7 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div class="w-9 h-9 rounded-xl bg-purple-100 text-brand-600 flex items-center justify-center shadow-2xs">
-                                <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                                <i class="fa-solid fa-cloud-arrow-up text-lg animate-bounce text-brand-600"></i>
                             </div>
                             <div>
                                 <div class="flex items-center gap-2">
@@ -298,11 +309,11 @@
                         <!-- Metrics footer: Speed & ETA -->
                         <div class="flex items-center justify-between text-[11px] text-slate-500 font-mono pt-1">
                             <div class="flex items-center gap-1.5">
-                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                <i class="fa-solid fa-gauge-high text-slate-400"></i>
                                 <span>Speed: <strong class="text-slate-800" x-text="uploadSpeed || 'Calculating...'"></strong></span>
                             </div>
                             <div class="flex items-center gap-1.5">
-                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <i class="fa-regular fa-clock text-slate-400"></i>
                                 <span>Est. Time Remaining: <strong class="text-slate-800" x-text="timeRemaining || 'Calculating...'"></strong></span>
                             </div>
                         </div>
@@ -311,16 +322,16 @@
                     <!-- Pipeline Steps Indicator -->
                     <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 text-[11px]">
                         <div class="flex items-center gap-1.5" :class="uploadProgress > 0 ? 'text-emerald-700 font-semibold' : 'text-slate-400'">
-                            <span>✓</span>
+                            <i class="fa-solid fa-check text-emerald-600 text-[10px]"></i>
                             <span>1. Client Binary Pack</span>
                         </div>
                         <div class="flex items-center gap-1.5" :class="uploadProgress === 100 ? 'text-brand-700 font-bold' : (uploadProgress > 0 ? 'text-brand-600 font-medium' : 'text-slate-400')">
-                            <span x-show="uploadProgress < 100">⏳</span>
-                            <span x-show="uploadProgress === 100">✓</span>
+                            <i x-show="uploadProgress < 100" class="fa-solid fa-hourglass-half text-brand-600 text-[10px]"></i>
+                            <i x-show="uploadProgress === 100" class="fa-solid fa-check text-emerald-600 text-[10px]"></i>
                             <span>2. Network Transfer</span>
                         </div>
                         <div class="flex items-center gap-1.5" :class="uploadProgress === 100 ? 'text-amber-600 font-bold' : 'text-slate-400'">
-                            <span>⚡</span>
+                            <i class="fa-solid fa-bolt text-amber-500 text-[10px]"></i>
                             <span>3. SHA-256 &amp; Save</span>
                         </div>
                     </div>
@@ -328,7 +339,7 @@
                     <!-- Cancel Upload Action -->
                     <div class="pt-2 flex justify-end" x-show="uploadProgress < 100">
                         <button type="button" @click="cancelUpload()" class="text-xs text-rose-600 hover:text-rose-800 hover:underline flex items-center gap-1">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <i class="fa-solid fa-xmark"></i>
                             <span>Cancel Upload</span>
                         </button>
                     </div>
@@ -365,17 +376,14 @@
                     
                     <template x-if="!isUploading">
                         <span class="flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
                             <span>Save Release to Database</span>
                         </span>
                     </template>
 
                     <template x-if="isUploading">
                         <span class="flex items-center gap-2">
-                            <svg class="w-4 h-4 animate-spin text-white" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                            </svg>
+                            <i class="fa-solid fa-spinner fa-spin text-white"></i>
                             <span x-text="uploadProgress < 100 ? 'Uploading (' + uploadProgress + '%)' : 'Processing Server Checksum...'"></span>
                         </span>
                     </template>
@@ -389,7 +397,7 @@
         <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
                 <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
-                    <span>📊</span>
+                    <i class="fa-solid fa-chart-column text-brand-600"></i>
                     <span>All Release Versions &amp; Download Breakdown</span>
                 </h3>
                 <p class="text-xs text-slate-400">Historical record of all published APK builds and their individual download counts.</p>
@@ -416,6 +424,7 @@
                             <th class="px-6 py-3.5">Release Date</th>
                             <th class="px-6 py-3.5">Downloads</th>
                             <th class="px-6 py-3.5">Download Share</th>
+                            <th class="px-6 py-3.5 text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -426,7 +435,7 @@
                             @php
                                 $percent = round(($rel->download_count / $grandTotal) * 100, 1);
                             @endphp
-                            <tr class="hover:bg-slate-50/80 transition {{ $rel->is_latest ? 'bg-purple-50/20' : '' }}">
+                            <tr class="hover:bg-slate-50/80 transition {{ $rel->is_latest ? 'bg-purple-50/20' : '' }}" x-data="{ editingCount: false, countVal: {{ $rel->download_count ?? 0 }} }">
                                 <!-- 1. Version & Code -->
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-2.5">
@@ -464,20 +473,40 @@
 
                                 <!-- 5. Download Count -->
                                 <td class="px-6 py-4">
-                                    <div class="font-mono font-black text-slate-900 text-sm">
-                                        {{ number_format($rel->download_count ?? 0) }}
-                                    </div>
-                                    <span class="text-[10px] text-slate-400">Total Downloads</span>
+                                    <template x-if="!editingCount">
+                                        <div>
+                                            <div class="font-mono font-black text-slate-900 text-sm">
+                                                {{ number_format($rel->download_count ?? 0) }}
+                                            </div>
+                                            <span class="text-[10px] text-slate-400">Total Downloads</span>
+                                        </div>
+                                    </template>
+                                    <template x-if="editingCount">
+                                        <form action="{{ route('admin.release.download-count', $rel->id) }}" method="POST" class="flex items-center gap-1.5">
+                                            @csrf
+                                            <input type="number" name="download_count" min="0" x-model="countVal" class="w-24 px-2 py-1 text-xs font-mono font-bold border border-brand-500 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                            <button type="submit" class="px-2 py-1 bg-emerald-600 text-white rounded-lg text-[10px] font-bold hover:bg-emerald-700 shadow-2xs inline-flex items-center gap-1"><i class="fa-solid fa-check"></i> <span>Save</span></button>
+                                            <button type="button" @click="editingCount = false" class="px-2 py-1 bg-slate-200 text-slate-700 rounded-lg text-[10px] font-bold hover:bg-slate-300 inline-flex items-center"><i class="fa-solid fa-xmark"></i></button>
+                                        </form>
+                                    </template>
                                 </td>
 
                                 <!-- 6. Download Share % -->
-                                <td class="px-6 py-4 min-w-[160px]">
+                                <td class="px-6 py-4 min-w-[140px]">
                                     <div class="flex items-center justify-between text-[11px] font-bold text-slate-700 mb-1">
                                         <span>{{ $percent }}%</span>
                                     </div>
                                     <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
                                         <div class="h-full {{ $rel->is_latest ? 'bg-gradient-to-r from-brand-600 to-pink-500' : 'bg-slate-400' }} rounded-full" style="width: {{ max(4, $percent) }}%;"></div>
                                     </div>
+                                </td>
+
+                                <!-- 7. Actions -->
+                                <td class="px-6 py-4 text-right">
+                                    <button type="button" @click="editingCount = !editingCount" class="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-brand-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg transition">
+                                        <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                        <span>Edit Count</span>
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach

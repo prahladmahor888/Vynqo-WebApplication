@@ -8,7 +8,8 @@
 <section class="py-16 sm:py-24 bg-white border-b border-slate-100 hero-glow-bg">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-indigo-50 border border-indigo-100 text-brand-700 text-xs font-semibold">
-            <span>🌐 Social & Community Rooms</span>
+            <i class="fa-solid fa-earth-americas text-brand-600"></i>
+            <span>Social & Community Rooms</span>
         </div>
         <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
             Discover Communities That Match Your Passion
@@ -66,16 +67,16 @@
 
                     <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
                         <div class="flex items-center gap-3 text-xs text-slate-500">
-                            <span class="flex items-center gap-1">
+                            <span class="flex items-center gap-1.5">
                                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                                 <strong class="text-slate-800">{{ number_format($room['online']) }}</strong> online
                             </span>
                             <span>•</span>
                             <span>{{ number_format($room['members']) }} members</span>
                         </div>
-                        <a href="{{ route('download.page') }}" class="inline-flex items-center gap-1 text-xs font-bold text-brand-600 hover:text-brand-700">
+                        <a href="{{ route('download.page') }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-600 hover:text-brand-700">
                             <span>Join</span>
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
                         </a>
                     </div>
                 </div>
@@ -91,8 +92,8 @@
         <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Want to create your own Community Room?</h3>
         <p class="text-sm text-slate-600 max-w-lg mx-auto">Download Sangfy now and start custom public or private groups with up to 50,000 members and live HD voice lounges.</p>
         <div>
-            <a href="{{ route('download.apk') }}" class="inline-flex items-center gap-2 px-8 py-3.5 text-base font-bold text-white btn-sangfy rounded-xl shadow-md transition hover:shadow-lg">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            <a href="{{ route('download.apk') }}" class="inline-flex items-center gap-2.5 px-8 py-3.5 text-base font-bold text-white btn-sangfy rounded-xl shadow-md transition hover:shadow-lg">
+                <i class="fa-solid fa-download text-lg"></i>
                 <span>Download Sangfy to Join</span>
             </a>
         </div>

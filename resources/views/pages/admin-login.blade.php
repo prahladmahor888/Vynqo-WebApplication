@@ -32,14 +32,25 @@
             <form action="{{ route('admin.login.submit') }}" method="POST" class="space-y-4">
                 @csrf
 
+                {{-- Anti-Bot Honeypot Trap --}}
+                <div style="position: absolute; opacity: 0; pointer-events: none; height: 0; width: 0; overflow: hidden; z-index: -1;" aria-hidden="true">
+                    <input type="text" name="sangfy_hp_check" value="" tabindex="-1" autocomplete="off">
+                </div>
+
                 <div>
-                    <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-1.5">Admin Email</label>
+                    <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-envelope text-slate-400"></i>
+                        <span>Admin Email</span>
+                    </label>
                     <input type="email" name="email" value="{{ old('email') }}" required autofocus placeholder="admin@example.com" class="w-full text-sm px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500">
                     @error('email') <span class="text-xs text-rose-600 mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-1.5">Password</label>
+                    <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-key text-slate-400"></i>
+                        <span>Password</span>
+                    </label>
                     <input type="password" name="password" required value="" placeholder="••••••••" class="w-full text-sm px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500">
                     @error('password') <span class="text-xs text-rose-600 mt-1 block">{{ $message }}</span> @enderror
                 </div>
@@ -49,11 +60,15 @@
                         <input type="checkbox" name="remember" class="rounded border-slate-300 text-brand-600 focus:ring-brand-500">
                         <span>Remember my session</span>
                     </label>
-                    <span class="text-slate-400">Encrypted AES-256</span>
+                    <span class="text-slate-400 flex items-center gap-1">
+                        <i class="fa-solid fa-shield-halved text-[10px] text-emerald-500"></i>
+                        <span>AES-256 Protected</span>
+                    </span>
                 </div>
 
-                <button type="submit" class="w-full py-3 px-4 text-sm font-bold text-white btn-sangfy rounded-lg shadow-md transition hover:shadow-lg">
-                    Sign In to Admin Dashboard
+                <button type="submit" class="w-full py-3 px-4 text-sm font-bold text-white btn-sangfy rounded-lg shadow-md transition hover:shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>Sign In to Admin Dashboard</span>
                 </button>
             </form>
         </div>

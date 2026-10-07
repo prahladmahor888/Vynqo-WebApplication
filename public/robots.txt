@@ -1,6 +1,28 @@
+# ==============================================================================
+# Sangfy Official Robots.txt — Bot Traffic & Crawler Directives
+# ==============================================================================
+
+# Disallow known aggressive scrapers & bots
+User-agent: SemrushBot
+User-agent: SemrushBot-SA
+User-agent: AhrefsBot
+User-agent: MJ12bot
+User-agent: DotBot
+User-agent: BLEXBot
+User-agent: DataForSeoBot
+User-agent: PetalBot
+User-agent: Bytespider
+User-agent: ZoominfoBot
+Disallow: /
+
+# General Crawlers Directives
 User-agent: *
 Disallow: /admin/
 Disallow: /login
+Disallow: /clear-cache
+Disallow: /run-link
+Disallow: /*.env$
+Disallow: /*.git$
 
 Allow: /
 Allow: /features

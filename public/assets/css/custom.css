@@ -291,3 +291,71 @@ button.btn-sangfy * {
     scrollbar-color: rgba(148, 163, 184, 0.25) transparent;
 }
 
+/* ==========================================================================
+   CLEAN & CRISP LEGAL DOCUMENT TYPOGRAPHY (.legal-content)
+   ========================================================================== */
+.legal-content {
+    font-size: 0.875rem;
+    line-height: 1.75;
+    color: #334155;
+}
+
+.legal-content h2 {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.01em;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.legal-content h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.legal-content p {
+    margin-bottom: 0.875rem;
+    color: #475569;
+}
+
+.legal-content strong {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.legal-content code {
+    background-color: #f5f3ff;
+    color: #6d28d9;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.375rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid #ede9fe;
+}
+
+.legal-content a {
+    color: #7c3aed;
+    font-weight: 600;
+    text-decoration: underline;
+    transition: color 0.15s ease;
+}
+
+.legal-content a:hover {
+    color: #5b21b6;
+}
+
+.legal-content ul,
+.legal-content ol {
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+}
+
+.legal-content li {
+    margin-bottom: 0.4rem;
+}
+

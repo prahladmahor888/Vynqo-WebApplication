@@ -34,7 +34,7 @@ class DownloadController extends Controller
     {
         $release = AppRelease::getLatestRelease();
 
-        // 1. Check if this is a partial byte-range continuation request (e.g., Range: bytes=1024-...)
+        // 1. Check if this is a partial byte-range continuation chunk (e.g., Range: bytes=1024-...)
         $rangeHeader = $request->header('Range') ?? $request->server('HTTP_RANGE');
         $isContinuationChunk = false;
         if ($rangeHeader && preg_match('/bytes=(\d+)-/i', $rangeHeader, $matches)) {
@@ -51,7 +51,7 @@ class DownloadController extends Controller
         if (!$isContinuationChunk && $release && $release->exists) {
             // Atomic 2-second lock stops duplicate parallel connections from a single click
             if (Cache::add($dedupKey, 1, 2)) {
-                $release->increment('download_count');
+                $release->recordDownload();
             }
         }
 

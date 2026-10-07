@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
             try {
                 if (Schema::hasTable('app_releases')) {
                     $latestRelease = AppRelease::getLatestRelease();
-                    $totalPublicDownloads = AppRelease::sum('download_count') ?: ($latestRelease->download_count ?? 1250);
+                    $totalPublicDownloads = AppRelease::getTotalDownloads();
                     $allReleases = AppRelease::latest('id')->get();
                 } else {
                     $latestRelease = new AppRelease([

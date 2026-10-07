@@ -57,6 +57,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     // APK Release Manager
     Route::get('/release', [ReleaseManagerController::class, 'index'])->name('admin.release');
     Route::post('/release', [ReleaseManagerController::class, 'updateRelease'])->name('admin.release.update');
+    Route::post('/release/{release}/download-count', [ReleaseManagerController::class, 'updateDownloadCount'])->name('admin.release.download-count');
 
     // Android App Device Permissions Manager (Dynamic Privacy Permissions)
     Route::get('/permissions', [PermissionManagerController::class, 'index'])->name('admin.permissions.index');
@@ -80,18 +81,29 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     // Real-Time Visitor Traffic & Analytics
     Route::get('/traffic', [AdminDashboardController::class, 'traffic'])->name('admin.traffic');
     Route::post('/traffic/clear', [AdminDashboardController::class, 'clearTraffic'])->name('admin.traffic.clear');
-});
+    Route::post('/traffic/clear-bots', [AdminDashboardController::class, 'clearBotLogs'])->name('admin.traffic.clear-bots');
 
-Route::get('/clear-cache', function() {
-    Artisan::call('config:clear');
-    Artisan::call('cache:clear');
-    Artisan::call('view:clear');
-    return "All Cache Cleared!";
-});
+    // Background Queue & Batch Job Controls (jobs, job_batches, failed_jobs)
+    Route::post('/queue/dispatch-batch', function() {
+        $batch = \Illuminate\Support\Facades\Bus::batch([
+            new \App\Jobs\PruneOldVisitorTrafficJob(90),
+            new \App\Jobs\SyncLegalDocumentBatchJob('privacy', \App\Models\LegalDocument::getDefaultsArray()['privacy']),
+            new \App\Jobs\SyncLegalDocumentBatchJob('guidelines', \App\Models\LegalDocument::getDefaultsArray()['guidelines']),
+            new \App\Jobs\SyncLegalDocumentBatchJob('terms', \App\Models\LegalDocument::getDefaultsArray()['terms']),
+            new \App\Jobs\SyncLegalDocumentBatchJob('security', \App\Models\LegalDocument::getDefaultsArray()['security']),
+        ])->name('Sangfy System Maintenance & Legal Sync Batch')->dispatch();
 
-Route::get('/run-link', function () {
-    Artisan::call('storage:link');
-    return 'Storage link created successfully!';
+        return back()->with('success', "Batch #{$batch->id} with {$batch->totalJobs} jobs successfully dispatched to queue (job_batches table)!");
+    })->name('admin.queue.dispatch-batch');
+
+    Route::post('/queue/run-work', function() {
+        \Illuminate\Support\Facades\Artisan::call('queue:work', [
+            '--stop-when-empty' => true,
+            '--tries' => 3,
+        ]);
+        $output = \Illuminate\Support\Facades\Artisan::output();
+        return back()->with('success', "Queue worker finished: " . ($output ?: 'All pending jobs processed.'));
+    })->name('admin.queue.run-work');
 });
 
 // Digital Asset Links for Android App Links Verification
@@ -105,7 +117,8 @@ Route::get('/.well-known/assetlinks.json', function () {
                 "namespace" => "android_app",
                 "package_name" => "com.prahlix.sangfy",
                 "sha256_cert_fingerprints" => [
-                    "FF:19:64:87:5B:64:91:21:FC:91:1F:52:30:43:6F:A8:36:D3:13:C9:5B:79:A4:75:21:C2:D2:4D:BE:B2:3F:08"
+                    "FF:19:64:87:5B:64:91:21:FC:91:1F:52:30:43:6F:A8:36:D3:13:C9:5B:79:A4:75:21:C2:D2:4D:BE:B2:3F:08",
+                    "FD:CB:ED:AC:CB:8F:30:FC:5A:C9:A8:43:44:D2:4D:2F:6C:47:AD:1D:A4:AE:49:67:82:59:27:C1:77:AD:3D:56"
                 ]
             ]
         ]
@@ -117,32 +130,35 @@ Route::get('/.well-known/assetlinks.json', function () {
 // --------------------------------------------------------------------------
 
 Route::get('/user/{id}', function ($id) {
+    $cleanId = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', (string) $id);
     return view('sangfy_redirect', [
         'type' => 'user',
-        'id' => $id,
+        'id' => $cleanId,
         'title' => 'Sangfy User Profile',
-        'desc' => "View @" . e($id) . " on Sangfy",
-        'appUrl' => "sangfy://user/" . urlencode($id)
+        'desc' => "View @" . e($cleanId) . " on Sangfy",
+        'appUrl' => "sangfy://user/" . urlencode($cleanId)
     ]);
 });
 
 Route::get('/post/{id}', function ($id) {
+    $cleanId = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', (string) $id);
     return view('sangfy_redirect', [
         'type' => 'post',
-        'id' => $id,
+        'id' => $cleanId,
         'title' => 'Sangfy Post',
         'desc' => "View this post on Sangfy",
-        'appUrl' => "sangfy://post/" . urlencode($id)
+        'appUrl' => "sangfy://post/" . urlencode($cleanId)
     ]);
 });
 
 Route::get('/group/join', function (\Illuminate\Http\Request $request) {
-    $id = $request->query('id', '');
+    $rawId = $request->query('id', '');
+    $cleanId = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', (string) $rawId);
     return view('sangfy_redirect', [
         'type' => 'group',
-        'id' => $id,
+        'id' => $cleanId,
         'title' => 'Sangfy Group Invite',
         'desc' => "Join this group on Sangfy",
-        'appUrl' => "sangfy://group/join?id=" . urlencode($id)
+        'appUrl' => "sangfy://group/join?id=" . urlencode($cleanId)
     ]);
 });

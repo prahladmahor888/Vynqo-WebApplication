@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AppPermission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class PermissionManagerController extends Controller
 {
@@ -17,6 +18,36 @@ class PermissionManagerController extends Controller
         if (AppPermission::count() === 0) {
             foreach (AppPermission::getDefaultPermissions() as $perm) {
                 AppPermission::create($perm);
+            }
+        } else {
+            // Auto-upgrade legacy emoji or missing icons in database
+            $emojiMap = [
+                '📷' => 'fa-solid fa-camera',
+                '📸' => 'fa-solid fa-camera',
+                '🎤' => 'fa-solid fa-microphone',
+                '📁' => 'fa-solid fa-folder-open',
+                '📂' => 'fa-solid fa-folder-open',
+                '🗂️' => 'fa-solid fa-folder-open',
+                '📍' => 'fa-solid fa-location-dot',
+                '🗺️' => 'fa-solid fa-location-dot',
+                '🔔' => 'fa-solid fa-bell',
+                '🎧' => 'fa-solid fa-headphones',
+                '🌐' => 'fa-solid fa-globe',
+            ];
+            
+            $defaults = collect(AppPermission::getDefaultPermissions())->keyBy('name');
+
+            foreach (AppPermission::all() as $p) {
+                $rawIcon = trim($p->icon ?? '');
+                if (isset($emojiMap[$rawIcon])) {
+                    $p->update(['icon' => $emojiMap[$rawIcon]]);
+                } elseif (empty($rawIcon) || $rawIcon === 'fa-') {
+                    if (isset($defaults[$p->name])) {
+                        $p->update(['icon' => $defaults[$p->name]['icon']]);
+                    } else {
+                        $p->update(['icon' => 'fa-solid fa-shield-halved']);
+                    }
+                }
             }
         }
 
@@ -32,14 +63,26 @@ class PermissionManagerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'code' => 'nullable|string|max:150',
-            'icon' => 'nullable|string|max:50',
+            'icon' => 'nullable|string|max:255',
+            'icon_file' => 'nullable|file|mimes:png,jpg,jpeg,svg,webp,ico,gif|max:2048',
             'category' => 'nullable|string|max:100',
             'badge' => 'nullable|string|max:50',
             'purpose' => 'required|string',
             'order_index' => 'nullable|integer',
         ]);
 
-        $validated['icon'] = !empty(trim($validated['icon'] ?? '')) ? trim($validated['icon']) : '🔒';
+        if ($request->hasFile('icon_file')) {
+            $uploadDir = public_path('uploads/permissions');
+            File::ensureDirectoryExists($uploadDir);
+            $file = $request->file('icon_file');
+            $extension = $file->getClientOriginalExtension() ?: 'png';
+            $filename = 'perm-' . time() . '-' . Str::random(6) . '.' . $extension;
+            $file->move($uploadDir, $filename);
+            $validated['icon'] = 'uploads/permissions/' . $filename;
+        } else {
+            $validated['icon'] = !empty(trim($validated['icon'] ?? '')) ? trim($validated['icon']) : 'fa-solid fa-lock';
+        }
+
         $validated['category'] = !empty(trim($validated['category'] ?? '')) ? trim($validated['category']) : 'General';
         $validated['badge'] = !empty(trim($validated['badge'] ?? '')) ? trim($validated['badge']) : 'Feature-Based';
         $validated['code'] = !empty(trim($validated['code'] ?? '')) ? trim($validated['code']) : ('android.permission.' . strtoupper(Str::slug($validated['name'], '_')));
@@ -60,14 +103,28 @@ class PermissionManagerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'code' => 'nullable|string|max:150',
-            'icon' => 'nullable|string|max:50',
+            'icon' => 'nullable|string|max:255',
+            'icon_file' => 'nullable|file|mimes:png,jpg,jpeg,svg,webp,ico,gif|max:2048',
             'category' => 'nullable|string|max:100',
             'badge' => 'nullable|string|max:50',
             'purpose' => 'required|string',
             'order_index' => 'nullable|integer',
         ]);
 
-        $validated['icon'] = !empty(trim($validated['icon'] ?? '')) ? trim($validated['icon']) : ($permission->icon ?: '🔒');
+        if ($request->hasFile('icon_file')) {
+            $uploadDir = public_path('uploads/permissions');
+            File::ensureDirectoryExists($uploadDir);
+            $file = $request->file('icon_file');
+            $extension = $file->getClientOriginalExtension() ?: 'png';
+            $filename = 'perm-' . time() . '-' . Str::random(6) . '.' . $extension;
+            $file->move($uploadDir, $filename);
+            $validated['icon'] = 'uploads/permissions/' . $filename;
+        } elseif ($request->has('icon')) {
+            $validated['icon'] = !empty(trim($validated['icon'] ?? '')) ? trim($validated['icon']) : ($permission->icon ?: 'fa-solid fa-lock');
+        } else {
+            $validated['icon'] = $permission->icon ?: 'fa-solid fa-lock';
+        }
+
         $validated['category'] = !empty(trim($validated['category'] ?? '')) ? trim($validated['category']) : 'General';
         $validated['badge'] = !empty(trim($validated['badge'] ?? '')) ? trim($validated['badge']) : 'Feature-Based';
         $validated['code'] = !empty(trim($validated['code'] ?? '')) ? trim($validated['code']) : ('android.permission.' . strtoupper(Str::slug($validated['name'], '_')));

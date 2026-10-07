@@ -18,7 +18,7 @@ class AdminDashboardController extends Controller
     {
         $latestRelease = AppRelease::getLatestRelease();
         $totalReleases = AppRelease::count();
-        $totalDownloads = AppRelease::sum('download_count') ?: ($latestRelease->download_count ?? 1250);
+        $totalDownloads = AppRelease::getTotalDownloads();
         $legalDocs = LegalDocument::all();
         if ($legalDocs->isEmpty()) {
             $legalDocs = collect(LegalDocument::getDefaultsArray())->map(fn($d) => new LegalDocument($d));
@@ -33,6 +33,28 @@ class AdminDashboardController extends Controller
 
         // Traffic overview summary
         $trafficStats = VisitorTraffic::getStats();
+        $shieldStats = \App\Models\BlockedBotLog::getShieldStats();
+
+        // Queue & Background Worker Telemetry (jobs, job_batches, failed_jobs)
+        $queueStats = [
+            'pending_jobs' => 0,
+            'job_batches' => 0,
+            'failed_jobs' => 0,
+        ];
+
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('jobs')) {
+                $queueStats['pending_jobs'] = \Illuminate\Support\Facades\DB::table('jobs')->count();
+            }
+            if (\Illuminate\Support\Facades\Schema::hasTable('job_batches')) {
+                $queueStats['job_batches'] = \Illuminate\Support\Facades\DB::table('job_batches')->count();
+            }
+            if (\Illuminate\Support\Facades\Schema::hasTable('failed_jobs')) {
+                $queueStats['failed_jobs'] = \Illuminate\Support\Facades\DB::table('failed_jobs')->count();
+            }
+        } catch (\Throwable $e) {
+            // Graceful fallback
+        }
 
         return view('pages.admin-dashboard', compact(
             'latestRelease',
@@ -44,19 +66,23 @@ class AdminDashboardController extends Controller
             'recentMessages',
             'recentReleases',
             'apkExists',
-            'trafficStats'
+            'trafficStats',
+            'shieldStats',
+            'queueStats'
         ));
     }
 
     /**
-     * Display comprehensive Real-Time Traffic & Visitor Analytics Hub.
+     * Display comprehensive Real-Time Traffic & Visitor Analytics Hub with Bot Shield Defense.
      */
     public function traffic()
     {
         $stats = VisitorTraffic::getStats();
         $paginatedLogs = VisitorTraffic::latest()->paginate(25);
+        $shieldStats = \App\Models\BlockedBotLog::getShieldStats();
+        $paginatedBotLogs = \App\Models\BlockedBotLog::latest()->paginate(25, ['*'], 'bot_page');
 
-        return view('pages.admin-traffic', compact('stats', 'paginatedLogs'));
+        return view('pages.admin-traffic', compact('stats', 'paginatedLogs', 'shieldStats', 'paginatedBotLogs'));
     }
 
     /**
@@ -66,6 +92,15 @@ class AdminDashboardController extends Controller
     {
         VisitorTraffic::truncate();
         return redirect()->route('admin.traffic')->with('success', 'All traffic logs cleared successfully.');
+    }
+
+    /**
+     * Clear all blocked bot & exploit probe security logs.
+     */
+    public function clearBotLogs()
+    {
+        \App\Models\BlockedBotLog::truncate();
+        return redirect()->route('admin.traffic')->with('success', 'All blocked bot security logs cleared successfully.');
     }
 
     /**

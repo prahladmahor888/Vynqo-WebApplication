@@ -13,8 +13,21 @@ class LegalManagerController extends Controller
     public function index()
     {
         $slugs = ['privacy', 'guidelines', 'terms', 'security'];
-        $documents = [];
+        $defaults = LegalDocument::getDefaultsArray();
 
+        // Ensure all legal documents are synced, updated, and active in DB
+        foreach ($slugs as $slug) {
+            $doc = LegalDocument::where('slug', $slug)->first();
+            if (!$doc && isset($defaults[$slug])) {
+                LegalDocument::create($defaults[$slug]);
+                \Illuminate\Support\Facades\Cache::forget("legal_doc_{$slug}");
+            } elseif ($doc && isset($defaults[$slug]) && version_compare($doc->version ?? '1.0.0', '1.2.0', '<')) {
+                $doc->update($defaults[$slug]);
+                \Illuminate\Support\Facades\Cache::forget("legal_doc_{$slug}");
+            }
+        }
+
+        $documents = [];
         foreach ($slugs as $slug) {
             $documents[$slug] = LegalDocument::getBySlug($slug);
         }
@@ -68,6 +81,8 @@ class LegalManagerController extends Controller
             ]
         );
 
+        \Illuminate\Support\Facades\Cache::forget("legal_doc_{$slug}");
+
         return redirect()->route('admin.legal.index')->with('success', "Legal document '{$validated['title']}' updated successfully in database!");
     }
 
@@ -82,6 +97,9 @@ class LegalManagerController extends Controller
                 ['slug' => $slug],
                 $defaults[$slug]
             );
+
+            \Illuminate\Support\Facades\Cache::forget("legal_doc_{$slug}");
+
             return redirect()->route('admin.legal.index')->with('success', "Reset '{$slug}' policy back to official default.");
         }
 

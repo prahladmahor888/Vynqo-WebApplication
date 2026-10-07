@@ -23,7 +23,7 @@
 
         <div class="flex items-center gap-2">
             <a href="{{ route('home') }}" target="_blank" class="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition flex items-center gap-1.5 shadow-2xs">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 <span>View Live Site</span>
             </a>
         </div>
@@ -32,7 +32,7 @@
     <!-- Alert Messages -->
     @if(session('success'))
         <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-2 shadow-xs">
-            <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <i class="fa-solid fa-circle-check text-emerald-600 shrink-0 text-base"></i>
             <span class="font-medium">{{ session('success') }}</span>
         </div>
     @endif
@@ -115,7 +115,7 @@
             <form action="{{ route('admin.settings.reset-logo') }}" method="POST" onsubmit="return confirm('Reset site logo and favicon to default?');">
                 @csrf
                 <button type="submit" class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 border border-slate-200 transition flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    <i class="fa-solid fa-rotate-left"></i>
                     <span>Reset Logo to Default</span>
                 </button>
             </form>
@@ -129,22 +129,25 @@
         <!-- Category Navigation Tabs -->
         <div class="flex items-center gap-2 p-3 bg-slate-50 border-b border-slate-200 overflow-x-auto text-xs font-bold">
             <button type="button" @click="activeTab = 'branding'" :class="activeTab === 'branding' ? 'bg-white text-brand-700 shadow-xs border border-slate-200' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'" class="px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap">
-                <span>🖼️</span> <span>Logo &amp; Brand</span>
+                <i class="fa-solid fa-image text-brand-600"></i> <span>Logo &amp; Brand</span>
             </button>
             <button type="button" @click="activeTab = 'hero'" :class="activeTab === 'hero' ? 'bg-white text-brand-700 shadow-xs border border-slate-200' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'" class="px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap">
-                <span>🚀</span> <span>Hero Section &amp; Banner</span>
+                <i class="fa-solid fa-rocket text-purple-600"></i> <span>Hero Section &amp; Banner</span>
             </button>
             <button type="button" @click="activeTab = 'contact'" :class="activeTab === 'contact' ? 'bg-white text-brand-700 shadow-xs border border-slate-200' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'" class="px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap">
-                <span>📞</span> <span>Contact &amp; Support</span>
+                <i class="fa-solid fa-phone text-blue-600"></i> <span>Contact &amp; Support</span>
             </button>
             <button type="button" @click="activeTab = 'social'" :class="activeTab === 'social' ? 'bg-white text-brand-700 shadow-xs border border-slate-200' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'" class="px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap">
-                <span>🌐</span> <span>Social Media Links</span>
+                <i class="fa-solid fa-globe text-emerald-600"></i> <span>Social Media Links</span>
             </button>
             <button type="button" @click="activeTab = 'seo'" :class="activeTab === 'seo' ? 'bg-white text-brand-700 shadow-xs border border-slate-200' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'" class="px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap">
-                <span>📈</span> <span>SEO &amp; Analytics</span>
+                <i class="fa-solid fa-chart-line text-indigo-600"></i> <span>SEO &amp; Analytics</span>
             </button>
             <button type="button" @click="activeTab = 'footer'" :class="activeTab === 'footer' ? 'bg-white text-brand-700 shadow-xs border border-slate-200' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'" class="px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap">
-                <span>📄</span> <span>Footer &amp; Store Channels</span>
+                <i class="fa-solid fa-file-lines text-amber-600"></i> <span>Footer &amp; Store Channels</span>
+            </button>
+            <button type="button" @click="activeTab = 'shield'" :class="activeTab === 'shield' ? 'bg-white text-rose-700 shadow-xs border border-slate-200' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'" class="px-4 py-2.5 rounded-xl transition flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-shield-halved text-rose-600"></i> <span>Bot Protection &amp; Shield</span>
             </button>
         </div>
 
@@ -183,7 +186,7 @@
                                 <label class="flex flex-col items-center justify-center w-full min-h-[90px] border-2 border-slate-300 border-dashed rounded-xl cursor-pointer bg-white hover:bg-purple-50/50 hover:border-purple-300 transition p-3 text-center">
                                     <div class="flex flex-col items-center justify-center space-y-1">
                                         <div class="flex items-center gap-1.5 text-xs text-slate-700 font-bold">
-                                            <svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                            <i class="fa-solid fa-cloud-arrow-up text-brand-600"></i>
                                             <span x-text="logoFileName ? 'Selected: ' + logoFileName : 'Choose New Logo File'">Choose New Logo File</span>
                                         </div>
                                         <p class="text-[10px] text-slate-400">PNG, SVG, JPG (Max 5MB)</p>
@@ -216,7 +219,7 @@
                                 <label class="flex flex-col items-center justify-center w-full min-h-[90px] border-2 border-slate-300 border-dashed rounded-xl cursor-pointer bg-white hover:bg-pink-50/50 hover:border-pink-300 transition p-3 text-center">
                                     <div class="flex flex-col items-center justify-center space-y-1">
                                         <div class="flex items-center gap-1.5 text-xs text-slate-700 font-bold">
-                                            <svg class="w-4 h-4 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                                            <i class="fa-solid fa-wand-magic-sparkles text-pink-600"></i>
                                             <span x-text="faviconFileName ? 'Selected: ' + faviconFileName : 'Choose New Favicon File'"></span>
                                         </div>
                                         <p class="text-[10px] text-slate-400">ICO, PNG (32x32 or 64x64)</p>
@@ -270,17 +273,79 @@
                     <p class="text-xs text-slate-500">Edit the hero headline, subtitle, badge, and global top announcement banner.</p>
                 </div>
 
-                <!-- Top Announcement Banner Toggle & Text -->
-                <div class="p-5 rounded-2xl bg-purple-50/70 border border-purple-200 space-y-4">
+                <!-- Top Announcement Banner Toggle, Icon & Text -->
+                <div class="p-5 rounded-2xl bg-purple-50/70 border border-purple-200 space-y-4" x-data="{ 
+                    bannerIconClass: '{{ old('top_banner_icon_class', $settings['top_banner_icon_class'] ?? 'fa-solid fa-bullhorn') }}',
+                    setIcon(cls) { this.bannerIconClass = cls; }
+                }">
                     <div class="flex items-center justify-between">
                         <div>
-                            <span class="text-xs font-bold text-slate-900 block">Top Announcement Notice Banner</span>
-                            <span class="text-[11px] text-slate-500">Displays a dismissable alert across the top of all public pages</span>
+                            <span class="text-xs font-bold text-slate-900 block flex items-center gap-1.5">
+                                <i class="fa-solid fa-bell text-brand-600"></i>
+                                <span>Top Announcement Notice Banner</span>
+                            </span>
+                            <span class="text-[11px] text-slate-500">Displays an announcement alert with customizable icon across the top of all public pages</span>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" name="top_banner_enabled" value="1" {{ ($settings['top_banner_enabled'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
                             <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                         </label>
+                    </div>
+
+                    <!-- Notification Icon Selector (Font Awesome vs Custom Uploaded Image) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-purple-200/80">
+                        <!-- Option A: Font Awesome Icon Class -->
+                        <div class="bg-white p-3.5 rounded-xl border border-purple-200/80 space-y-2.5">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold uppercase text-slate-700 tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-icons text-brand-600"></i>
+                                    <span>Font Awesome Icon</span>
+                                </label>
+                                <span class="w-7 h-7 rounded-lg bg-purple-50 text-brand-600 flex items-center justify-center border border-purple-100 shadow-2xs">
+                                    <i :class="bannerIconClass ? bannerIconClass : 'fa-solid fa-bell'" class="text-xs"></i>
+                                </span>
+                            </div>
+
+                            <input type="text" name="top_banner_icon_class" x-model="bannerIconClass" placeholder="fa-solid fa-bullhorn" class="w-full text-xs font-mono px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900 bg-slate-50 focus:bg-white">
+
+                            <!-- Popular Preset Icons -->
+                            <div>
+                                <span class="text-[10px] font-semibold text-slate-500 block mb-1.5">Quick Presets:</span>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <button type="button" @click="setIcon('fa-solid fa-bullhorn')" class="px-2 py-1 bg-slate-100 hover:bg-purple-100 rounded text-[10px] text-slate-700 flex items-center gap-1 border border-slate-200"><i class="fa-solid fa-bullhorn text-brand-600"></i> Bullhorn</button>
+                                    <button type="button" @click="setIcon('fa-solid fa-bell')" class="px-2 py-1 bg-slate-100 hover:bg-purple-100 rounded text-[10px] text-slate-700 flex items-center gap-1 border border-slate-200"><i class="fa-solid fa-bell text-brand-600"></i> Bell</button>
+                                    <button type="button" @click="setIcon('fa-solid fa-circle-exclamation')" class="px-2 py-1 bg-slate-100 hover:bg-purple-100 rounded text-[10px] text-slate-700 flex items-center gap-1 border border-slate-200"><i class="fa-solid fa-circle-exclamation text-brand-600"></i> Alert</button>
+                                    <button type="button" @click="setIcon('fa-solid fa-bolt')" class="px-2 py-1 bg-slate-100 hover:bg-purple-100 rounded text-[10px] text-slate-700 flex items-center gap-1 border border-slate-200"><i class="fa-solid fa-bolt text-brand-600"></i> Bolt</button>
+                                    <button type="button" @click="setIcon('fa-solid fa-star')" class="px-2 py-1 bg-slate-100 hover:bg-purple-100 rounded text-[10px] text-slate-700 flex items-center gap-1 border border-slate-200"><i class="fa-solid fa-star text-brand-600"></i> Star</button>
+                                    <button type="button" @click="setIcon('fa-solid fa-shield-halved')" class="px-2 py-1 bg-slate-100 hover:bg-purple-100 rounded text-[10px] text-slate-700 flex items-center gap-1 border border-slate-200"><i class="fa-solid fa-shield-halved text-brand-600"></i> Shield</button>
+                                    <button type="button" @click="setIcon('fa-solid fa-mobile-screen')" class="px-2 py-1 bg-slate-100 hover:bg-purple-100 rounded text-[10px] text-slate-700 flex items-center gap-1 border border-slate-200"><i class="fa-solid fa-mobile-screen text-brand-600"></i> App</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Option B: Custom Image Upload -->
+                        <div class="bg-white p-3.5 rounded-xl border border-purple-200/80 space-y-2.5">
+                            <label class="text-xs font-bold uppercase text-slate-700 tracking-wider flex items-center gap-1.5">
+                                <i class="fa-solid fa-image text-brand-600"></i>
+                                <span>Upload Custom Icon Image</span>
+                            </label>
+
+                            @if(!empty($settings['top_banner_icon_image']))
+                                <div class="flex items-center justify-between p-2 bg-purple-50/70 border border-purple-100 rounded-lg">
+                                    <div class="flex items-center gap-2">
+                                        <img src="{{ asset($settings['top_banner_icon_image']) }}" alt="Current Custom Icon" class="w-6 h-6 object-contain rounded bg-white p-0.5 border border-slate-200">
+                                        <span class="text-[11px] font-medium text-slate-700">Active Custom Image</span>
+                                    </div>
+                                    <label class="flex items-center gap-1 text-[11px] text-rose-600 cursor-pointer font-semibold">
+                                        <input type="checkbox" name="remove_banner_icon_image" value="1" class="rounded border-slate-300 text-rose-600 focus:ring-rose-500">
+                                        <span>Remove</span>
+                                    </label>
+                                </div>
+                            @endif
+
+                            <input type="file" name="top_banner_icon_file" accept=".png,.jpg,.jpeg,.svg,.webp,.ico,.gif" class="block w-full text-xs text-slate-500 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-brand-700 hover:file:bg-purple-100 cursor-pointer">
+                            <p class="text-[10px] text-slate-400">PNG, SVG, WEBP, or ICO (Max 2MB). If uploaded, this image overrides the Font Awesome icon.</p>
+                        </div>
                     </div>
 
                     <div>
@@ -367,7 +432,7 @@
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
                             Customer &amp; Technical Support Email <span class="text-rose-500">*</span>
                         </label>
-                        <input type="email" name="contact_email" value="{{ old('contact_email', $settings['contact_email'] ?? 'support@sangfy.prahlix.com') }}" placeholder="e.g. support@sangfy.prahlix.com" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="email" name="contact_email" value="{{ old('contact_email', $settings['contact_email'] ?? 'support@prahlix.com') }}" placeholder="e.g. support@prahlix.com" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
@@ -388,28 +453,28 @@
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
                             Company / Headquarters Address
                         </label>
-                        <input type="text" name="company_address" value="{{ old('company_address', $settings['company_address'] ?? 'Prahlix Technologies, Silicon Valley & Global') }}" placeholder="e.g. Prahlix Technologies, Silicon Valley" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="text" name="company_address" value="{{ old('company_address', $settings['company_address'] ?? 'Prahlix Technologies, Global') }}" placeholder="e.g. Prahlix Technologies" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
                             Privacy &amp; Security Desk Email
                         </label>
-                        <input type="email" name="privacy_email" value="{{ old('privacy_email', $settings['privacy_email'] ?? 'privacy@sangfy.prahlix.com') }}" placeholder="e.g. privacy@sangfy.prahlix.com" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="email" name="privacy_email" value="{{ old('privacy_email', $settings['privacy_email'] ?? 'support@prahlix.com') }}" placeholder="e.g. support@prahlix.com" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
                             Content Safety &amp; Appeals Email
                         </label>
-                        <input type="email" name="safety_email" value="{{ old('safety_email', $settings['safety_email'] ?? 'safety@sangfy.prahlix.com') }}" placeholder="e.g. safety@sangfy.prahlix.com" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="email" name="safety_email" value="{{ old('safety_email', $settings['safety_email'] ?? 'support@prahlix.com') }}" placeholder="e.g. support@prahlix.com" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div class="sm:col-span-2 p-4 bg-purple-50/60 rounded-xl border border-purple-200 space-y-1">
                         <label class="block text-xs font-bold uppercase text-brand-700 tracking-wider mb-1">
-                            📩 Admin Notification Receiver Email (Where user messages will be emailed)
+                            <i class="fa-solid fa-envelope text-brand-700 mr-1"></i> Admin Notification Receiver Email (Where user messages will be emailed)
                         </label>
-                        <input type="email" name="support_receiver_email" value="{{ old('support_receiver_email', $settings['support_receiver_email'] ?? 'sangfy@prahlix.com') }}" placeholder="e.g. sangfy@prahlix.com" class="w-full text-sm px-4 py-2.5 rounded-xl border border-purple-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900 bg-white">
+                        <input type="email" name="support_receiver_email" value="{{ old('support_receiver_email', $settings['support_receiver_email'] ?? 'support@prahlix.com') }}" placeholder="e.g. support@prahlix.com" class="w-full text-sm px-4 py-2.5 rounded-xl border border-purple-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900 bg-white">
                         <p class="text-[11px] text-slate-500">Every time a visitor submits the contact form, an instant notification with their name, email, and message will be sent to this email address.</p>
                     </div>
                 </div>
@@ -444,56 +509,56 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
-                            <span>📸</span> Instagram URL
+                            <i class="fa-brands fa-instagram text-pink-600 mr-1"></i> Instagram URL
                         </label>
                         <input type="url" name="social_instagram" value="{{ old('social_instagram', $settings['social_instagram'] ?? 'https://instagram.com/sangfyapp') }}" placeholder="https://instagram.com/yourusername" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
-                            <span>🐦</span> X (Twitter) URL
+                            <i class="fa-brands fa-x-twitter text-slate-800 mr-1"></i> X (Twitter) URL
                         </label>
                         <input type="url" name="social_twitter" value="{{ old('social_twitter', $settings['social_twitter'] ?? 'https://x.com/sangfyapp') }}" placeholder="https://x.com/yourusername" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
-                            <span>✈️</span> Telegram Channel URL
+                            <i class="fa-brands fa-telegram text-sky-500 mr-1"></i> Telegram Channel URL
                         </label>
                         <input type="url" name="social_telegram" value="{{ old('social_telegram', $settings['social_telegram'] ?? 'https://t.me/sangfyapp') }}" placeholder="https://t.me/yourchannel" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
-                            <span>▶️</span> YouTube Channel URL
+                            <i class="fa-brands fa-youtube text-red-600 mr-1"></i> YouTube Channel URL
                         </label>
                         <input type="url" name="social_youtube" value="{{ old('social_youtube', $settings['social_youtube'] ?? 'https://youtube.com/@sangfyapp') }}" placeholder="https://youtube.com/@yourchannel" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
-                            <span>👾</span> Discord Community URL
+                            <i class="fa-brands fa-discord text-indigo-600 mr-1"></i> Discord Community URL
                         </label>
                         <input type="url" name="social_discord" value="{{ old('social_discord', $settings['social_discord'] ?? 'https://discord.gg/sangfy') }}" placeholder="https://discord.gg/invitecode" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
-                            <span>📘</span> Facebook Page URL
+                            <i class="fa-brands fa-facebook text-blue-600 mr-1"></i> Facebook Page URL
                         </label>
                         <input type="url" name="social_facebook" value="{{ old('social_facebook', $settings['social_facebook'] ?? 'https://facebook.com/sangfyapp') }}" placeholder="https://facebook.com/yourpage" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
-                            <span>💼</span> LinkedIn Page URL
+                            <i class="fa-brands fa-linkedin text-blue-700 mr-1"></i> LinkedIn Page URL
                         </label>
                         <input type="url" name="social_linkedin" value="{{ old('social_linkedin', $settings['social_linkedin'] ?? 'https://linkedin.com/company/sangfy') }}" placeholder="https://linkedin.com/company/yourbrand" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div class="sm:col-span-2">
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
-                            <span>🐙</span> GitHub / Developer Repository URL
+                            <i class="fa-brands fa-github text-slate-800 mr-1"></i> GitHub / Developer Repository URL
                         </label>
                         <input type="url" name="social_github" value="{{ old('social_github', $settings['social_github'] ?? 'https://github.com/prahlix/sangfy') }}" placeholder="https://github.com/organization/repo" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
@@ -605,13 +670,170 @@
                 </div>
             </div>
 
+            <!-- ============================================================= -->
+            <!-- TAB 7: BOT PROTECTION, FIREWALL & SECURITY SHIELD -->
+            <!-- ============================================================= -->
+            <div x-show="activeTab === 'shield'" class="space-y-6" style="display:none;">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <div>
+                        <h2 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-rose-600"></i>
+                            <span>Bot Protection, Anti-Scraping &amp; Firewall Shield</span>
+                        </h2>
+                        <p class="text-xs text-slate-500">Protect your website from automated bots, content scrapers, exploit scanners, and form spam.</p>
+                    </div>
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Shield Active</span>
+                    </div>
+                </div>
+
+                <!-- Master Switch -->
+                <div class="p-5 rounded-2xl bg-gradient-to-r from-rose-50 to-orange-50 border border-rose-200 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-slate-900 block">Master Bot Protection Shield</span>
+                        <span class="text-[11px] text-slate-600">Enforces request filtering, threat neutralization, and bot throttling across all routes</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="bot_protection_enabled" value="1" {{ ($settings['bot_protection_enabled'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
+                    </label>
+                </div>
+
+                <!-- Defense Modules Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <!-- 1. Block Malicious Exploit Scanners & Probes -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">Block Exploit Probes &amp; Vulnerability Scanners</span>
+                            <span class="text-[11px] text-slate-500 block mt-0.5">Instantly drops bots probing <code class="text-rose-600 font-mono">/.env</code>, <code class="text-rose-600 font-mono">/.git</code>, <code class="text-rose-600 font-mono">/wp-login.php</code>, <code class="text-rose-600 font-mono">/phpmyadmin</code>, shell scripts, etc.</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                            <input type="checkbox" name="block_exploit_probes" value="1" {{ ($settings['block_exploit_probes'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-600"></div>
+                        </label>
+                    </div>
+
+                    <!-- 2. Block Known Automated Scrapers & Attack Tools -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">Block Automated Scrapers &amp; Tools</span>
+                            <span class="text-[11px] text-slate-500 block mt-0.5">Blocks Python-requests, Scrapy, Sqlmap, Nikto, HeadlessChrome, Curl/Wget bots and aggressive scrapers.</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                            <input type="checkbox" name="block_known_scrapers" value="1" {{ ($settings['block_known_scrapers'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-600"></div>
+                        </label>
+                    </div>
+
+                    <!-- 3. Form Honeypot & Anti-Spam -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">Form Honeypot &amp; Sub-second Anti-Spam</span>
+                            <span class="text-[11px] text-slate-500 block mt-0.5">Traps automated form-filling bots with invisible honey tokens &amp; minimum human completion time analysis.</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                            <input type="checkbox" name="honeypot_enabled" value="1" {{ ($settings['honeypot_enabled'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-600"></div>
+                        </label>
+                    </div>
+
+                    <!-- 4. Cross-Site Scripting (XSS) & Script Injection Defense -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">Cross-Site Scripting (XSS) &amp; Script Injection Shield</span>
+                            <span class="text-[11px] text-slate-500 block mt-0.5">Scans URIs, query strings, and payloads for <code class="text-rose-600 font-mono">&lt;script&gt;</code>, event handlers (<code class="text-rose-600 font-mono">onerror=</code>), and javascript protocols.</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                            <input type="checkbox" name="xss_protection_enabled" value="1" {{ ($settings['xss_protection_enabled'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-600"></div>
+                        </label>
+                    </div>
+
+                    <!-- 5. SQL Injection & Malicious Payload Filter -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">SQL Injection (SQLi) Deep Heuristics</span>
+                            <span class="text-[11px] text-slate-500 block mt-0.5">Intercepts malicious query patterns (<code class="text-rose-600 font-mono">UNION SELECT</code>, <code class="text-rose-600 font-mono">SLEEP()</code>, <code class="text-rose-600 font-mono">OR 1=1</code>) across all endpoints.</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                            <input type="checkbox" name="sqli_protection_enabled" value="1" {{ ($settings['sqli_protection_enabled'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-600"></div>
+                        </label>
+                    </div>
+
+                    <!-- 6. Block Empty / Missing User-Agents -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">Block Empty / Missing User-Agents</span>
+                            <span class="text-[11px] text-slate-500 block mt-0.5">Denies anonymous automated scripts and low-reputation crawlers that hide browser headers.</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                            <input type="checkbox" name="block_empty_user_agents" value="1" {{ ($settings['block_empty_user_agents'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-600"></div>
+                        </label>
+                    </div>
+
+                    <!-- 5. Allow Verified Search Engines (Google, Bing for SEO) -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-3 md:col-span-2">
+                        <div>
+                            <span class="text-xs font-bold text-slate-900 block">Allow Verified Search Engine Indexers (Google, Bing, DuckDuckGo)</span>
+                            <span class="text-[11px] text-slate-500 block mt-0.5">Ensures Googlebot and search indexers can crawl public showcase pages for top SEO ranking while preserving security.</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                            <input type="checkbox" name="allow_search_engines" value="1" {{ ($settings['allow_search_engines'] ?? '1') == '1' ? 'checked' : '' }} class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-600"></div>
+                        </label>
+                    </div>
+
+                </div>
+
+                <!-- Rate Limit & IP Access Rules -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
+                            Max Requests Per Minute <span class="text-slate-400 font-normal">(Anti-Hammering)</span>
+                        </label>
+                        <input type="number" name="max_requests_per_minute" min="5" max="1000" value="{{ old('max_requests_per_minute', $settings['max_requests_per_minute'] ?? 60) }}" class="w-full text-sm font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <p class="text-[10px] text-slate-400 mt-1">Limits requests from a single IP. Default: 60/min.</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
+                            IP Whitelist <span class="text-slate-400 font-normal">(1 IP per line)</span>
+                        </label>
+                        <textarea name="ip_whitelist" rows="3" placeholder="e.g.&#10;192.168.1.1&#10;203.0.113.50" class="w-full text-xs font-mono px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900 leading-tight">{{ old('ip_whitelist', $settings['ip_whitelist'] ?? '') }}</textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
+                            IP Blacklist / Ban List <span class="text-slate-400 font-normal">(1 IP per line)</span>
+                        </label>
+                        <textarea name="ip_blacklist" rows="3" placeholder="e.g.&#10;45.33.32.156&#10;198.51.100.22" class="w-full text-xs font-mono px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900 leading-tight">{{ old('ip_blacklist', $settings['ip_blacklist'] ?? '') }}</textarea>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-purple-50 border border-purple-200 text-xs text-brand-800 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-chart-column text-brand-700"></i>
+                        <span>Want to view live blocked bot logs and attack stream?</span>
+                    </div>
+                    <a href="{{ route('admin.traffic') }}" class="font-bold underline hover:text-brand-900 flex items-center gap-1">
+                        <span>Open Bot Shield Analytics</span>
+                        <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                    </a>
+                </div>
+
+            </div>
+
             <!-- Submit Button Bar -->
             <div class="pt-6 border-t border-slate-100 flex items-center justify-between">
                 <div class="text-xs text-slate-500">
                     Changes take effect immediately across all website views and download endpoints.
                 </div>
                 <button type="submit" class="px-8 py-3 text-sm font-bold text-white btn-sangfy rounded-xl shadow-md transition hover:shadow-lg flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <i class="fa-solid fa-floppy-disk"></i>
                     <span>Save All Settings</span>
                 </button>
             </div>

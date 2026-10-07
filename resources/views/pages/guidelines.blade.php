@@ -8,7 +8,8 @@
 <section class="py-16 sm:py-24 bg-white border-b border-slate-100 hero-glow-bg">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-purple-50 border border-purple-100 text-brand-700 text-xs font-semibold">
-            <span>✨ Respect, Authenticity & Safety</span>
+            <i class="fa-solid fa-shield-heart text-brand-600"></i>
+            <span>Respect, Authenticity & Safety</span>
         </div>
         <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
             {{ $document->title ?? 'Community Guidelines' }}

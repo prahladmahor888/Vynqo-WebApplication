@@ -8,7 +8,8 @@
 <section class="py-16 sm:py-24 bg-white border-b border-slate-100 hero-glow-bg">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold">
-            <span>🛡️ Android App Data Safety & Privacy</span>
+            <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+            <span>Android App Data Safety & Privacy</span>
         </div>
         <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
             {{ $document->title ?? 'Sangfy Privacy Policy' }}
@@ -35,7 +36,8 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
             <div>
                 <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                    <span>📱 Live Android Device Runtime Permissions</span>
+                    <i class="fa-solid fa-mobile-screen text-brand-600"></i>
+                    <span>Live Android Device Runtime Permissions</span>
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 </h2>
                 <p class="text-xs text-slate-500">Dynamically synced permissions active in the Sangfy Android App</p>
@@ -47,21 +49,30 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             @foreach($permissions as $perm)
+                @php
+                    $pName = is_array($perm) ? ($perm['name'] ?? '') : ($perm->name ?? '');
+                    $pCode = is_array($perm) ? ($perm['code'] ?? '') : ($perm->code ?? '');
+                    $pIcon = is_array($perm) ? ($perm['icon'] ?? '') : ($perm->icon ?? '');
+                    $pBadge = is_array($perm) ? ($perm['badge'] ?? 'Feature-Based') : ($perm->badge ?? 'Feature-Based');
+                    $pPurpose = is_array($perm) ? ($perm['purpose'] ?? '') : ($perm->purpose ?? '');
+                @endphp
                 <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-2xs hover:border-purple-200 transition space-y-2">
                     <div class="flex items-start justify-between gap-2">
                         <div class="flex items-center gap-2.5">
-                            <span class="text-xl p-1.5 rounded-lg bg-purple-50 border border-purple-100">{{ $perm['icon'] ?? '🔒' }}</span>
+                            <span class="w-9 h-9 rounded-lg bg-purple-50 border border-purple-100 flex items-center justify-center text-brand-600 font-bold text-sm shrink-0 overflow-hidden p-1">
+                                {!! \App\Models\AppPermission::renderIcon($pIcon, $pName) !!}
+                            </span>
                             <div>
-                                <h3 class="font-bold text-xs text-slate-900">{{ $perm['name'] }}</h3>
-                                <code class="text-[10px] text-brand-700 font-mono block">{{ $perm['code'] ?? 'android.permission' }}</code>
+                                <h3 class="font-bold text-xs text-slate-900">{{ $pName }}</h3>
+                                <code class="text-[10px] text-brand-700 font-mono block">{{ $pCode ?: 'android.permission' }}</code>
                             </div>
                         </div>
-                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full {{ ($perm['badge'] ?? '') === 'Required' ? 'bg-rose-50 text-rose-700 border border-rose-100' : 'bg-purple-50 text-brand-700 border border-purple-100' }}">
-                            {{ $perm['badge'] ?? 'Feature-Based' }}
+                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full {{ $pBadge === 'Required' ? 'bg-rose-50 text-rose-700 border border-rose-100' : 'bg-purple-50 text-brand-700 border border-purple-100' }}">
+                            {{ $pBadge }}
                         </span>
                     </div>
                     <p class="text-xs text-slate-600 leading-relaxed pt-1">
-                        {{ $perm['purpose'] }}
+                        {{ $pPurpose }}
                     </p>
                 </div>
             @endforeach

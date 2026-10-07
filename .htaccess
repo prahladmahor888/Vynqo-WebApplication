@@ -5,6 +5,21 @@
 
     RewriteEngine On
 
+    # Block sensitive hidden files, configuration, logs, and databases
+    RewriteRule ^(\.env|\.git|\.aws|\.svn|composer\.(json|lock)|package\.(json|lock)|artisan|\.sqlite|\.log) - [F,L]
+
+    # Block known malicious attack tools & exploit scanners
+    RewriteCond %{HTTP_USER_AGENT} (sqlmap|nikto|masscan|zgrab|nmap|dirbuster|gobuster|wpscan|acunetix|havij|hydra|metasploit|morfeus|openvas|nessus|arachni|shodan|censys) [NC]
+    RewriteRule .* - [F,L]
+
+    # Block Cross-Site Scripting (XSS) Injection in Query Strings & URIs
+    RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} (javascript:|vbscript:|data:text/html) [NC,OR]
+    RewriteCond %{QUERY_STRING} (<|%3C).*(iframe|embed|object|applet).*(>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} (document\.(cookie|location|write)|window\.location) [NC,OR]
+    RewriteCond %{QUERY_STRING} (onload|onerror|onclick|onmouseover|onfocus)\s*= [NC]
+    RewriteRule .* - [F,L]
+
     # 1. Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP_AUTHORIZATION}]

@@ -41,6 +41,9 @@ class SiteSettingController extends Controller
             'hero_cta_text' => 'nullable|string|max:100',
             'top_banner_enabled' => 'nullable|string|in:0,1',
             'top_banner_text' => 'nullable|string|max:500',
+            'top_banner_icon_class' => 'nullable|string|max:100',
+            'top_banner_icon_file' => 'nullable|file|mimes:png,jpg,jpeg,svg,webp,ico,gif|max:2048',
+            'remove_banner_icon_image' => 'nullable|string|in:0,1',
 
             // 3. Contact & Support Page
             'support_badge_text' => 'nullable|string|max:255',
@@ -75,7 +78,12 @@ class SiteSettingController extends Controller
             'google_analytics_id' => 'nullable|string|max:50',
             'custom_head_code' => 'nullable|string|max:5000',
 
-            // 7. Footer
+            // 7. Bot Protection & Firewall
+            'max_requests_per_minute' => 'nullable|integer|min:5|max:1000',
+            'ip_whitelist' => 'nullable|string|max:5000',
+            'ip_blacklist' => 'nullable|string|max:5000',
+
+            // 8. Footer
             'footer_about_text' => 'nullable|string|max:1000',
             'footer_copyright' => 'nullable|string|max:255',
         ]);
@@ -89,6 +97,7 @@ class SiteSettingController extends Controller
             'hero_subtitle',
             'hero_cta_text',
             'top_banner_text',
+            'top_banner_icon_class',
             'support_badge_text',
             'support_title',
             'support_subtitle',
@@ -112,6 +121,9 @@ class SiteSettingController extends Controller
             'meta_keywords',
             'google_analytics_id',
             'custom_head_code',
+            'max_requests_per_minute',
+            'ip_whitelist',
+            'ip_blacklist',
             'footer_about_text',
             'footer_copyright',
         ];
@@ -126,6 +138,14 @@ class SiteSettingController extends Controller
         SiteSetting::set('top_banner_enabled', $request->has('top_banner_enabled') ? '1' : '0');
         SiteSetting::set('play_store_enabled', $request->has('play_store_enabled') ? '1' : '0');
         SiteSetting::set('direct_apk_enabled', $request->has('direct_apk_enabled') ? '1' : '0');
+        SiteSetting::set('bot_protection_enabled', $request->has('bot_protection_enabled') ? '1' : '0');
+        SiteSetting::set('block_known_scrapers', $request->has('block_known_scrapers') ? '1' : '0');
+        SiteSetting::set('block_exploit_probes', $request->has('block_exploit_probes') ? '1' : '0');
+        SiteSetting::set('block_empty_user_agents', $request->has('block_empty_user_agents') ? '1' : '0');
+        SiteSetting::set('honeypot_enabled', $request->has('honeypot_enabled') ? '1' : '0');
+        SiteSetting::set('allow_search_engines', $request->has('allow_search_engines') ? '1' : '0');
+        SiteSetting::set('xss_protection_enabled', $request->has('xss_protection_enabled') ? '1' : '0');
+        SiteSetting::set('sqli_protection_enabled', $request->has('sqli_protection_enabled') ? '1' : '0');
 
         $uploadDir = public_path('uploads/settings');
         File::ensureDirectoryExists($uploadDir);
@@ -150,6 +170,18 @@ class SiteSettingController extends Controller
             
             $favFile->move($uploadDir, $favFilename);
             SiteSetting::set('site_favicon', 'uploads/settings/' . $favFilename);
+        }
+
+        // Process Top Banner Notification Icon Upload & Removal
+        if ($request->input('remove_banner_icon_image') == '1') {
+            SiteSetting::set('top_banner_icon_image', '');
+        } elseif ($request->hasFile('top_banner_icon_file')) {
+            $bannerIconFile = $request->file('top_banner_icon_file');
+            $extension = $bannerIconFile->getClientOriginalExtension() ?: 'png';
+            $bannerIconFilename = 'banner-icon-' . time() . '.' . $extension;
+            
+            $bannerIconFile->move($uploadDir, $bannerIconFilename);
+            SiteSetting::set('top_banner_icon_image', 'uploads/settings/' . $bannerIconFilename);
         }
 
         return redirect()->route('admin.settings.index')->with('success', 'All site settings, branding, hero copy, social links, and SEO configuration updated successfully!');
