@@ -516,6 +516,119 @@
         @endif
     </div>
 
+    <!-- Live APK Download & Geolocation Audit Logs -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-7 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-slate-100">
+            <div>
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <h2 class="text-base sm:text-lg font-bold text-slate-900">
+                        Live APK Download & Exact Location Audit Logs
+                    </h2>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">
+                    Every download request is inspected for device type, real IP address, city & country. Multi-clicks, mobile prompts, and iOS requests are handled with precision.
+                </p>
+            </div>
+            <div class="flex items-center gap-2 text-xs text-slate-600 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                <i class="fa-solid fa-satellite-dish text-brand-600"></i>
+                <span class="font-medium">Showing Last {{ count($recentDownloadLogs ?? []) }} Requests</span>
+            </div>
+        </div>
+
+        @if(empty($recentDownloadLogs) || $recentDownloadLogs->isEmpty())
+            <div class="text-center py-12 text-slate-400 bg-slate-50/50 rounded-xl border border-dashed border-slate-200">
+                <i class="fa-solid fa-cloud-arrow-down text-3xl mb-2 text-slate-300"></i>
+                <p class="text-xs font-medium">No APK download events logged yet. Once users download from mobile or web, real-time logs with exact IP & location will appear here.</p>
+            </div>
+        @else
+            <div class="overflow-x-auto rounded-xl border border-slate-200">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-50 text-slate-600 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
+                        <tr>
+                            <th class="px-4 py-3">Device & Platform</th>
+                            <th class="px-4 py-3">Exact IP Address</th>
+                            <th class="px-4 py-3">Resolved Location</th>
+                            <th class="px-4 py-3">Counting Status</th>
+                            <th class="px-4 py-3 text-right">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @foreach($recentDownloadLogs as $log)
+                            <tr class="hover:bg-slate-50/60 transition">
+                                <!-- Device & Platform -->
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center gap-2">
+                                        @if($log->platform === 'iOS' || $log->status === 'blocked_ios')
+                                            <span class="w-6 h-6 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center text-xs">
+                                                <i class="fa-brands fa-apple"></i>
+                                            </span>
+                                        @else
+                                            <span class="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs">
+                                                <i class="fa-brands fa-android"></i>
+                                            </span>
+                                        @endif
+                                        <div>
+                                            <div class="font-bold text-slate-800">{{ $log->platform ?: 'Android' }}</div>
+                                            <div class="text-[10px] text-slate-400">{{ $log->browser ?: 'Browser' }} • {{ $log->device_type ?: 'Mobile' }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Exact IP -->
+                                <td class="px-4 py-3 font-mono font-medium text-slate-700">
+                                    {{ $log->ip_address }}
+                                </td>
+
+                                <!-- Resolved Location -->
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center gap-1.5 font-medium text-slate-800">
+                                        <span class="text-base leading-none">{{ $log->country_flag }}</span>
+                                        <span>{{ $log->location_display }}</span>
+                                    </div>
+                                </td>
+
+                                <!-- Counting Status -->
+                                <td class="px-4 py-3">
+                                    @if($log->status === 'counted')
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <i class="fa-solid fa-circle-check text-[10px]"></i>
+                                            <span>+1 Verified Count</span>
+                                        </span>
+                                    @elseif($log->status === 'blocked_ios')
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
+                                            <i class="fa-solid fa-ban text-[10px]"></i>
+                                            <span>Blocked (iOS Notice)</span>
+                                        </span>
+                                    @elseif($log->status === 'duplicate_ip_window')
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200" title="Same IP within 90s (Mobile prompt / chunk request)">
+                                            <i class="fa-solid fa-filter text-[9px]"></i>
+                                            <span>Duplicate Filtered (IP)</span>
+                                        </span>
+                                    @elseif($log->status === 'duplicate_token')
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200" title="Same user tap token">
+                                            <i class="fa-solid fa-filter text-[9px]"></i>
+                                            <span>Duplicate Token (Replay)</span>
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                                            <span>{{ ucfirst(str_replace('_', ' ', $log->status)) }}</span>
+                                        </span>
+                                    @endif
+                                </td>
+
+                                <!-- Time -->
+                                <td class="px-4 py-3 text-right text-slate-500 text-[11px]">
+                                    {{ $log->created_at ? $log->created_at->diffForHumans() : 'Just now' }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+    </div>
+
 </div>
 
 @push('scripts')

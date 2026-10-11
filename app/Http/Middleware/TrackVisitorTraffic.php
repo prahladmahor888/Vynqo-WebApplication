@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\VisitorTraffic;
+use App\Services\GeoLocationService;
 use Closure;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
@@ -56,10 +57,10 @@ class TrackVisitorTraffic
             // Ensure geolocation columns exist dynamically without needing manual migration command
             $this->ensureGeoColumnsExist();
 
-            $rawIp = $request->ip() ?: '127.0.0.1';
+            $rawIp = GeoLocationService::getExactIp($request);
             $userAgent = (string) $request->header('User-Agent', '');
-            $deviceInfo = $this->parseUserAgent($userAgent);
-            $geo = $this->resolveGeoLocation($rawIp, $request);
+            $deviceInfo = GeoLocationService::parseDeviceInfo($userAgent);
+            $geo = GeoLocationService::resolveLocation($rawIp, $request);
 
             VisitorTraffic::create([
                 'url' => substr($request->fullUrl(), 0, 500),

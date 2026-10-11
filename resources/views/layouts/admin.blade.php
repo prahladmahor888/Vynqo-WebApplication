@@ -314,6 +314,34 @@
             toggleMobileSidebar(false);
         }
     });
+
+    // APK Download Debounce & One-Time Token Handler for Admin Test Downloads
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('a[href*="/download/apk"], a[href$="/download/apk"]');
+        if (!btn) return;
+
+        var now = Date.now();
+        if (btn.dataset.isDownloading === '1' || (window.__lastApkDownloadClick && (now - window.__lastApkDownloadClick < 4000))) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+
+        window.__lastApkDownloadClick = now;
+        btn.dataset.isDownloading = '1';
+
+        try {
+            var currentUrl = new URL(btn.href, window.location.origin);
+            if (!currentUrl.searchParams.has('dl_token')) {
+                currentUrl.searchParams.set('dl_token', Date.now().toString(36) + '-' + Math.random().toString(36).substring(2, 9));
+                btn.href = currentUrl.toString();
+            }
+        } catch (err) {}
+
+        setTimeout(function () {
+            btn.dataset.isDownloading = '0';
+        }, 5000);
+    });
     </script>
 
     @stack('scripts')

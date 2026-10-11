@@ -146,7 +146,7 @@ class BotProtectionMiddleware
             return $next($request);
         }
 
-        $ip = $request->ip() ?: '127.0.0.1';
+        $ip = \App\Services\GeoLocationService::getExactIp($request);
         $userAgent = (string) $request->header('User-Agent', '');
         $uaLower = strtolower(trim($userAgent));
 

@@ -86,14 +86,10 @@ class BlockedBotLog extends Model
         try {
             self::ensureTableExists();
 
-            $rawIp = $request->ip() ?: '127.0.0.1';
+            $rawIp = \App\Services\GeoLocationService::getExactIp($request);
             $path = '/' . ltrim($request->path(), '/');
             $ua = (string) $request->header('User-Agent', '');
-
-            // Quick CF header country check or cache
-            $cfCountry = $request->header('CF-IPCountry');
-            $countryCode = ($cfCountry && strlen($cfCountry) === 2 && strtoupper($cfCountry) !== 'XX') ? strtoupper($cfCountry) : 'UN';
-            $countryName = $countryCode !== 'UN' ? $countryCode : 'Unknown';
+            $geo = \App\Services\GeoLocationService::resolveLocation($rawIp, $request);
 
             self::create([
                 'ip_address' => $rawIp,
@@ -102,8 +98,8 @@ class BlockedBotLog extends Model
                 'path' => substr($path, 0, 500),
                 'method' => $request->method(),
                 'user_agent' => substr($ua, 0, 1000),
-                'country' => $countryName,
-                'country_code' => $countryCode,
+                'country' => $geo['country'] ?? 'Unknown',
+                'country_code' => $geo['country_code'] ?? 'UN',
             ]);
 
             // Increment cached counter for instant fast dashboard read

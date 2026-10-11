@@ -179,6 +179,19 @@
         </div>
     @endif
 
+    @if(session('ios_error'))
+        <div class="bg-amber-50 border-b border-amber-200 text-amber-900 px-4 py-3 text-sm">
+            <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-6 h-6 rounded-lg bg-amber-100 flex items-center justify-center text-amber-700 text-xs shrink-0 font-bold">
+                        <i class="fa-brands fa-apple"></i>
+                    </span>
+                    <span class="font-bold">{{ session('ios_error') }}</span>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <!-- Main Page Content -->
     <main class="flex-grow">
         @yield('content')
@@ -351,20 +364,135 @@
         </div>
     </footer>
 
+    <!-- iOS Device Not Supported Alert Modal -->
+    <div id="ios-block-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity" style="display: none;">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl border border-slate-200 relative animate-in fade-in zoom-in-95 duration-150">
+            <button type="button" onclick="closeIosModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center text-sm transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center text-xl">
+                    <i class="fa-brands fa-apple"></i>
+                </div>
+                <div class="w-6 h-6 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center text-xs font-black">
+                    <i class="fa-solid fa-ban"></i>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center text-xl">
+                    <i class="fa-brands fa-android"></i>
+                </div>
+            </div>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold mb-3">
+                <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
+                <span>Notice for Apple iOS Users</span>
+            </div>
+            <h3 class="text-xl font-extrabold text-slate-900 mb-2">This app is only for Android users</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+                You cannot download it on an iOS device. Sangfy is exclusively compiled as a native Android (.apk) package and cannot be installed on iPhone or iPad.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-2.5">
+                <button type="button" onclick="closeIosModal()" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition">
+                    Got it
+                </button>
+                <a href="{{ route('features') }}" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-white btn-sangfy flex items-center justify-center gap-1.5 shadow-sm">
+                    <span>Explore Features</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Global client-side throttle to prevent rapid multi-clicks on download triggers
-        document.addEventListener('click', function (e) {
-            var btn = e.target.closest('a[href*="/download/apk"]');
-            if (!btn) return;
-            if (btn.dataset.isDownloading === '1') {
-                e.preventDefault();
-                return false;
+        // High-precision client-side protection for APK download triggers
+        (function() {
+            function isIosUser() {
+                var ua = navigator.userAgent || '';
+                return /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             }
-            btn.dataset.isDownloading = '1';
-            setTimeout(function () {
-                delete btn.dataset.isDownloading;
-            }, 1000);
-        });
+
+            window.closeIosModal = function() {
+                var modal = document.getElementById('ios-block-modal');
+                if (modal) modal.style.display = 'none';
+            };
+
+            function openIosModal() {
+                var modal = document.getElementById('ios-block-modal');
+                if (modal) {
+                    modal.style.display = 'flex';
+                } else {
+                    alert("This app is only for Android users. You cannot download it on iOS devices.");
+                }
+            }
+
+            function generateDownloadToken() {
+                return Date.now().toString(36) + '-' + Math.random().toString(36).substring(2, 9);
+            }
+
+            document.addEventListener('click', function (e) {
+                var btn = e.target.closest('a[href*="/download/apk"], a[href$="/download/apk"]');
+                if (!btn) return;
+
+                // 1. Immediately block iOS devices with interactive modal notice
+                if (isIosUser()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openIosModal();
+                    return false;
+                }
+
+                var now = Date.now();
+
+                // 2. Block rapid repeated taps on mobile across all download buttons (4-second throttle)
+                if (btn.dataset.isDownloading === '1' || (window.__lastApkDownloadClick && (now - window.__lastApkDownloadClick < 4000))) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+
+                window.__lastApkDownloadClick = now;
+                btn.dataset.isDownloading = '1';
+
+                // 3. Attach unique one-time dl_token to download URL so server deduplicates
+                // multiple internal requests from mobile Chrome & Android Download Manager
+                try {
+                    var currentUrl = new URL(btn.href, window.location.origin);
+                    if (!currentUrl.searchParams.has('dl_token')) {
+                        currentUrl.searchParams.set('dl_token', generateDownloadToken());
+                        btn.href = currentUrl.toString();
+                    }
+                } catch (err) {
+                    if (btn.href.indexOf('dl_token=') === -1) {
+                        var sep = btn.href.indexOf('?') === -1 ? '?' : '&';
+                        btn.href += sep + 'dl_token=' + generateDownloadToken();
+                    }
+                }
+
+                // 4. Mobile UI feedback: show loading spinner and prevent duplicate taps
+                var icon = btn.querySelector('i');
+                var originalIconClass = icon ? icon.className : null;
+
+                if (icon) {
+                    icon.className = 'fa-solid fa-circle-notch fa-spin text-lg';
+                }
+                btn.style.opacity = '0.85';
+                btn.style.pointerEvents = 'none';
+
+                // 5. Re-enable button after 5 seconds
+                setTimeout(function () {
+                    delete btn.dataset.isDownloading;
+                    btn.style.opacity = '';
+                    btn.style.pointerEvents = '';
+                    if (icon && originalIconClass) {
+                        icon.className = originalIconClass;
+                    }
+                    // Reset token for next genuine user-initiated download attempt
+                    try {
+                        var resetUrl = new URL(btn.href, window.location.origin);
+                        resetUrl.searchParams.delete('dl_token');
+                        btn.href = resetUrl.toString();
+                    } catch (err) {}
+                }, 5000);
+            }, true);
+        })();
     </script>
 
     @stack('scripts')

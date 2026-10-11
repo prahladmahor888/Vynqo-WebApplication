@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AppRelease;
+use App\Models\ApkDownloadLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
@@ -19,7 +20,10 @@ class ReleaseManagerController extends Controller
         $totalAllDownloads = AppRelease::getTotalDownloads();
         $totalReleasesCount = AppRelease::count();
 
-        return view('pages.admin-release', compact('currentRelease', 'allReleases', 'totalAllDownloads', 'totalReleasesCount'));
+        ApkDownloadLog::ensureTableExists();
+        $recentDownloadLogs = ApkDownloadLog::latest('id')->take(25)->get();
+
+        return view('pages.admin-release', compact('currentRelease', 'allReleases', 'totalAllDownloads', 'totalReleasesCount', 'recentDownloadLogs'));
     }
 
     /**
