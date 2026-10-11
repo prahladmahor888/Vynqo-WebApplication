@@ -58,6 +58,16 @@ class TrackVisitorTraffic
             $this->ensureGeoColumnsExist();
 
             $rawIp = GeoLocationService::getExactIp($request);
+            $sessionId = $request->hasSession() ? $request->session()->getId() : null;
+
+            // Use Cache::lock on cache_locks table to prevent rapid duplicate logs from the same visitor
+            $visitorLockKey = 'traffic_log_lock_' . md5($rawIp . '_' . $path . '_' . ($sessionId ?: ''));
+            $visitorLock = Cache::lock($visitorLockKey, 3); // 3-second atomic debounce window
+
+            if (!$visitorLock->get()) {
+                return;
+            }
+
             $userAgent = (string) $request->header('User-Agent', '');
             $deviceInfo = GeoLocationService::parseDeviceInfo($userAgent);
             $geo = GeoLocationService::resolveLocation($rawIp, $request);

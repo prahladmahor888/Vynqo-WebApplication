@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="color-scheme" content="light">
     <title>@yield('title', 'Admin Console — Sangfy')</title>
     
@@ -185,6 +186,21 @@
                     </span>
                     <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400"></i>
                 </a>
+
+                <div class="pt-3 px-3 pb-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 font-mono">
+                    System Maintenance
+                </div>
+
+                <button type="button" 
+                        onclick="handleClearCache(this)"
+                        title="Clear Application, View & Config Cache"
+                        class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-amber-700 bg-amber-50/70 hover:bg-amber-100 border border-amber-200/80 transition cursor-pointer shadow-2xs">
+                    <span class="flex items-center gap-3">
+                        <i class="fa-solid fa-broom w-4 text-center shrink-0 text-sm text-amber-600"></i>
+                        <span>Clear All Cache</span>
+                    </span>
+                    <i class="fa-solid fa-bolt text-[10px] text-amber-500"></i>
+                </button>
             </div>
 
             <!-- Bottom User & App Status Card (Fixed Bottom with Safe-Area Inset) -->
@@ -194,11 +210,11 @@
                 <div class="p-2.5 rounded-xl bg-white border border-slate-200 text-xs space-y-1 shadow-2xs">
                     <div class="flex items-center justify-between text-slate-500 text-[11px]">
                         <span>Active Release:</span>
-                        <span class="font-bold text-emerald-600 font-mono">{{ $latestRelease->version_name ?? 'v1.0.0' }}</span>
+                        <span class="font-bold text-emerald-600 font-mono">{{ $latestRelease?->version_name ?? 'v1.0.0' }}</span>
                     </div>
                     <div class="flex items-center justify-between text-slate-500 text-[11px]">
                         <span>Package Size:</span>
-                        <span class="font-semibold text-slate-800 font-mono">{{ $latestRelease->file_size ?? '30 MB' }}</span>
+                        <span class="font-semibold text-slate-800 font-mono">{{ $latestRelease?->file_size ?? '30 MB' }}</span>
                     </div>
                 </div>
 
@@ -206,11 +222,11 @@
                 <div class="flex items-center justify-between bg-white p-2 sm:p-2.5 rounded-xl border border-slate-200 shadow-2xs">
                     <div class="flex items-center gap-2 min-w-0">
                         <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-600 to-pink-600 text-white flex items-center justify-center font-bold text-xs shadow-xs shrink-0">
-                            {{ substr(Auth::user()->name ?? 'A', 0, 1) }}
+                            {{ substr(Auth::user()?->name ?? 'A', 0, 1) }}
                         </div>
                         <div class="text-left min-w-0">
-                            <div class="text-xs font-bold text-slate-900 leading-tight truncate">{{ Auth::user()->name ?? 'Admin' }}</div>
-                            <div class="text-[10px] text-slate-500 truncate">{{ Auth::user()->email ?? 'Active Admin' }}</div>
+                            <div class="text-xs font-bold text-slate-900 leading-tight truncate">{{ Auth::user()?->name ?? 'Admin' }}</div>
+                            <div class="text-[10px] text-slate-500 truncate">{{ Auth::user()?->email ?? 'Active Admin' }}</div>
                         </div>
                     </div>
 
@@ -262,6 +278,16 @@
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span>Live</span>
                     </div>
+
+                    <!-- Top Header Clear Cache Button -->
+                    <button type="button" 
+                            id="headerClearCacheBtn"
+                            onclick="handleClearCache(this)"
+                            title="Clear Application, View & Config Cache" 
+                            class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 hover:text-amber-800 border border-amber-200 rounded-lg transition cursor-pointer shadow-2xs">
+                        <i class="fa-solid fa-broom text-amber-600 text-xs"></i>
+                        <span class="hidden sm:inline">Clear Cache</span>
+                    </button>
 
                     <a href="{{ route('home') }}" target="_blank" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-brand-600 hover:bg-slate-50 border border-slate-200 rounded-lg transition">
                         <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-xs"></i>
@@ -342,7 +368,82 @@
             btn.dataset.isDownloading = '0';
         }, 5000);
     });
+
+    // Global Admin Toast Notification Handler
+    function showAdminToast(message, isError) {
+        var toast = document.getElementById('adminGlobalToast');
+        var msgEl = document.getElementById('adminToastMessage');
+        var iconEl = document.getElementById('adminToastIcon');
+        if (!toast || !msgEl || !iconEl) {
+            alert(message);
+            return;
+        }
+        msgEl.textContent = message;
+        if (isError) {
+            iconEl.className = 'fa-solid fa-triangle-exclamation text-rose-400 text-base';
+        } else {
+            iconEl.className = 'fa-solid fa-circle-check text-emerald-400 text-base';
+        }
+        toast.classList.remove('-translate-y-20', 'opacity-0', 'pointer-events-none');
+        toast.classList.add('translate-y-0', 'opacity-100');
+
+        setTimeout(function() {
+            toast.classList.remove('translate-y-0', 'opacity-100');
+            toast.classList.add('-translate-y-20', 'opacity-0', 'pointer-events-none');
+        }, 3500);
+    }
+
+    // Clear Cache Action with Instant Visual Feedback
+    function handleClearCache(btn) {
+        if (!btn || btn.dataset.loading === '1') return;
+        btn.dataset.loading = '1';
+        var originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-xs"></i> <span>Clearing...</span>';
+        btn.style.opacity = '0.7';
+
+        var token = document.querySelector('meta[name="csrf-token"]') 
+            ? document.querySelector('meta[name="csrf-token"]').content 
+            : '{{ csrf_token() }}';
+
+        fetch('{{ route("admin.clear-cache") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token,
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(function(res) {
+            return res.json().catch(function() { 
+                return { status: 'success', message: 'Application & view cache cleared successfully!' }; 
+            });
+        })
+        .then(function(data) {
+            btn.innerHTML = '<i class="fa-solid fa-check text-emerald-600 text-xs"></i> <span>Cleared!</span>';
+            showAdminToast(data.message || 'Application cache, views & config cleared successfully!', false);
+            setTimeout(function() {
+                btn.innerHTML = originalHtml;
+                btn.style.opacity = '1';
+                btn.dataset.loading = '0';
+            }, 2000);
+        })
+        .catch(function(err) {
+            btn.innerHTML = originalHtml;
+            btn.style.opacity = '1';
+            btn.dataset.loading = '0';
+            showAdminToast('Failed to clear cache.', true);
+        });
+    }
     </script>
+
+    <!-- Global Floating Toast for Instant Admin Feedback -->
+    <div id="adminGlobalToast" class="fixed top-5 right-5 z-50 transition-all duration-300 transform -translate-y-20 opacity-0 pointer-events-none">
+        <div class="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-2xl border border-slate-700">
+            <i id="adminToastIcon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+            <span id="adminToastMessage">Action completed successfully</span>
+        </div>
+    </div>
 
     @stack('scripts')
 </body>

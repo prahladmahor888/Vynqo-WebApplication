@@ -8,63 +8,243 @@ use Illuminate\Support\Facades\Cache;
 class GeoLocationService
 {
     /**
+     * Check if an IP address belongs to Cloudflare's edge proxy network.
+     * Prevents returning Cloudflare datacenter servers as visitor device IPs.
+     */
+    public static function isCloudflareProxyIp(?string $ip): bool
+    {
+        if (empty($ip)) {
+            return false;
+        }
+
+        $cfPrefixes = [
+            '173.245.48.', '173.245.49.', '173.245.5', '173.245.6',
+            '103.21.244.', '103.21.245.', '103.21.246.', '103.21.247.',
+            '103.22.200.', '103.22.201.', '103.22.202.', '103.22.203.',
+            '103.31.4.', '103.31.5.', '103.31.6.', '103.31.7.',
+            '141.101.',
+            '108.162.',
+            '190.93.',
+            '188.114.',
+            '197.234.',
+            '198.41.',
+            '162.158.', '162.159.',
+            '104.16.', '104.17.', '104.18.', '104.19.', '104.20.', '104.21.', '104.22.', '104.23.', '104.24.', '104.25.', '104.26.', '104.27.',
+            '172.64.', '172.65.', '172.66.', '172.67.', '172.68.', '172.69.', '172.70.', '172.71.',
+            '131.0.72.',
+        ];
+
+        foreach ($cfPrefixes as $prefix) {
+            if (str_starts_with($ip, $prefix)) {
+                return true;
+            }
+        }
+
+        // Cloudflare IPv6 subnets
+        if (
+            str_starts_with($ip, '2400:cb00:') ||
+            str_starts_with($ip, '2606:4700:') ||
+            str_starts_with($ip, '2803:f800:') ||
+            str_starts_with($ip, '2405:b500:') ||
+            str_starts_with($ip, '2405:8100:') ||
+            str_starts_with($ip, '2a06:98c0:') ||
+            str_starts_with($ip, '2c0f:f248:')
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Read request header or server variable across all web servers (LiteSpeed, Nginx, Apache, cPanel).
+     */
+    public static function readHeaderOrServer(Request $request, string $headerName): ?string
+    {
+        // 1. Standard Laravel request header
+        $val = $request->header($headerName);
+        if (!empty($val)) {
+            return trim((string) $val);
+        }
+
+        // 2. $_SERVER / $request->server with HTTP_ prefix (e.g. HTTP_CF_CONNECTING_IP)
+        $serverKey = 'HTTP_' . str_replace('-', '_', strtoupper($headerName));
+        if (!empty($_SERVER[$serverKey])) {
+            return trim((string) $_SERVER[$serverKey]);
+        }
+        if (!empty($request->server($serverKey))) {
+            return trim((string) $request->server($serverKey));
+        }
+
+        // 3. $_SERVER / $request->server without HTTP_ prefix (e.g. CF_CONNECTING_IP or X_REAL_IP)
+        $plainKey = str_replace('-', '_', strtoupper($headerName));
+        if (!empty($_SERVER[$plainKey])) {
+            return trim((string) $_SERVER[$plainKey]);
+        }
+        if (!empty($request->server($plainKey))) {
+            return trim((string) $request->server($plainKey));
+        }
+
+        // 4. Apache / LiteSpeed apache_request_headers() fallback
+        if (function_exists('apache_request_headers')) {
+            $headers = apache_request_headers();
+            foreach ($headers as $k => $v) {
+                if (strcasecmp($k, $headerName) === 0 && !empty($v)) {
+                    return trim((string) $v);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Extract the genuine client device public IP address.
-     * Prioritizes reverse proxy, Cloudflare, load balancer headers over internal socket connections.
+     * Prioritizes Cloudflare CF-Connecting-IP, True-Client-IP, and X-Real-IP over reverse proxies.
      */
     public static function getExactIp(Request $request): string
     {
-        $headersToInspect = [
+        $ipv4Candidates = [];
+        $ipv6Candidates = [];
+
+        // 1. Check all proxy/CDN and forwarded headers in priority order
+        $headers = [
+            'CF-Pseudo-IPv4',
             'CF-Connecting-IP',
             'True-Client-IP',
             'X-Real-IP',
-            'X-Forwarded-For',
             'X-Client-IP',
-            'X-Forwarded',
-            'Forwarded-For',
-            'Forwarded',
             'Client-IP',
+            'X-Cluster-Client-IP',
+            'X-Forwarded-For',
+            'Forwarded-For',
+            'X-Forwarded',
         ];
 
-        foreach ($headersToInspect as $headerName) {
-            $val = $request->header($headerName);
-            if (empty($val)) {
-                $serverKey = 'HTTP_' . str_replace('-', '_', strtoupper($headerName));
-                if (isset($_SERVER[$serverKey])) {
-                    $val = $_SERVER[$serverKey];
-                }
-            }
-
+        foreach ($headers as $header) {
+            $val = self::readHeaderOrServer($request, $header);
             if (!empty($val)) {
-                // Handle multiple comma-separated IPs (client, proxy1, proxy2)
-                $candidates = explode(',', (string) $val);
+                $candidates = explode(',', $val);
                 foreach ($candidates as $candidate) {
                     $cleaned = self::cleanIp($candidate);
-                    if (self::isValidPublicIp($cleaned)) {
-                        return $cleaned;
+                    if ($cleaned && self::isValidPublicIp($cleaned) && !self::isCloudflareProxyIp($cleaned)) {
+                        if (filter_var($cleaned, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                            $ipv4Candidates[] = $cleaned;
+                        } elseif (filter_var($cleaned, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+                            $ipv6Candidates[] = $cleaned;
+                        }
                     }
                 }
             }
         }
 
-        // Direct web server remote address
-        if (!empty($_SERVER['REMOTE_ADDR'])) {
-            $cleaned = self::cleanIp($_SERVER['REMOTE_ADDR']);
-            if (self::isValidPublicIp($cleaned)) {
-                return $cleaned;
+        // 2. RFC 7239 Forwarded header (e.g. for=103.21.244.5;proto=https)
+        $rfcForwarded = self::readHeaderOrServer($request, 'Forwarded');
+        if (!empty($rfcForwarded) && preg_match_all('/for="?([^";,\s]+)"?/i', $rfcForwarded, $matches)) {
+            foreach ($matches[1] as $candidate) {
+                $cleaned = self::cleanIp($candidate);
+                if ($cleaned && self::isValidPublicIp($cleaned) && !self::isCloudflareProxyIp($cleaned)) {
+                    if (filter_var($cleaned, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                        $ipv4Candidates[] = $cleaned;
+                    } elseif (filter_var($cleaned, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+                        $ipv6Candidates[] = $cleaned;
+                    }
+                }
             }
         }
 
-        // Laravel default request IP
+        // 3. Laravel trusted proxy resolved IP
         $laravelIp = self::cleanIp($request->ip());
-        if (self::isValidPublicIp($laravelIp)) {
-            return $laravelIp;
+        if ($laravelIp && self::isValidPublicIp($laravelIp) && !self::isCloudflareProxyIp($laravelIp)) {
+            if (filter_var($laravelIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                $ipv4Candidates[] = $laravelIp;
+            } elseif (filter_var($laravelIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+                $ipv6Candidates[] = $laravelIp;
+            }
         }
 
-        return !empty($laravelIp) ? $laravelIp : '127.0.0.1';
+        // 4. Direct web server remote address
+        $remoteAddr = self::cleanIp($_SERVER['REMOTE_ADDR'] ?? $request->server('REMOTE_ADDR'));
+        if ($remoteAddr && self::isValidPublicIp($remoteAddr) && !self::isCloudflareProxyIp($remoteAddr)) {
+            if (filter_var($remoteAddr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                $ipv4Candidates[] = $remoteAddr;
+            } elseif (filter_var($remoteAddr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+                $ipv6Candidates[] = $remoteAddr;
+            }
+        }
+
+        // ⚡ RULE: Agar IPv4 available hai to wahi dikhaye!
+        if (!empty($ipv4Candidates)) {
+            return $ipv4Candidates[0];
+        }
+
+        // ⚡ RULE: Agar IPv4 nahi hai aur IPv6 hai, tab hi IPv6 dikhaye!
+        if (!empty($ipv6Candidates)) {
+            return $ipv6Candidates[0];
+        }
+
+        // 5. Local development / Loopback fallback
+        // When running on localhost (php artisan serve, 127.0.0.1, or cloudflared tunnel), resolve the machine's actual public IP
+        if (empty($remoteAddr) || in_array($remoteAddr, ['127.0.0.1', '::1', 'localhost']) || str_starts_with($remoteAddr, '192.168.') || str_starts_with($remoteAddr, '10.')) {
+            $devIp = self::getDevPublicIp();
+            if (!empty($devIp)) {
+                return $devIp;
+            }
+        }
+
+        return !empty($remoteAddr) ? $remoteAddr : '127.0.0.1';
     }
 
     /**
-     * Clean and normalize raw IP address (strip surrounding quotes, spaces, and ports).
+     * Discover developer machine public external IP when testing on local server / 127.0.0.1.
+     * Prioritizes IPv4 first; only falls back to IPv6 if machine has no IPv4.
+     */
+    public static function getDevPublicIp(): ?string
+    {
+        return Cache::remember('dev_machine_public_ip_v7', 1800, function () {
+            // 1. Try IPv4-specific services first
+            $ipv4Services = [
+                'https://api.ipify.org',
+                'https://checkip.amazonaws.com',
+                'https://icanhazip.com',
+            ];
+            foreach ($ipv4Services as $svc) {
+                try {
+                    $ctx = stream_context_create(['http' => ['timeout' => 2]]);
+                    $res = @file_get_contents($svc, false, $ctx);
+                    if ($res) {
+                        $ip = self::cleanIp($res);
+                        if ($ip && filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && self::isValidPublicIp($ip)) {
+                            return $ip;
+                        }
+                    }
+                } catch (\Throwable $e) {}
+            }
+
+            // 2. If machine has NO IPv4 at all, fall back to dual-stack IPv6 lookup
+            $ipv6Services = [
+                'https://api64.ipify.org',
+                'https://icanhazip.com',
+            ];
+            foreach ($ipv6Services as $svc) {
+                try {
+                    $ctx = stream_context_create(['http' => ['timeout' => 2]]);
+                    $res = @file_get_contents($svc, false, $ctx);
+                    if ($res) {
+                        $ip = self::cleanIp($res);
+                        if ($ip && self::isValidPublicIp($ip)) {
+                            return $ip;
+                        }
+                    }
+                } catch (\Throwable $e) {}
+            }
+
+            return null;
+        });
+    }
+
+    /**
+     * Clean and normalize raw IP address (strip surrounding quotes, spaces, brackets, and ports).
      */
     public static function cleanIp(?string $rawIp): ?string
     {
@@ -75,8 +255,18 @@ class GeoLocationService
         $ip = trim((string) $rawIp);
         $ip = trim($ip, "\"' \t\n\r\0\x0B");
 
+        // Strip IPv6 zone index if present (e.g. fe80::1%eth0 or 2405:...%1)
+        if (str_contains($ip, '%')) {
+            $ip = explode('%', $ip)[0];
+        }
+
         // IPv6 bracketed format with optional port: [2405:201:...]:54321
         if (preg_match('/^\[([a-fA-F0-9:]+)\](?::\d+)?$/', $ip, $matches)) {
+            return $matches[1];
+        }
+
+        // IPv4-mapped IPv6 format: ::ffff:103.21.244.5 -> 103.21.244.5
+        if (preg_match('/^::ffff:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/i', $ip, $matches)) {
             return $matches[1];
         }
 
@@ -99,7 +289,20 @@ class GeoLocationService
     }
 
     /**
-     * Check if an IP address is a valid public IP (not a private, loopback, or reserved IP).
+     * Check if an IP address is an IPv6 address.
+     */
+    public static function isIpv6(?string $ip): bool
+    {
+        if (empty($ip)) {
+            return false;
+        }
+        $clean = self::cleanIp($ip);
+        return filter_var($clean, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false;
+    }
+
+    /**
+     * Check if an IP address is a valid public IP.
+     * Safely allows Indian mobile carrier CGNAT (100.64.0.0/10) and mobile IPv6 allocations.
      */
     public static function isValidPublicIp(?string $ip): bool
     {
@@ -112,12 +315,41 @@ class GeoLocationService
             return false;
         }
 
-        // Filter out private and reserved IP ranges (127.0.0.1, 10.*, 192.168.*, 172.16-31.*)
-        return filter_var(
-            $clean,
-            FILTER_VALIDATE_IP,
-            FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
-        ) !== false;
+        // Must be a valid IPv4 or IPv6
+        if (!filter_var($clean, FILTER_VALIDATE_IP)) {
+            return false;
+        }
+
+        // Exclude loopback and unspecified
+        if ($clean === '127.0.0.1' || $clean === '::1' || $clean === '0.0.0.0') {
+            return false;
+        }
+
+        // Exclude private IPv4 subnets (10.0.0.0/8, 192.168.0.0/16, 169.254.0.0/16)
+        if (
+            str_starts_with($clean, '10.') ||
+            str_starts_with($clean, '192.168.') ||
+            str_starts_with($clean, '169.254.')
+        ) {
+            return false;
+        }
+
+        // Exclude private 172.16.0.0 - 172.31.255.255
+        if (preg_match('/^172\.(1[6-9]|2[0-9]|3[0-1])\./', $clean)) {
+            return false;
+        }
+
+        // Exclude private IPv6 (fc00::/7 unique local, fe80::/10 link-local)
+        $lower = strtolower($clean);
+        if (str_starts_with($lower, 'fc') || str_starts_with($lower, 'fd') || str_starts_with($lower, 'fe80:')) {
+            return false;
+        }
+
+        // NOTE: We deliberately do NOT use FILTER_FLAG_NO_RES_RANGE because
+        // Indian mobile operators (Jio, Airtel, Vi) use Carrier-Grade NAT (100.64.0.0/10)
+        // and modern ISP IPv6 allocations that PHP's RFC filter rejects as reserved!
+
+        return true;
     }
 
     /**
@@ -127,44 +359,40 @@ class GeoLocationService
     {
         $cleanIp = self::cleanIp($ip);
 
+        // Check if dev environment resolved a real public IP
         if (empty($cleanIp) || in_array($cleanIp, ['127.0.0.1', '::1', 'localhost'])) {
-            return [
-                'country' => 'Localhost',
-                'country_code' => 'DEV',
-                'city' => 'Local Server',
-                'region' => 'Development',
-                'flag' => '💻',
-            ];
+            $devIp = self::getDevPublicIp();
+            if (!empty($devIp)) {
+                $cleanIp = $devIp;
+            } else {
+                return [
+                    'country' => 'Localhost',
+                    'country_code' => 'DEV',
+                    'city' => 'Local Server',
+                    'region' => 'Development',
+                    'flag' => '💻',
+                ];
+            }
         }
 
         // Check for private subnet IP ranges
         if (
             str_starts_with($cleanIp, '192.168.') ||
             str_starts_with($cleanIp, '10.') ||
-            str_starts_with($cleanIp, '172.16.') ||
-            str_starts_with($cleanIp, '172.17.') ||
-            str_starts_with($cleanIp, '172.18.') ||
-            str_starts_with($cleanIp, '172.19.') ||
-            str_starts_with($cleanIp, '172.20.') ||
-            str_starts_with($cleanIp, '172.21.') ||
-            str_starts_with($cleanIp, '172.22.') ||
-            str_starts_with($cleanIp, '172.23.') ||
-            str_starts_with($cleanIp, '172.24.') ||
-            str_starts_with($cleanIp, '172.25.') ||
-            str_starts_with($cleanIp, '172.26.') ||
-            str_starts_with($cleanIp, '172.27.') ||
-            str_starts_with($cleanIp, '172.28.') ||
-            str_starts_with($cleanIp, '172.29.') ||
-            str_starts_with($cleanIp, '172.30.') ||
-            str_starts_with($cleanIp, '172.31.')
+            preg_match('/^172\.(1[6-9]|2[0-9]|3[0-1])\./', $cleanIp)
         ) {
-            return [
-                'country' => 'Localhost',
-                'country_code' => 'DEV',
-                'city' => 'Local Network',
-                'region' => 'Private Subnet',
-                'flag' => '💻',
-            ];
+            $devIp = self::getDevPublicIp();
+            if (!empty($devIp)) {
+                $cleanIp = $devIp;
+            } else {
+                return [
+                    'country' => 'Localhost',
+                    'country_code' => 'DEV',
+                    'city' => 'Local Network',
+                    'region' => 'Private Subnet',
+                    'flag' => '💻',
+                ];
+            }
         }
 
         // Check if Cloudflare provides headers
@@ -173,9 +401,9 @@ class GeoLocationService
         $cfRegion = null;
 
         if ($request) {
-            $cfCountry = $request->header('CF-IPCountry') ?: ($_SERVER['HTTP_CF_IPCOUNTRY'] ?? null);
-            $cfCity = $request->header('CF-IPCity') ?: ($_SERVER['HTTP_CF_IPCITY'] ?? null);
-            $cfRegion = $request->header('CF-Region') ?: ($request->header('CF-Region-Code') ?: ($_SERVER['HTTP_CF_REGION'] ?? null));
+            $cfCountry = self::readHeaderOrServer($request, 'CF-IPCountry');
+            $cfCity = self::readHeaderOrServer($request, 'CF-IPCity');
+            $cfRegion = self::readHeaderOrServer($request, 'CF-Region') ?: self::readHeaderOrServer($request, 'CF-Region-Code');
         }
 
         // If Cloudflare already provides both Country AND City, return immediately
@@ -190,22 +418,41 @@ class GeoLocationService
             ];
         }
 
-        // Cache GeoIP lookup per unique IP for 30 days for instant sub-millisecond execution
-        return Cache::remember("geoip_accurate_v4_{$cleanIp}", 86400 * 30, function () use ($cleanIp, $cfCountry) {
-            $data = self::queryGeoIpProviders($cleanIp);
+        // Cache GeoIP lookup per unique IP for 30 days under v5 cache namespace (sanitize colons for IPv6)
+        $safeCacheKey = str_replace([':', ' ', '%'], '_', $cleanIp);
+        $cacheKey = "geoip_accurate_v5_{$safeCacheKey}";
 
-            // If Cloudflare provided country code, prioritize it if lookup was empty
-            if (!empty($cfCountry) && strlen($cfCountry) === 2 && strtoupper($cfCountry) !== 'XX') {
-                if (empty($data['country_code']) || $data['country_code'] === 'UN') {
-                    $code = strtoupper($cfCountry);
-                    $data['country_code'] = $code;
-                    $data['country'] = self::getCountryNameByCode($code) ?: $code;
-                    $data['flag'] = self::getCountryFlag($code);
-                }
-            }
+        // Fast path: Return cached GeoIP if already resolved
+        $cached = Cache::get($cacheKey);
+        if ($cached !== null) {
+            return $cached;
+        }
 
-            return $data;
-        });
+        // Cache lock to prevent thundering herd / parallel external API calls for same IP
+        $geoLock = Cache::lock("geoip_lock_{$safeCacheKey}", 10);
+        try {
+            return $geoLock->block(3, function () use ($cacheKey, $cleanIp, $cfCountry) {
+                return Cache::remember($cacheKey, 86400 * 30, function () use ($cleanIp, $cfCountry) {
+                    $data = self::queryGeoIpProviders($cleanIp);
+
+                    // If Cloudflare provided country code, prioritize it if lookup was empty
+                    if (!empty($cfCountry) && strlen($cfCountry) === 2 && strtoupper($cfCountry) !== 'XX') {
+                        if (empty($data['country_code']) || $data['country_code'] === 'UN') {
+                            $code = strtoupper($cfCountry);
+                            $data['country_code'] = $code;
+                            $data['country'] = self::getCountryNameByCode($code) ?: $code;
+                            $data['flag'] = self::getCountryFlag($code);
+                        }
+                    }
+
+                    return $data;
+                });
+            });
+        } catch (\Throwable $e) {
+            return Cache::remember($cacheKey, 86400 * 30, function () use ($cleanIp, $cfCountry) {
+                return self::queryGeoIpProviders($cleanIp);
+            });
+        }
     }
 
     /**
@@ -260,6 +507,19 @@ class GeoLocationService
             $code = strtoupper((string) $res['country_code']);
             return [
                 'country' => $res['country_name'] ?? self::getCountryNameByCode($code) ?? 'Unknown',
+                'country_code' => $code,
+                'city' => !empty($res['city']) ? trim($res['city']) : null,
+                'region' => !empty($res['region']) ? trim($res['region']) : null,
+                'flag' => self::getCountryFlag($code),
+            ];
+        }
+
+        // Provider 5: ipwhois.app (HTTPS fallback)
+        $res = self::fetchJson("https://ipwhois.app/json/{$ip}", $timeout);
+        if ($res && isset($res['success']) && $res['success'] == true && !empty($res['country_code'])) {
+            $code = strtoupper((string) $res['country_code']);
+            return [
+                'country' => $res['country'] ?? self::getCountryNameByCode($code) ?? 'Unknown',
                 'country_code' => $code,
                 'city' => !empty($res['city']) ? trim($res['city']) : null,
                 'region' => !empty($res['region']) ? trim($res['region']) : null,

@@ -4,7 +4,7 @@
 @section('page_title', 'Traffic & Bot Shield Defense')
 
 @section('content')
-<div class="max-w-7xl mx-auto space-y-6" x-data="{ activeView: 'traffic' }">
+<div class="max-w-7xl mx-auto space-y-6" x-data="{ activeView: '{{ (request('active_tab') === 'shield' || request()->has('bot_page') || request()->filled('bot_search') || (request()->filled('bot_category') && request('bot_category') !== 'all')) ? 'shield' : 'traffic' }}' }">
     
     <!-- Top Header Card -->
     <div class="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -311,7 +311,7 @@
         </div>
 
         <!-- Live Real-Time Human Visitor Stream -->
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+        <div id="humanTrafficSection" class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden relative">
             <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
                     <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
@@ -321,6 +321,10 @@
                     <p class="text-xs text-slate-400">Detailed breakdown showing IP Address, Place Location, Browser, Device &amp; Route</p>
                 </div>
                 <div class="flex items-center gap-2">
+                    <button type="button" onclick="refreshTrafficAjax('human')" title="Refresh current page data" class="px-3 py-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg transition flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-arrows-rotate text-brand-600"></i>
+                        <span>Refresh</span>
+                    </button>
                     <form action="{{ route('admin.traffic.clear') }}" method="POST" onsubmit="return confirm('Are you sure you want to clear all recorded visitor traffic logs?');">
                         @csrf
                         <button type="submit" class="px-3 py-1.5 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg transition flex items-center gap-1.5">
@@ -331,11 +335,167 @@
                 </div>
             </div>
 
+            <!-- Container for AJAX Swap of both Filter Toolbar & Table -->
+            <div id="humanTrafficContainer">
+                <!-- 🔍 Multi-Criteria Filter & Search Toolbar -->
+                <div class="p-4 sm:p-5 bg-slate-50/80 border-b border-slate-200">
+                    <form id="humanTrafficFilterForm" onsubmit="handleTrafficFilterSubmit(event, 'human')" class="space-y-3">
+                        <!-- Row 1: Search Input & Action Buttons -->
+                        <div class="flex flex-col md:flex-row items-stretch md:items-center gap-2.5">
+                            <!-- Main Search Bar -->
+                            <div class="relative flex-1">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                    <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                                </span>
+                                <input type="text" 
+                                       name="search" 
+                                       value="{{ request('search') }}" 
+                                       placeholder="Filter by IP, City, State, Country, Route, Browser, OS..." 
+                                       class="w-full pl-9 pr-8 py-2 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 shadow-2xs">
+                                @if(request('search'))
+                                    <a href="{{ request()->fullUrlWithQuery(['search' => null]) }}" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 text-xs" title="Clear Search">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </a>
+                                @endif
+                            </div>
+
+                            <!-- Filter Submit Button -->
+                            <button type="submit" class="px-4 py-2 text-xs font-bold text-white btn-sangfy rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+                                <i class="fa-solid fa-filter text-xs"></i>
+                                <span>Apply Filter</span>
+                            </button>
+
+                            <!-- Clear All Filters Button (Visible when any filter is active) -->
+                            @if(($activeFiltersCount ?? 0) > 0)
+                                <a href="{{ route('admin.traffic') }}" class="px-3.5 py-2 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl transition flex items-center justify-center gap-1.5" title="Reset all active filters">
+                                    <i class="fa-solid fa-rotate-left text-xs"></i>
+                                    <span>Reset ({{ $activeFiltersCount }})</span>
+                                </a>
+                            @endif
+                        </div>
+
+                        <!-- Row 2: Dropdown Selects Grid -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 pt-1 text-xs">
+                            <!-- 1. Time Period -->
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Time Period</label>
+                                <select name="period" onchange="handleTrafficFilterSubmit(event, 'human')" class="w-full py-1.5 px-2.5 rounded-lg border border-slate-200 bg-white text-slate-700 font-medium focus:ring-1 focus:ring-brand-500 text-xs cursor-pointer">
+                                    <option value="all" {{ request('period') === 'all' || !request('period') ? 'selected' : '' }}>All Time</option>
+                                    <option value="today" {{ request('period') === 'today' ? 'selected' : '' }}>Today</option>
+                                    <option value="yesterday" {{ request('period') === 'yesterday' ? 'selected' : '' }}>Yesterday</option>
+                                    <option value="week" {{ request('period') === 'week' ? 'selected' : '' }}>Last 7 Days</option>
+                                    <option value="month" {{ request('period') === 'month' ? 'selected' : '' }}>This Month</option>
+                                </select>
+                            </div>
+
+                            <!-- 2. Device Type -->
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Device Type</label>
+                                <select name="device" onchange="handleTrafficFilterSubmit(event, 'human')" class="w-full py-1.5 px-2.5 rounded-lg border border-slate-200 bg-white text-slate-700 font-medium focus:ring-1 focus:ring-brand-500 text-xs cursor-pointer">
+                                    <option value="all" {{ !request('device') || request('device') === 'all' ? 'selected' : '' }}>All Devices</option>
+                                    @foreach($availableDevices ?? [] as $dev)
+                                        <option value="{{ $dev }}" {{ request('device') === $dev ? 'selected' : '' }}>{{ $dev }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- 3. IP Protocol (IPv6 vs IPv4) -->
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">IP Protocol</label>
+                                <select name="ip_type" onchange="handleTrafficFilterSubmit(event, 'human')" class="w-full py-1.5 px-2.5 rounded-lg border border-slate-200 bg-white text-slate-700 font-medium focus:ring-1 focus:ring-brand-500 text-xs cursor-pointer">
+                                    <option value="all" {{ !request('ip_type') || request('ip_type') === 'all' ? 'selected' : '' }}>All IPs (v4 &amp; v6)</option>
+                                    <option value="ipv6" {{ request('ip_type') === 'ipv6' ? 'selected' : '' }}>IPv6 Only 🟣</option>
+                                    <option value="ipv4" {{ request('ip_type') === 'ipv4' ? 'selected' : '' }}>IPv4 Only ⚪</option>
+                                </select>
+                            </div>
+
+                            <!-- 4. Route / Page -->
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Route / Page</label>
+                                <select name="route" onchange="handleTrafficFilterSubmit(event, 'human')" class="w-full py-1.5 px-2.5 rounded-lg border border-slate-200 bg-white text-slate-700 font-medium focus:ring-1 focus:ring-brand-500 text-xs cursor-pointer">
+                                    <option value="all" {{ !request('route') || request('route') === 'all' ? 'selected' : '' }}>All Routes</option>
+                                    <option value="home" {{ request('route') === 'home' ? 'selected' : '' }}>Home (/)</option>
+                                    <option value="download" {{ request('route') === 'download' ? 'selected' : '' }}>Download (/download)</option>
+                                    <option value="features" {{ request('route') === 'features' ? 'selected' : '' }}>Features (/features)</option>
+                                    <option value="contact" {{ request('route') === 'contact' ? 'selected' : '' }}>Contact (/contact)</option>
+                                    <option value="legal" {{ request('route') === 'legal' ? 'selected' : '' }}>Legal Policies</option>
+                                </select>
+                            </div>
+
+                            <!-- 5. Country / Place -->
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Location / Country</label>
+                                <select name="country" onchange="handleTrafficFilterSubmit(event, 'human')" class="w-full py-1.5 px-2.5 rounded-lg border border-slate-200 bg-white text-slate-700 font-medium focus:ring-1 focus:ring-brand-500 text-xs cursor-pointer">
+                                    <option value="all" {{ !request('country') || request('country') === 'all' ? 'selected' : '' }}>All Countries</option>
+                                    @foreach($availableCountries ?? [] as $c)
+                                        <option value="{{ $c }}" {{ request('country') === $c ? 'selected' : '' }}>{{ $c }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                    <!-- Row 3: Active Filters Summary Pills -->
+                    @if(($activeFiltersCount ?? 0) > 0)
+                        <div class="flex flex-wrap items-center gap-1.5 pt-2 border-t border-slate-200/80 text-[11px]">
+                            <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px]">Active Filters:</span>
+                            @if(request('search'))
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 font-medium">
+                                    <span>Search: "{{ request('search') }}"</span>
+                                    <a href="{{ request()->fullUrlWithQuery(['search' => null]) }}" class="text-purple-600 hover:text-purple-900"><i class="fa-solid fa-xmark"></i></a>
+                                </span>
+                            @endif
+                            @if(request('period') && request('period') !== 'all')
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 font-medium">
+                                    <span>Period: {{ ucfirst(request('period')) }}</span>
+                                    <a href="{{ request()->fullUrlWithQuery(['period' => null]) }}" class="text-purple-600 hover:text-purple-900"><i class="fa-solid fa-xmark"></i></a>
+                                </span>
+                            @endif
+                            @if(request('device') && request('device') !== 'all')
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 font-medium">
+                                    <span>Device: {{ request('device') }}</span>
+                                    <a href="{{ request()->fullUrlWithQuery(['device' => null]) }}" class="text-purple-600 hover:text-purple-900"><i class="fa-solid fa-xmark"></i></a>
+                                </span>
+                            @endif
+                            @if(request('ip_type') && request('ip_type') !== 'all')
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 font-medium">
+                                    <span>IP: {{ strtoupper(request('ip_type')) }}</span>
+                                    <a href="{{ request()->fullUrlWithQuery(['ip_type' => null]) }}" class="text-purple-600 hover:text-purple-900"><i class="fa-solid fa-xmark"></i></a>
+                                </span>
+                            @endif
+                            @if(request('route') && request('route') !== 'all')
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 font-medium">
+                                    <span>Route: {{ ucfirst(request('route')) }}</span>
+                                    <a href="{{ request()->fullUrlWithQuery(['route' => null]) }}" class="text-purple-600 hover:text-purple-900"><i class="fa-solid fa-xmark"></i></a>
+                                </span>
+                            @endif
+                            @if(request('country') && request('country') !== 'all')
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 font-medium">
+                                    <span>Country: {{ request('country') }}</span>
+                                    <a href="{{ request()->fullUrlWithQuery(['country' => null]) }}" class="text-purple-600 hover:text-purple-900"><i class="fa-solid fa-xmark"></i></a>
+                                </span>
+                            @endif
+                            <span class="text-slate-500 font-mono text-[10px] ml-auto">
+                                Showing <strong>{{ number_format($paginatedLogs->total()) }}</strong> filtered visits
+                            </span>
+                        </div>
+                    @endif
+                </form>
+            </div>
+
+            <div id="humanTrafficTableWrapper" class="relative transition-opacity duration-200">
             @if($paginatedLogs->isEmpty())
                 <div class="p-12 text-center space-y-2">
-                    <i class="fa-solid fa-globe text-3xl text-slate-300 block mb-2"></i>
-                    <p class="text-sm font-bold text-slate-700">No Visitor Logs Yet</p>
-                    <p class="text-xs text-slate-400">As people browse your site, their IP, place location, browser, device, and visited route will stream here in real time.</p>
+                    <i class="fa-solid fa-filter-circle-xmark text-3xl text-slate-300 block mb-2"></i>
+                    <p class="text-sm font-bold text-slate-700">No Visits Matching Filters</p>
+                    <p class="text-xs text-slate-400">No visitor records match your selected filter criteria. Try clearing search or changing the time period.</p>
+                    @if(($activeFiltersCount ?? 0) > 0)
+                        <div class="pt-2">
+                            <a href="{{ route('admin.traffic') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-brand-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg transition">
+                                <i class="fa-solid fa-rotate-left"></i>
+                                <span>Reset All Filters</span>
+                            </a>
+                        </div>
+                    @endif
                 </div>
             @else
                 <div class="overflow-x-auto">
@@ -359,9 +519,16 @@
                                     </td>
                                     
                                     <td class="px-5 py-3.5 whitespace-nowrap">
-                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 font-mono text-[11px] font-bold border border-slate-200">
-                                            <span>{{ $log->ip_address ?? '127.0.0.1' }}</span>
-                                        </span>
+                                        <div class="inline-flex items-center gap-1.5">
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 font-mono text-[11px] font-bold border border-slate-200">
+                                                <span>{{ $log->ip_address ?? '127.0.0.1' }}</span>
+                                            </span>
+                                            @if(str_contains($log->ip_address ?? '', ':'))
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-purple-100 text-purple-700 border border-purple-200 tracking-wider">IPv6</span>
+                                            @else
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-slate-100 text-slate-600 border border-slate-200 tracking-wider">IPv4</span>
+                                            @endif
+                                        </div>
                                     </td>
 
                                     <td class="px-5 py-3.5">
@@ -405,13 +572,15 @@
                     </table>
                 </div>
 
-                <div class="p-4 border-t border-slate-100">
+                <div class="p-4 border-t border-slate-100 pagination-container">
                     {{ $paginatedLogs->links() }}
                 </div>
             @endif
+            </div>
         </div>
-
     </div>
+
+</div>
 
     <!-- ========================================================================= -->
     <!-- VIEW 2: BOT SHIELD & DEFENSE LOGS -->
@@ -522,7 +691,7 @@
         </div>
 
         <!-- Live Blocked Bots & Threat Stream Table -->
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+        <div id="botTrafficSection" class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden relative">
             <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
                     <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
@@ -531,17 +700,72 @@
                     </h3>
                     <p class="text-xs text-slate-400">Live feed of malicious automated scrapers and exploit probes blocked by the firewall</p>
                 </div>
-                <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200 flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
-                    <span>Real-Time Defense Stream</span>
-                </span>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="refreshTrafficAjax('bot')" title="Refresh current page data" class="px-3 py-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg transition flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-arrows-rotate text-rose-600"></i>
+                        <span>Refresh</span>
+                    </button>
+                    <form action="{{ route('admin.traffic.clear-bots') }}" method="POST" onsubmit="return confirm('Are you sure you want to clear all blocked bot & threat security logs?');">
+                        @csrf
+                        <button type="submit" class="px-3 py-1.5 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Clear Threat Logs</span>
+                        </button>
+                    </form>
+                    <span class="hidden sm:flex px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200 items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
+                        <span>Real-Time Defense Stream</span>
+                    </span>
+                </div>
             </div>
 
+            <!-- Container for AJAX Swap of both Bot Filter Toolbar & Table -->
+            <div id="botTrafficContainer">
+                <!-- 🛡️ Bot Threat Search & Filter Toolbar -->
+                <div class="p-3.5 sm:p-4 bg-slate-50/80 border-b border-slate-200">
+                    <form id="botTrafficFilterForm" onsubmit="handleTrafficFilterSubmit(event, 'bot')" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                        <input type="hidden" name="active_tab" value="shield">
+                        <div class="relative flex-1">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                            </span>
+                            <input type="text" 
+                                   name="bot_search" 
+                                   value="{{ request('bot_search') }}" 
+                                   placeholder="Search blocked bots by IP, probe path, or reason..." 
+                                   class="w-full pl-8 pr-7 py-1.5 text-xs rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-rose-500 shadow-2xs">
+                            @if(request('bot_search'))
+                                <a href="{{ request()->fullUrlWithQuery(['bot_search' => null]) }}" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-700 text-xs" title="Clear search">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </a>
+                            @endif
+                        </div>
+                        <select name="bot_category" onchange="handleTrafficFilterSubmit(event, 'bot')" class="py-1.5 px-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-medium focus:ring-1 focus:ring-rose-500 cursor-pointer">
+                            <option value="all" {{ !request('bot_category') || request('bot_category') === 'all' ? 'selected' : '' }}>All Attack Categories</option>
+                            <option value="sql_injection" {{ request('bot_category') === 'sql_injection' ? 'selected' : '' }}>SQL Injection</option>
+                            <option value="xss_attack" {{ request('bot_category') === 'xss_attack' ? 'selected' : '' }}>XSS Attack</option>
+                            <option value="exploit_probe" {{ request('bot_category') === 'exploit_probe' ? 'selected' : '' }}>Exploit Probes (/.env, wp)</option>
+                            <option value="honeypot" {{ request('bot_category') === 'honeypot' ? 'selected' : '' }}>Honeypot Trap</option>
+                            <option value="rate_limit" {{ request('bot_category') === 'rate_limit' ? 'selected' : '' }}>Rate Limit Exceeded</option>
+                        </select>
+                        <button type="submit" class="px-3.5 py-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl transition flex items-center justify-center gap-1 cursor-pointer shadow-2xs">
+                            <i class="fa-solid fa-filter text-xs"></i>
+                            <span>Filter</span>
+                        </button>
+                        @if(request('bot_search') || (request('bot_category') && request('bot_category') !== 'all'))
+                            <a href="{{ route('admin.traffic', ['active_tab' => 'shield']) }}" class="px-3 py-1.5 text-xs font-bold text-slate-600 bg-slate-200 hover:bg-slate-300 rounded-xl transition flex items-center justify-center">
+                                Reset
+                            </a>
+                        @endif
+                    </form>
+                </div>
+
+                <div id="botTrafficTableWrapper" class="relative transition-opacity duration-200">
             @if($paginatedBotLogs->isEmpty())
                 <div class="p-12 text-center space-y-2">
                     <i class="fa-solid fa-shield-halved text-3xl text-slate-300 block mb-2"></i>
-                    <p class="text-sm font-bold text-slate-700">No Blocked Bot Threats Recorded Yet</p>
-                    <p class="text-xs text-slate-400">When automated scrapers, exploit scanners, or spam bots attempt to access your website, they are instantly dropped and logged here.</p>
+                    <p class="text-sm font-bold text-slate-700">No Blocked Threats Found</p>
+                    <p class="text-xs text-slate-400">No recorded malicious attempts match your filter criteria.</p>
                 </div>
             @else
                 <div class="overflow-x-auto">
@@ -565,9 +789,16 @@
 
                                     <!-- IP Address -->
                                     <td class="px-5 py-3.5 whitespace-nowrap">
-                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 font-mono text-[11px] font-bold border border-slate-200">
-                                            <span>{{ $bot->country_flag }}</span>
-                                            <span>{{ $bot->ip_address ?? 'Unknown' }}</span>
+                                        <div class="inline-flex items-center gap-1.5">
+                                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-800 font-mono text-[11px] font-bold border border-slate-200">
+                                                <span>{{ $bot->country_flag }}</span>
+                                                <span>{{ $bot->ip_address ?? 'Unknown' }}</span>
+                                            </div>
+                                            @if(str_contains($bot->ip_address ?? '', ':'))
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-purple-100 text-purple-700 border border-purple-200 tracking-wider">IPv6</span>
+                                            @else
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-slate-100 text-slate-600 border border-slate-200 tracking-wider">IPv4</span>
+                                            @endif
                                         </div>
                                     </td>
 
@@ -606,13 +837,189 @@
                     </table>
                 </div>
 
-                <div class="p-4 border-t border-slate-100">
+                <div class="p-4 border-t border-slate-100 pagination-container">
                     {{ $paginatedBotLogs->links() }}
                 </div>
             @endif
+            </div>
         </div>
-
     </div>
 
 </div>
+
+@push('scripts')
+<script>
+(function() {
+    // 1. Submit Handler for Filter Forms (Human & Bot)
+    window.handleTrafficFilterSubmit = function(e, type) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        var isHuman = (type === 'human');
+        var formId = isHuman ? 'humanTrafficFilterForm' : 'botTrafficFilterForm';
+        var containerId = isHuman ? 'humanTrafficContainer' : 'botTrafficContainer';
+        var sectionId = isHuman ? 'humanTrafficSection' : 'botTrafficSection';
+        var form = document.getElementById(formId);
+
+        if (!form) return;
+
+        var formData = new FormData(form);
+        var currentUrl = new URL(window.location.href);
+        var params = currentUrl.searchParams;
+
+        if (isHuman) {
+            // Reset human-specific filter and pagination params
+            params.delete('page');
+            params.delete('search');
+            params.delete('period');
+            params.delete('device');
+            params.delete('ip_type');
+            params.delete('route');
+            params.delete('country');
+            params.set('active_tab', 'traffic');
+
+            formData.forEach(function(val, key) {
+                val = (typeof val === 'string') ? val.trim() : val;
+                if (val && val !== 'all') {
+                    params.set(key, val);
+                }
+            });
+        } else {
+            // Reset bot-specific filter and pagination params
+            params.delete('bot_page');
+            params.delete('bot_search');
+            params.delete('bot_category');
+            params.set('active_tab', 'shield');
+
+            formData.forEach(function(val, key) {
+                val = (typeof val === 'string') ? val.trim() : val;
+                if (val && val !== 'all') {
+                    params.set(key, val);
+                }
+            });
+        }
+
+        var queryString = params.toString();
+        var targetUrl = currentUrl.pathname + (queryString ? '?' + queryString : '');
+
+        loadTrafficContainer(targetUrl, containerId, sectionId, true);
+    };
+
+    // 2. Click Interceptor for Filter Pills [x], Reset buttons, and Pagination Links
+    document.addEventListener('click', function(e) {
+        var link = e.target.closest('#humanTrafficContainer a, #botTrafficContainer a');
+        if (!link || !link.href) return;
+
+        // Skip non-GET / external / hash links
+        if (link.getAttribute('target') === '_blank') return;
+        if (link.getAttribute('aria-disabled') === 'true') {
+            e.preventDefault();
+            return;
+        }
+        var href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        var isHuman = Boolean(link.closest('#humanTrafficContainer'));
+        var containerId = isHuman ? 'humanTrafficContainer' : 'botTrafficContainer';
+        var sectionId = isHuman ? 'humanTrafficSection' : 'botTrafficSection';
+
+        loadTrafficContainer(link.href, containerId, sectionId, true);
+    });
+
+    // 3. Manual Refresh Button Trigger
+    window.refreshTrafficAjax = function(type) {
+        var isHuman = (type === 'human');
+        var containerId = isHuman ? 'humanTrafficContainer' : 'botTrafficContainer';
+        var sectionId = isHuman ? 'humanTrafficSection' : 'botTrafficSection';
+        loadTrafficContainer(window.location.href, containerId, sectionId, false);
+    };
+
+    // 4. Core AJAX Loader Function using DOMParser
+    function loadTrafficContainer(url, containerId, sectionId, updateHistory) {
+        var container = document.getElementById(containerId);
+        var section = document.getElementById(sectionId);
+        if (!container) {
+            window.location.href = url;
+            return;
+        }
+
+        // Add subtle loading state
+        container.classList.add('opacity-40', 'pointer-events-none', 'transition-opacity');
+
+        var toastId = 'traffic_filter_toast';
+        var existingToast = document.getElementById(toastId);
+        if (!existingToast) {
+            var toast = document.createElement('div');
+            toast.id = toastId;
+            toast.className = 'fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-2xl backdrop-blur-md border border-slate-700 transition-all';
+            toast.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-brand-400 text-sm"></i><span>Updating traffic data...</span>';
+            document.body.appendChild(toast);
+        }
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(function(res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.text();
+        })
+        .then(function(html) {
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(html, 'text/html');
+            var newContainer = doc.getElementById(containerId);
+
+            // Remove loading toast
+            var t = document.getElementById(toastId);
+            if (t) t.remove();
+
+            if (newContainer) {
+                container.innerHTML = newContainer.innerHTML;
+                container.classList.remove('opacity-40', 'pointer-events-none');
+
+                if (updateHistory) {
+                    window.history.pushState({ path: url, containerId: containerId, sectionId: sectionId }, '', url);
+                }
+
+                // If user has scrolled down past the section header, smoothly scroll to top of section
+                if (section) {
+                    var rect = section.getBoundingClientRect();
+                    if (rect.top < 60) {
+                        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            } else {
+                window.location.href = url;
+            }
+        })
+        .catch(function(err) {
+            console.error('AJAX traffic filter error:', err);
+            var t = document.getElementById(toastId);
+            if (t) t.remove();
+            window.location.href = url;
+        });
+    }
+
+    // 5. Browser Back & Forward Navigation Synchronization
+    window.addEventListener('popstate', function(e) {
+        if (e.state && e.state.containerId) {
+            loadTrafficContainer(window.location.href, e.state.containerId, e.state.sectionId, false);
+        } else {
+            var params = new URLSearchParams(window.location.search);
+            if (params.get('active_tab') === 'shield' || params.has('bot_page') || params.has('bot_search') || params.has('bot_category')) {
+                loadTrafficContainer(window.location.href, 'botTrafficContainer', 'botTrafficSection', false);
+            } else {
+                loadTrafficContainer(window.location.href, 'humanTrafficContainer', 'humanTrafficSection', false);
+            }
+        }
+    });
+})();
+</script>
+@endpush
 @endsection

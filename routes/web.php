@@ -82,6 +82,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/traffic', [AdminDashboardController::class, 'traffic'])->name('admin.traffic');
     Route::post('/traffic/clear', [AdminDashboardController::class, 'clearTraffic'])->name('admin.traffic.clear');
     Route::post('/traffic/clear-bots', [AdminDashboardController::class, 'clearBotLogs'])->name('admin.traffic.clear-bots');
+    // System Cache Flush
+    Route::post('/clear-cache', [AdminDashboardController::class, 'clearCache'])->name('admin.clear-cache');
 
     // Background Queue & Batch Job Controls (jobs, job_batches, failed_jobs)
     Route::post('/queue/dispatch-batch', function() {

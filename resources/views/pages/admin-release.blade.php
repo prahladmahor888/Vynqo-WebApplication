@@ -576,8 +576,15 @@
                                 </td>
 
                                 <!-- Exact IP -->
-                                <td class="px-4 py-3 font-mono font-medium text-slate-700">
-                                    {{ $log->ip_address }}
+                                <td class="px-4 py-3 whitespace-nowrap font-mono font-medium text-slate-700">
+                                    <div class="inline-flex items-center gap-1.5">
+                                        <span class="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-xs">{{ $log->ip_address ?: '127.0.0.1' }}</span>
+                                        @if(str_contains($log->ip_address ?? '', ':'))
+                                            <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-purple-100 text-purple-700 border border-purple-200 tracking-wider">IPv6</span>
+                                        @else
+                                            <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-slate-100 text-slate-600 border border-slate-200 tracking-wider">IPv4</span>
+                                        @endif
+                                    </div>
                                 </td>
 
                                 <!-- Resolved Location -->

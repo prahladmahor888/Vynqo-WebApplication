@@ -78,7 +78,7 @@ class ContactController extends Controller
             'email' => $cleanEmail,
             'subject' => $cleanSubject,
             'message' => $cleanMessage,
-            'ip_address' => $request->ip(),
+            'ip_address' => \App\Services\GeoLocationService::getExactIp($request),
             'is_resolved' => false,
         ]);
 

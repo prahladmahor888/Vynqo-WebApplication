@@ -202,9 +202,9 @@ class DownloadController extends Controller
         if (!empty($token) && is_string($token)) {
             $cleanToken = preg_replace('/[^a-zA-Z0-9_\-]/', '', substr($token, 0, 64));
             if (!empty($cleanToken)) {
-                $tokenLockKey = 'apk_dl_token_' . $cleanToken;
-                // Atomic lock for 2 hours: if already exists, this download action was already counted!
-                if (!Cache::add($tokenLockKey, 1, 7200)) {
+                // Atomic lock in cache_locks for 2 hours: if lock exists, this download action was already counted!
+                $tokenLock = Cache::lock('apk_dl_token_lock_' . $cleanToken, 7200);
+                if (!$tokenLock->get()) {
                     return false;
                 }
             }
@@ -225,11 +225,11 @@ class DownloadController extends Controller
             return false;
         }
 
-        // 7. IP-Level Debounce Window (60-second atomic lock)
+        // 7. IP-Level Debounce Window (60-second atomic lock in cache_locks)
         // Mobile browsers & download managers often issue 2-3 requests within 0-20 seconds.
         // Even if User-Agent changes between Chrome and AndroidDownloadManager, the IP matches!
-        $ipLockKey = 'apk_dl_ip_debounce_' . $releaseId . '_' . md5($ip);
-        if (!Cache::add($ipLockKey, 1, 60)) {
+        $ipLock = Cache::lock('apk_dl_ip_debounce_lock_' . $releaseId . '_' . md5($ip), 60);
+        if (!$ipLock->get()) {
             return false;
         }
 

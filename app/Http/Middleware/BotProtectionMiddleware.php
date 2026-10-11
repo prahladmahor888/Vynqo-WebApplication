@@ -237,9 +237,28 @@ class BotProtectionMiddleware
         $maxPerMinute = (int) SiteSetting::get('max_requests_per_minute', 60);
         if ($maxPerMinute > 0 && !str_starts_with($path, '/admin')) {
             $rateKey = 'bot_rate_limit_' . md5($ip);
-            $currentHits = (int) Cache::get($rateKey, 0);
+            $rateLock = Cache::lock('rate_limit_lock_' . md5($ip), 5);
+            $blockedDueToRate = false;
 
-            if ($currentHits >= $maxPerMinute) {
+            try {
+                $rateLock->block(2, function () use ($rateKey, $maxPerMinute, &$blockedDueToRate) {
+                    $currentHits = (int) Cache::get($rateKey, 0);
+                    if ($currentHits >= $maxPerMinute) {
+                        $blockedDueToRate = true;
+                    } else {
+                        Cache::put($rateKey, $currentHits + 1, 60);
+                    }
+                });
+            } catch (\Throwable $e) {
+                $currentHits = (int) Cache::get($rateKey, 0);
+                if ($currentHits >= $maxPerMinute) {
+                    $blockedDueToRate = true;
+                } else {
+                    Cache::put($rateKey, $currentHits + 1, 60);
+                }
+            }
+
+            if ($blockedDueToRate) {
                 BlockedBotLog::record($request, "Rate Limit Exceeded (> {$maxPerMinute} req/min)", 'rate_limit');
                 return response()->json([
                     'status' => 'error',
@@ -250,8 +269,6 @@ class BotProtectionMiddleware
                     'Content-Type' => 'application/json',
                 ]);
             }
-
-            Cache::put($rateKey, $currentHits + 1, 60);
         }
 
         return $next($request);
