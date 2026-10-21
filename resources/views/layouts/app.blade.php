@@ -223,64 +223,86 @@
                         {{ $siteSettings['footer_about_text'] ?? ('The official communication platform for the ' . ($siteName ?? 'Sangfy') . ' Android App (' . ($siteSettings['android_package_name'] ?? 'com.prahlix.sangfy') . '). Built for photo/video posts, 24h stories, nearby people discovery, and end-to-end encrypted messaging.') }}
                     </p>
                     
-                    <!-- Dynamic High-Quality Brand Social Media Icons (Font Awesome) -->
-                    <div class="flex flex-wrap items-center gap-2 pt-2">
-                        <!-- Instagram -->
-                        @if(!empty($siteSettings['social_instagram']))
-                            <a href="{{ $siteSettings['social_instagram'] }}" target="_blank" rel="noopener noreferrer" title="Follow on Instagram" class="social-icon-btn btn-instagram group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-pink-600">
-                                <i class="fa-brands fa-instagram text-base"></i>
-                            </a>
-                        @endif
+                    <!-- Dynamic Brand Social Media Icons (Only Active / Configured Icons Displayed) -->
+                    @php
+                        $activeSocials = array_filter([
+                            'instagram' => $siteSettings['social_instagram'] ?? null,
+                            'twitter'   => $siteSettings['social_twitter'] ?? null,
+                            'telegram'  => $siteSettings['social_telegram'] ?? null,
+                            'youtube'   => $siteSettings['social_youtube'] ?? null,
+                            'whatsapp'  => $siteSettings['social_whatsapp'] ?? null,
+                            'discord'   => $siteSettings['social_discord'] ?? null,
+                            'facebook'  => $siteSettings['social_facebook'] ?? null,
+                            'linkedin'  => $siteSettings['social_linkedin'] ?? null,
+                            'github'    => $siteSettings['social_github'] ?? null,
+                        ]);
+                    @endphp
+                    @if(!empty($activeSocials))
+                        <div class="flex flex-wrap items-center gap-2 pt-2">
+                            <!-- Instagram -->
+                            @if(!empty($siteSettings['social_instagram']))
+                                <a href="{{ $siteSettings['social_instagram'] }}" target="_blank" rel="noopener noreferrer" title="Follow on Instagram" class="social-icon-btn btn-instagram group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-pink-600">
+                                    <i class="fa-brands fa-instagram text-base"></i>
+                                </a>
+                            @endif
 
-                        <!-- X (Twitter) -->
-                        @if(!empty($siteSettings['social_twitter']))
-                            <a href="{{ $siteSettings['social_twitter'] }}" target="_blank" rel="noopener noreferrer" title="Follow on X (Twitter)" class="social-icon-btn btn-x group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-black">
-                                <i class="fa-brands fa-x-twitter text-base"></i>
-                            </a>
-                        @endif
+                            <!-- X (Twitter) -->
+                            @if(!empty($siteSettings['social_twitter']))
+                                <a href="{{ $siteSettings['social_twitter'] }}" target="_blank" rel="noopener noreferrer" title="Follow on X (Twitter)" class="social-icon-btn btn-x group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-black">
+                                    <i class="fa-brands fa-x-twitter text-base"></i>
+                                </a>
+                            @endif
 
-                        <!-- Telegram -->
-                        @if(!empty($siteSettings['social_telegram']))
-                            <a href="{{ $siteSettings['social_telegram'] }}" target="_blank" rel="noopener noreferrer" title="Join Telegram Channel" class="social-icon-btn btn-telegram group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-sky-500">
-                                <i class="fa-brands fa-telegram text-base"></i>
-                            </a>
-                        @endif
+                            <!-- Telegram -->
+                            @if(!empty($siteSettings['social_telegram']))
+                                <a href="{{ $siteSettings['social_telegram'] }}" target="_blank" rel="noopener noreferrer" title="Join Telegram Channel" class="social-icon-btn btn-telegram group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-sky-500">
+                                    <i class="fa-brands fa-telegram text-base"></i>
+                                </a>
+                            @endif
 
-                        <!-- YouTube -->
-                        @if(!empty($siteSettings['social_youtube']))
-                            <a href="{{ $siteSettings['social_youtube'] }}" target="_blank" rel="noopener noreferrer" title="Watch on YouTube" class="social-icon-btn btn-youtube group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-rose-600">
-                                <i class="fa-brands fa-youtube text-base"></i>
-                            </a>
-                        @endif
+                            <!-- YouTube -->
+                            @if(!empty($siteSettings['social_youtube']))
+                                <a href="{{ $siteSettings['social_youtube'] }}" target="_blank" rel="noopener noreferrer" title="Watch on YouTube" class="social-icon-btn btn-youtube group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-rose-600">
+                                    <i class="fa-brands fa-youtube text-base"></i>
+                                </a>
+                            @endif
 
-                        <!-- GitHub -->
-                        @if(!empty($siteSettings['social_github']))
-                            <a href="{{ $siteSettings['social_github'] }}" target="_blank" rel="noopener noreferrer" title="View Source on GitHub" class="social-icon-btn btn-github group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-slate-900">
-                                <i class="fa-brands fa-github text-base"></i>
-                            </a>
-                        @endif
+                            <!-- WhatsApp -->
+                            @if(!empty($siteSettings['social_whatsapp']))
+                                <a href="{{ $siteSettings['social_whatsapp'] }}" target="_blank" rel="noopener noreferrer" title="Connect on WhatsApp" class="social-icon-btn btn-whatsapp group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-emerald-600">
+                                    <i class="fa-brands fa-whatsapp text-base"></i>
+                                </a>
+                            @endif
 
-                        <!-- Discord -->
-                        @if(!empty($siteSettings['social_discord']))
-                            <a href="{{ $siteSettings['social_discord'] }}" target="_blank" rel="noopener noreferrer" title="Join Discord Community" class="social-icon-btn btn-discord group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-indigo-600">
-                                <i class="fa-brands fa-discord text-base"></i>
-                            </a>
-                        @endif
+                            <!-- Discord -->
+                            @if(!empty($siteSettings['social_discord']))
+                                <a href="{{ $siteSettings['social_discord'] }}" target="_blank" rel="noopener noreferrer" title="Join Discord Community" class="social-icon-btn btn-discord group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-indigo-600">
+                                    <i class="fa-brands fa-discord text-base"></i>
+                                </a>
+                            @endif
 
-                        <!-- Facebook -->
-                        @if(!empty($siteSettings['social_facebook']))
-                            <a href="{{ $siteSettings['social_facebook'] }}" target="_blank" rel="noopener noreferrer" title="Follow on Facebook" class="social-icon-btn btn-facebook group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-blue-600">
-                                <i class="fa-brands fa-facebook text-base"></i>
-                            </a>
-                        @endif
+                            <!-- Facebook -->
+                            @if(!empty($siteSettings['social_facebook']))
+                                <a href="{{ $siteSettings['social_facebook'] }}" target="_blank" rel="noopener noreferrer" title="Follow on Facebook" class="social-icon-btn btn-facebook group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-blue-600">
+                                    <i class="fa-brands fa-facebook text-base"></i>
+                                </a>
+                            @endif
 
-                        <!-- LinkedIn -->
-                        @if(!empty($siteSettings['social_linkedin']))
-                            <a href="{{ $siteSettings['social_linkedin'] }}" target="_blank" rel="noopener noreferrer" title="Follow on LinkedIn" class="social-icon-btn btn-linkedin group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-blue-700">
-                                <i class="fa-brands fa-linkedin text-base"></i>
-                            </a>
-                        @endif
-                    </div>
+                            <!-- LinkedIn -->
+                            @if(!empty($siteSettings['social_linkedin']))
+                                <a href="{{ $siteSettings['social_linkedin'] }}" target="_blank" rel="noopener noreferrer" title="Follow on LinkedIn" class="social-icon-btn btn-linkedin group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-blue-700">
+                                    <i class="fa-brands fa-linkedin text-base"></i>
+                                </a>
+                            @endif
+
+                            <!-- GitHub -->
+                            @if(!empty($siteSettings['social_github']))
+                                <a href="{{ $siteSettings['social_github'] }}" target="_blank" rel="noopener noreferrer" title="View Source on GitHub" class="social-icon-btn btn-github group w-9 h-9 rounded-xl shadow-2xs flex items-center justify-center text-slate-600 hover:text-slate-900">
+                                    <i class="fa-brands fa-github text-base"></i>
+                                </a>
+                            @endif
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Product Links (2 cols) -->

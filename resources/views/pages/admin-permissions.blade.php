@@ -27,7 +27,7 @@
                 <span>Add Permission</span>
             </button>
             
-            <form action="{{ route('admin.permissions.reset') }}" method="POST" onsubmit="return confirm('Restore all 7 official Android app permissions to default state? Custom edits will be overwritten.');" class="w-full sm:w-auto inline-flex">
+            <form action="{{ route('admin.permissions.reset') }}" method="POST" onsubmit="return confirm('Restore all official Android manifest permissions to default state? Custom edits will be overwritten.');" class="w-full sm:w-auto inline-flex">
                 @csrf
                 <button type="submit" class="w-full sm:w-auto px-3.5 py-2.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer" title="Reset all permissions to official Android defaults">
                     <i class="fa-solid fa-rotate-left text-slate-500 shrink-0"></i>

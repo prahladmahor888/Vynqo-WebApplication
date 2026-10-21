@@ -23,8 +23,9 @@ class LegalController extends Controller
     {
         $document = LegalDocument::getBySlug('privacy');
         
-        // Fetch dynamic active permissions with structured fallback
+        // Auto-sync manifest permissions and fetch dynamic active permissions
         try {
+            \App\Models\AppPermission::syncDefaultPermissions();
             $permissions = \App\Models\AppPermission::active()->get();
             if ($permissions->isEmpty()) {
                 $permissions = collect(\App\Models\AppPermission::getDefaultPermissions());

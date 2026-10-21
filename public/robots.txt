@@ -25,6 +25,7 @@ Disallow: /*.env$
 Disallow: /*.git$
 
 Allow: /
+Allow: /app-ads.txt
 Allow: /features
 Allow: /download
 Allow: /contact

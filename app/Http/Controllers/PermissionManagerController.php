@@ -14,39 +14,34 @@ class PermissionManagerController extends Controller
      */
     public function index()
     {
-        // Auto-seed default permissions if table is empty
-        if (AppPermission::count() === 0) {
-            foreach (AppPermission::getDefaultPermissions() as $perm) {
-                AppPermission::create($perm);
-            }
-        } else {
-            // Auto-upgrade legacy emoji or missing icons in database
-            $emojiMap = [
-                '📷' => 'fa-solid fa-camera',
-                '📸' => 'fa-solid fa-camera',
-                '🎤' => 'fa-solid fa-microphone',
-                '📁' => 'fa-solid fa-folder-open',
-                '📂' => 'fa-solid fa-folder-open',
-                '🗂️' => 'fa-solid fa-folder-open',
-                '📍' => 'fa-solid fa-location-dot',
-                '🗺️' => 'fa-solid fa-location-dot',
-                '🔔' => 'fa-solid fa-bell',
-                '🎧' => 'fa-solid fa-headphones',
-                '🌐' => 'fa-solid fa-globe',
-            ];
-            
-            $defaults = collect(AppPermission::getDefaultPermissions())->keyBy('name');
+        // Auto-sync manifest permissions if new ones are added
+        AppPermission::syncDefaultPermissions();
+        // Auto-upgrade legacy emoji or missing icons in database
+        $emojiMap = [
+            '📷' => 'fa-solid fa-camera',
+            '📸' => 'fa-solid fa-camera',
+            '🎤' => 'fa-solid fa-microphone',
+            '📁' => 'fa-solid fa-folder-open',
+            '📂' => 'fa-solid fa-folder-open',
+            '🗂️' => 'fa-solid fa-folder-open',
+            '📍' => 'fa-solid fa-location-dot',
+            '🗺️' => 'fa-solid fa-location-dot',
+            '🔔' => 'fa-solid fa-bell',
+            '🎧' => 'fa-solid fa-headphones',
+            '🌐' => 'fa-solid fa-globe',
+        ];
+        
+        $defaults = collect(AppPermission::getDefaultPermissions())->keyBy('name');
 
-            foreach (AppPermission::all() as $p) {
-                $rawIcon = trim($p->icon ?? '');
-                if (isset($emojiMap[$rawIcon])) {
-                    $p->update(['icon' => $emojiMap[$rawIcon]]);
-                } elseif (empty($rawIcon) || $rawIcon === 'fa-') {
-                    if (isset($defaults[$p->name])) {
-                        $p->update(['icon' => $defaults[$p->name]['icon']]);
-                    } else {
-                        $p->update(['icon' => 'fa-solid fa-shield-halved']);
-                    }
+        foreach (AppPermission::all() as $p) {
+            $rawIcon = trim($p->icon ?? '');
+            if (isset($emojiMap[$rawIcon])) {
+                $p->update(['icon' => $emojiMap[$rawIcon]]);
+            } elseif (empty($rawIcon) || $rawIcon === 'fa-') {
+                if (isset($defaults[$p->name])) {
+                    $p->update(['icon' => $defaults[$p->name]['icon']]);
+                } else {
+                    $p->update(['icon' => 'fa-solid fa-shield-halved']);
                 }
             }
         }

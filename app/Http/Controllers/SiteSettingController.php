@@ -64,12 +64,16 @@ class SiteSettingController extends Controller
             'play_store_enabled' => 'nullable|string|in:0,1',
             'direct_apk_enabled' => 'nullable|string|in:0,1',
 
-            // 5. Social Links
+            // 5. Social Links (Active when filled, hidden when empty)
             'social_instagram' => 'nullable|string|max:255',
             'social_twitter' => 'nullable|string|max:255',
             'social_telegram' => 'nullable|string|max:255',
             'social_youtube' => 'nullable|string|max:255',
             'social_github' => 'nullable|string|max:255',
+            'social_discord' => 'nullable|string|max:255',
+            'social_facebook' => 'nullable|string|max:255',
+            'social_linkedin' => 'nullable|string|max:255',
+            'social_whatsapp' => 'nullable|string|max:255',
 
             // 6. SEO & Scripts
             'meta_title' => 'nullable|string|max:255',
@@ -116,6 +120,10 @@ class SiteSettingController extends Controller
             'social_telegram',
             'social_youtube',
             'social_github',
+            'social_discord',
+            'social_facebook',
+            'social_linkedin',
+            'social_whatsapp',
             'meta_title',
             'meta_description',
             'meta_keywords',

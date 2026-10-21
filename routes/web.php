@@ -127,6 +127,21 @@ Route::get('/.well-known/assetlinks.json', function () {
     ]);
 });
 
+// Authorized Digital Sellers for Mobile Apps (Google AdMob Verification)
+Route::get('/app-ads.txt', function () {
+    $filePath = public_path('app-ads.txt');
+    if (file_exists($filePath)) {
+        return response(file_get_contents($filePath), 200)
+            ->header('Content-Type', 'text/plain; charset=utf-8')
+            ->header('Cache-Control', 'public, max-age=3600');
+    }
+
+    $pubId = env('ADMOB_PUBLISHER_ID', 'pub-XXXXXXXXXXXXXXXX');
+    return response("google.com, {$pubId}, DIRECT, f08c47fec0942fa0\n", 200)
+        ->header('Content-Type', 'text/plain; charset=utf-8')
+        ->header('Cache-Control', 'public, max-age=3600');
+});
+
 // --------------------------------------------------------------------------
 // Sangfy App Deep Link Handlers (User Profiles, Posts & Groups)
 // --------------------------------------------------------------------------

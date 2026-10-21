@@ -143,7 +143,22 @@
                         </div>
                     </div>
 
-                    <!-- Social Channels Card -->
+                    @php
+                        $activeSocials = array_filter([
+                            'instagram' => $siteSettings['social_instagram'] ?? null,
+                            'twitter'   => $siteSettings['social_twitter'] ?? null,
+                            'telegram'  => $siteSettings['social_telegram'] ?? null,
+                            'youtube'   => $siteSettings['social_youtube'] ?? null,
+                            'whatsapp'  => $siteSettings['social_whatsapp'] ?? null,
+                            'discord'   => $siteSettings['social_discord'] ?? null,
+                            'facebook'  => $siteSettings['social_facebook'] ?? null,
+                            'linkedin'  => $siteSettings['social_linkedin'] ?? null,
+                            'github'    => $siteSettings['social_github'] ?? null,
+                        ]);
+                    @endphp
+
+                    @if(!empty($activeSocials))
+                    <!-- Social Channels Card (Active Channels Only) -->
                     <div class="p-4 sm:p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2.5">
                         <div class="font-bold text-slate-900 text-xs flex items-center gap-2">
                             <i class="fa-solid fa-globe text-brand-600"></i>
@@ -172,9 +187,9 @@
                                     <i class="fa-brands fa-youtube text-xs"></i>
                                 </a>
                             @endif
-                            @if(!empty($siteSettings['social_github']))
-                                <a href="{{ $siteSettings['social_github'] }}" target="_blank" rel="noopener noreferrer" title="GitHub" class="social-icon-btn btn-github w-8 h-8 rounded-xl shadow-2xs flex items-center justify-center">
-                                    <i class="fa-brands fa-github text-xs"></i>
+                            @if(!empty($siteSettings['social_whatsapp']))
+                                <a href="{{ $siteSettings['social_whatsapp'] }}" target="_blank" rel="noopener noreferrer" title="WhatsApp" class="social-icon-btn btn-whatsapp w-8 h-8 rounded-xl shadow-2xs flex items-center justify-center">
+                                    <i class="fa-brands fa-whatsapp text-xs"></i>
                                 </a>
                             @endif
                             @if(!empty($siteSettings['social_discord']))
@@ -192,8 +207,14 @@
                                     <i class="fa-brands fa-linkedin text-xs"></i>
                                 </a>
                             @endif
+                            @if(!empty($siteSettings['social_github']))
+                                <a href="{{ $siteSettings['social_github'] }}" target="_blank" rel="noopener noreferrer" title="GitHub" class="social-icon-btn btn-github w-8 h-8 rounded-xl shadow-2xs flex items-center justify-center">
+                                    <i class="fa-brands fa-github text-xs"></i>
+                                </a>
+                            @endif
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
 

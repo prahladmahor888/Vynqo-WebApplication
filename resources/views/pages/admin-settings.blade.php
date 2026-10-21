@@ -437,23 +437,23 @@
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
-                            Support Telephone / Hotline
+                            Support Telephone / Hotline <span class="text-slate-400 font-normal lowercase">(optional)</span>
                         </label>
-                        <input type="text" name="contact_phone" value="{{ old('contact_phone', $settings['contact_phone'] ?? '+1 (555) 019-2834') }}" placeholder="e.g. +1 (555) 019-2834" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="text" name="contact_phone" value="{{ old('contact_phone', $settings['contact_phone'] ?? '') }}" placeholder="e.g. +91 98765 43210 (Leave blank if none)" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
-                            Support Desk Operating Hours
+                            Support Desk Operating Hours <span class="text-slate-400 font-normal lowercase">(optional)</span>
                         </label>
-                        <input type="text" name="support_hours" value="{{ old('support_hours', $settings['support_hours'] ?? '24/7 Response Desk (within 24 hours)') }}" placeholder="e.g. 24/7 Response Desk" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="text" name="support_hours" value="{{ old('support_hours', $settings['support_hours'] ?? '') }}" placeholder="e.g. 24/7 Response Desk (Leave blank if none)" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
-                            Company / Headquarters Address
+                            Company / Headquarters Address <span class="text-slate-400 font-normal lowercase">(optional)</span>
                         </label>
-                        <input type="text" name="company_address" value="{{ old('company_address', $settings['company_address'] ?? 'Prahlix Technologies, Global') }}" placeholder="e.g. Prahlix Technologies" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="text" name="company_address" value="{{ old('company_address', $settings['company_address'] ?? '') }}" placeholder="e.g. Registered Corporate Address (Leave blank if none)" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
@@ -501,9 +501,16 @@
             <!-- TAB 4: SOCIAL MEDIA LINKS -->
             <!-- ============================================================= -->
             <div x-show="activeTab === 'social'" class="space-y-6" style="display:none;">
-                <div>
-                    <h2 class="text-base font-extrabold text-slate-900">Official Social Media &amp; Community Channels</h2>
-                    <p class="text-xs text-slate-500">Provide direct URLs to your social channels rendered across footer and contact pages.</p>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <h2 class="text-base font-extrabold text-slate-900">Official Social Media &amp; Community Channels</h2>
+                        <p class="text-xs text-slate-500">Provide direct URLs to your social channels. <strong>Only channels with a filled URL will be displayed publicly</strong> across the website footer and contact channels.</p>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-purple-50 border border-purple-100 rounded-xl text-xs text-brand-800 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-brand-600"></i>
+                    <span><strong>Dynamic Social Icons:</strong> Any social media channel left blank will be automatically hidden from the public footer and support pages.</span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -511,56 +518,63 @@
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
                             <i class="fa-brands fa-instagram text-pink-600 mr-1"></i> Instagram URL
                         </label>
-                        <input type="url" name="social_instagram" value="{{ old('social_instagram', $settings['social_instagram'] ?? 'https://instagram.com/sangfyapp') }}" placeholder="https://instagram.com/yourusername" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="url" name="social_instagram" value="{{ old('social_instagram', $settings['social_instagram'] ?? '') }}" placeholder="https://instagram.com/yourusername" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
                             <i class="fa-brands fa-x-twitter text-slate-800 mr-1"></i> X (Twitter) URL
                         </label>
-                        <input type="url" name="social_twitter" value="{{ old('social_twitter', $settings['social_twitter'] ?? 'https://x.com/sangfyapp') }}" placeholder="https://x.com/yourusername" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="url" name="social_twitter" value="{{ old('social_twitter', $settings['social_twitter'] ?? '') }}" placeholder="https://x.com/yourusername" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
                             <i class="fa-brands fa-telegram text-sky-500 mr-1"></i> Telegram Channel URL
                         </label>
-                        <input type="url" name="social_telegram" value="{{ old('social_telegram', $settings['social_telegram'] ?? 'https://t.me/sangfyapp') }}" placeholder="https://t.me/yourchannel" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="url" name="social_telegram" value="{{ old('social_telegram', $settings['social_telegram'] ?? '') }}" placeholder="https://t.me/yourchannel" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
                             <i class="fa-brands fa-youtube text-red-600 mr-1"></i> YouTube Channel URL
                         </label>
-                        <input type="url" name="social_youtube" value="{{ old('social_youtube', $settings['social_youtube'] ?? 'https://youtube.com/@sangfyapp') }}" placeholder="https://youtube.com/@yourchannel" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="url" name="social_youtube" value="{{ old('social_youtube', $settings['social_youtube'] ?? '') }}" placeholder="https://youtube.com/@yourchannel" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> WhatsApp Community / Support URL
+                        </label>
+                        <input type="url" name="social_whatsapp" value="{{ old('social_whatsapp', $settings['social_whatsapp'] ?? '') }}" placeholder="https://wa.me/yournumber or channel URL" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
                             <i class="fa-brands fa-discord text-indigo-600 mr-1"></i> Discord Community URL
                         </label>
-                        <input type="url" name="social_discord" value="{{ old('social_discord', $settings['social_discord'] ?? 'https://discord.gg/sangfy') }}" placeholder="https://discord.gg/invitecode" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="url" name="social_discord" value="{{ old('social_discord', $settings['social_discord'] ?? '') }}" placeholder="https://discord.gg/invitecode" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
                             <i class="fa-brands fa-facebook text-blue-600 mr-1"></i> Facebook Page URL
                         </label>
-                        <input type="url" name="social_facebook" value="{{ old('social_facebook', $settings['social_facebook'] ?? 'https://facebook.com/sangfyapp') }}" placeholder="https://facebook.com/yourpage" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="url" name="social_facebook" value="{{ old('social_facebook', $settings['social_facebook'] ?? '') }}" placeholder="https://facebook.com/yourpage" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
                             <i class="fa-brands fa-linkedin text-blue-700 mr-1"></i> LinkedIn Page URL
                         </label>
-                        <input type="url" name="social_linkedin" value="{{ old('social_linkedin', $settings['social_linkedin'] ?? 'https://linkedin.com/company/sangfy') }}" placeholder="https://linkedin.com/company/yourbrand" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="url" name="social_linkedin" value="{{ old('social_linkedin', $settings['social_linkedin'] ?? '') }}" placeholder="https://linkedin.com/company/yourbrand" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
 
                     <div class="sm:col-span-2">
                         <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2 flex items-center gap-1.5">
                             <i class="fa-brands fa-github text-slate-800 mr-1"></i> GitHub / Developer Repository URL
                         </label>
-                        <input type="url" name="social_github" value="{{ old('social_github', $settings['social_github'] ?? 'https://github.com/prahlix/sangfy') }}" placeholder="https://github.com/organization/repo" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                        <input type="url" name="social_github" value="{{ old('social_github', $settings['social_github'] ?? '') }}" placeholder="https://github.com/organization/repo" class="w-full text-xs font-mono px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                     </div>
                 </div>
             </div>

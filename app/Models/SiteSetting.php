@@ -43,9 +43,9 @@ class SiteSetting extends Model
             'support_title' => 'How Can We Help You?',
             'support_subtitle' => 'Need help with your Sangfy Android App, have feedback, or want to report an issue? Our team is here to assist.',
             'contact_email' => 'support@prahlix.com',
-            'contact_phone' => '+1 (555) 019-2834',
-            'support_hours' => '24/7 Response Desk (within 24 hours)',
-            'company_address' => 'Prahlix Technologies, Global',
+            'contact_phone' => '',
+            'support_hours' => '',
+            'company_address' => '',
             'privacy_email' => 'support@prahlix.com',
             'safety_email' => 'support@prahlix.com',
             'support_receiver_email' => 'support@prahlix.com',
@@ -57,15 +57,15 @@ class SiteSetting extends Model
             'play_store_enabled' => '1',
             'direct_apk_enabled' => '1',
 
-            // 6. Social Media & Community Links
-            'social_instagram' => 'https://instagram.com/sangfyapp',
-            'social_twitter' => 'https://x.com/sangfyapp',
-            'social_telegram' => 'https://t.me/sangfyapp',
-            'social_youtube' => 'https://youtube.com/@sangfyapp',
-            'social_github' => 'https://github.com/prahlix/sangfy',
-            'social_discord' => 'https://discord.gg/sangfy',
-            'social_facebook' => 'https://facebook.com/sangfyapp',
-            'social_linkedin' => 'https://linkedin.com/company/sangfy',
+            // 6. Social Media & Community Links (Empty by default - only active configured icons display)
+            'social_instagram' => '',
+            'social_twitter' => '',
+            'social_telegram' => '',
+            'social_youtube' => '',
+            'social_github' => '',
+            'social_discord' => '',
+            'social_facebook' => '',
+            'social_linkedin' => '',
             'social_whatsapp' => '',
 
             // 7. SEO & Analytics
@@ -132,6 +132,24 @@ class SiteSetting extends Model
                         }
                     }
 
+                    // Auto-cleanup legacy fake/hardcoded social and contact details from database
+                    $legacyHardcoded = [
+                        'social_instagram' => 'https://instagram.com/sangfyapp',
+                        'social_twitter' => 'https://x.com/sangfyapp',
+                        'social_telegram' => 'https://t.me/sangfyapp',
+                        'social_youtube' => 'https://youtube.com/@sangfyapp',
+                        'social_github' => 'https://github.com/prahlix/sangfy',
+                        'social_discord' => 'https://discord.gg/sangfy',
+                        'social_facebook' => 'https://facebook.com/sangfyapp',
+                        'social_linkedin' => 'https://linkedin.com/company/sangfy',
+                        'contact_phone' => '+1 (555) 019-2834',
+                        'company_address' => 'Prahlix Technologies, Global',
+                        'support_hours' => '24/7 Response Desk (within 24 hours)',
+                    ];
+                    foreach ($legacyHardcoded as $lKey => $lVal) {
+                        self::where('key', $lKey)->where('value', $lVal)->update(['value' => '']);
+                    }
+
                     // Auto-migrate legacy emails in database to support@prahlix.com
                     $legacyEmails = ['support@sangfy.prahlix.com', 'privacy@sangfy.prahlix.com', 'safety@sangfy.prahlix.com', 'sangfy@prahlix.com'];
                     foreach (['contact_email', 'privacy_email', 'safety_email', 'support_receiver_email'] as $eKey) {
@@ -142,7 +160,8 @@ class SiteSetting extends Model
                     }
 
                     $dbSettings = self::pluck('value', 'key')->toArray();
-                    return array_merge($defaults, array_filter($dbSettings, fn($v) => $v !== null && $v !== ''));
+                    // Merge DB settings over defaults so that saved settings (including empty values) take precedence
+                    return array_merge($defaults, $dbSettings);
                 }
             } catch (\Throwable $e) {
                 // Fallback gracefully

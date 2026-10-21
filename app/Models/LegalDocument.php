@@ -36,7 +36,7 @@ class LegalDocument extends Model
             $doc = self::where('slug', $slug)->first();
             if (!$doc && $defaultDoc) {
                 $doc = self::create($defaultDoc);
-            } elseif ($doc && $defaultDoc && (version_compare($doc->version ?? '1.0.0', '1.4.0', '<') || !str_contains($doc->content ?? '', 'Metadata Grid'))) {
+            } elseif ($doc && $defaultDoc && (version_compare($doc->version ?? '1.0.0', '1.5.0', '<') || !str_contains($doc->content ?? '', 'android.permission.USE_FULL_SCREEN_INTENT'))) {
                 $doc->update($defaultDoc);
             }
 
@@ -81,7 +81,7 @@ class LegalDocument extends Model
                 'slug' => 'privacy',
                 'title' => 'Official Privacy Policy & Data Safety',
                 'subtitle' => 'Comprehensive Data Safety, Device Permissions, End-to-End Encryption, and Privacy Compliance for Sangfy (com.prahlix.sangfy).',
-                'version' => '1.4.0',
+                'version' => '1.5.0',
                 'effective_date' => 'October 2026',
                 'summary' => 'Official Privacy Policy for Sangfy. Complete disclosure on data collection, Android permissions, zero-knowledge Signal Protocol E2EE messaging, transient Agora RTC voice/video calling, nearby radar privacy, DPDP Act 2023 & GDPR compliance, and permanent account deletion rights.',
                 'content' => <<<'HTML'
@@ -155,35 +155,158 @@ class LegalDocument extends Model
     <!-- Section 3: Android Device Runtime Permissions -->
     <div class="space-y-4">
         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
-            <span>3. ANDROID DEVICE RUNTIME PERMISSIONS</span>
+            <span>3. ANDROID DEVICE RUNTIME PERMISSIONS (MANIFEST DISCLOSURE)</span>
         </h2>
-        <p class="text-slate-600">Sangfy requests hardware access only when you actively trigger a feature. You can toggle any permission anytime via your Android Device Settings:</p>
+        <p class="text-slate-600">In compliance with Google Play Developer Policies and global data protection standards (GDPR &amp; DPDP Act 2023), Sangfy provides transparent disclosure of every permission declared in our Android Application Manifest (<code>AndroidManifest.xml</code>). Hardware access is requested strictly when you trigger a relevant feature, and can be reviewed or revoked anytime in your device settings.</p>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 text-xs">
+            <!-- Camera -->
             <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
-                <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-camera text-brand-600"></i> Camera</span>
-                <p class="text-slate-600">For capturing photos, recording video reels and 24h stories, taking profile pictures, and participating in Agora RTC live HD video calls.</p>
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-camera text-brand-600"></i> Camera Access</span>
+                    <span class="text-[10px] font-mono text-slate-500">Feature-Based</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">android.permission.CAMERA</code>
+                <p class="text-slate-600">Required to capture profile avatars, take photo updates, record vertical video reels and 24-hour stories, and broadcast real-time video during live Agora RTC HD video calls. The camera is never accessed in the background.</p>
             </div>
+
+            <!-- Microphone -->
             <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
-                <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-microphone text-brand-600"></i> Microphone</span>
-                <p class="text-slate-600">For recording voice notes in chat and transmitting audio during HD voice and video calls.</p>
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-microphone text-brand-600"></i> Microphone &amp; Audio Recording</span>
+                    <span class="text-[10px] font-mono text-slate-500">Feature-Based</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">android.permission.RECORD_AUDIO</code>
+                <p class="text-slate-600">Used for recording voice notes in private chat conversations and transmitting live spoken audio during HD voice and video calls powered by the Agora RTC Engine.</p>
             </div>
+
+            <!-- Audio Routing -->
             <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
-                <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-folder-open text-brand-600"></i> Photo &amp; Media Storage</span>
-                <p class="text-slate-600">For selecting and uploading media files (images, video reels, avatars) from device storage to publish on your profile.</p>
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-sliders text-brand-600"></i> Audio Routing &amp; Output</span>
+                    <span class="text-[10px] font-mono text-slate-500">System-Level</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">android.permission.MODIFY_AUDIO_SETTINGS</code>
+                <p class="text-slate-600">Allows seamless switching between handset earpiece, high-fidelity speakerphone, and connected wireless headsets during active calls for optimal call clarity.</p>
             </div>
+
+            <!-- Full Screen Incoming Calls -->
             <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
-                <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-location-dot text-brand-600"></i> Nearby Radar (Optional)</span>
-                <p class="text-slate-600">Used solely for calculating generalized distance approximations in Nearby discovery. Exact GPS coordinates are <strong>never stored or shared</strong>.</p>
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-phone-volume text-brand-600"></i> Incoming Call Full-Screen Display</span>
+                    <span class="text-[10px] font-mono text-purple-700 font-semibold">Critical for Calls</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">android.permission.USE_FULL_SCREEN_INTENT</code>
+                <p class="text-slate-600">Ensures incoming high-priority voice and video calls wake up the screen and display an immediate interactive ringing interface, even when your device is locked.</p>
             </div>
+
+            <!-- Foreground Services -->
             <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
-                <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-bell text-brand-600"></i> Notifications</span>
-                <p class="text-slate-600">Required to deliver instant message alerts, incoming call notifications, and security notices.</p>
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-phone text-brand-600"></i> Call Foreground Services</span>
+                    <span class="text-[10px] font-mono text-rose-700 font-semibold">System-Level</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">android.permission.FOREGROUND_SERVICE<br>android.permission.FOREGROUND_SERVICE_PHONE_CALL</code>
+                <p class="text-slate-600">Required on Android 14+ to maintain active real-time call connections and audio streams when the app is minimized or when using other apps during an ongoing conversation.</p>
             </div>
+
+            <!-- Bluetooth Routing -->
             <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
-                <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-headphones text-brand-600"></i> Bluetooth Headsets</span>
-                <p class="text-slate-600">Enables wireless audio routing to Bluetooth earbuds and hands-free car systems during voice/video calls.</p>
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-headphones text-brand-600"></i> Bluetooth Headsets &amp; Earbuds</span>
+                    <span class="text-[10px] font-mono text-slate-500">Feature-Based</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">android.permission.BLUETOOTH_CONNECT<br>android.permission.BLUETOOTH (<= Android 11)</code>
+                <p class="text-slate-600">Discovers and routes real-time call audio to wireless Bluetooth earphones, headsets, and hands-free automotive speaker systems.</p>
             </div>
+
+            <!-- Photo Media Storage (Android 13+) -->
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-images text-brand-600"></i> Photo &amp; Image Media</span>
+                    <span class="text-[10px] font-mono text-slate-500">Granular Storage</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">android.permission.READ_MEDIA_IMAGES</code>
+                <p class="text-slate-600">Provides selective, granular access on Android 13+ devices to choose photos from your gallery for profile pictures, photo posts, and stories without exposing unrelated documents.</p>
+            </div>
+
+            <!-- Video Media Storage (Android 13+) -->
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-film text-brand-600"></i> Video Media Access</span>
+                    <span class="text-[10px] font-mono text-slate-500">Granular Storage</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">android.permission.READ_MEDIA_VIDEO</code>
+                <p class="text-slate-600">Grants permission on Android 13+ to pick video clips from your gallery to publish as feed reels or short-form video stories.</p>
+            </div>
+
+            <!-- Legacy External Storage -->
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-folder-open text-brand-600"></i> Legacy Storage Compatibility</span>
+                    <span class="text-[10px] font-mono text-slate-500">Legacy (<= Android 12)</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">android.permission.READ_EXTERNAL_STORAGE (maxSdkVersion=32)</code>
+                <p class="text-slate-600">Provides backward-compatible media picking functionality on older Android devices (Android 12 and below) to select photos and video attachments.</p>
+            </div>
+
+            <!-- Nearby Radar Location -->
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-location-dot text-brand-600"></i> Nearby Radar (Location)</span>
+                    <span class="text-[10px] font-mono text-emerald-700 font-semibold">User-Initiated</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">android.permission.ACCESS_FINE_LOCATION<br>android.permission.ACCESS_COARSE_LOCATION</code>
+                <p class="text-slate-600">Used strictly on-demand when you explicitly open the Nearby Discovery Radar to compute approximate distance from nearby peers. Exact GPS coordinates are <strong>never stored, logged on our servers, or displayed to other users</strong>.</p>
+            </div>
+
+            <!-- Push Notifications -->
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-bell text-brand-600"></i> Push Notifications</span>
+                    <span class="text-[10px] font-mono text-slate-500">Optional</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">android.permission.POST_NOTIFICATIONS</code>
+                <p class="text-slate-600">Enables real-time push alerts for incoming encrypted chat messages, call rings, story comments, mentions, and urgent account security notices.</p>
+            </div>
+
+            <!-- Core Network & Connectivity -->
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-globe text-brand-600"></i> Internet &amp; Network Health</span>
+                    <span class="text-[10px] font-mono text-rose-700 font-semibold">Required</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">android.permission.INTERNET<br>android.permission.ACCESS_NETWORK_STATE<br>android.permission.ACCESS_WIFI_STATE</code>
+                <p class="text-slate-600">Mandatory to connect securely via TLS/HTTPS to servers, synchronize feeds, send/receive end-to-end encrypted chats, dynamically monitor Wi-Fi/cellular connection speed, and stream Agora RTC calls.</p>
+            </div>
+
+            <!-- Wake Lock & Vibration -->
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-mobile-screen text-brand-600"></i> Hardware Stability &amp; Haptics</span>
+                    <span class="text-[10px] font-mono text-slate-500">System-Level</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">android.permission.WAKE_LOCK<br>android.permission.VIBRATE</code>
+                <p class="text-slate-600">Prevents device CPU sleep during ongoing live phone calls to prevent audio stutters, and triggers haptic vibrations for call alerts and chat buzzes.</p>
+            </div>
+
+            <!-- OEM Home Screen Launcher Badges -->
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-certificate text-brand-600"></i> Launcher App Icon Badges</span>
+                    <span class="text-[10px] font-mono text-slate-500">OEM Integration</span>
+                </div>
+                <code class="text-[10px] text-brand-700 font-mono block">com.sec.android.provider.badge.* / com.huawei.android.launcher.* / com.oppo.launcher.* / com.sonymobile.home.* / com.htc.launcher.* / me.everything.badger.*</code>
+                <p class="text-slate-600">Used strictly to display unread chat counts and missed call counters on the app's home screen icon across Samsung, Xiaomi, Oppo, Huawei, Vivo, Sony, and HTC launcher interfaces.</p>
+            </div>
+        </div>
+
+        <div class="p-4 bg-purple-50/70 border border-purple-200 rounded-2xl text-xs text-purple-900 space-y-1">
+            <span class="font-bold flex items-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-brand-600"></i>
+                <span>How to Manage or Revoke Permissions:</span>
+            </span>
+            <p class="leading-relaxed">You hold continuous sovereign control over every permission. You can review or toggle any individual permission at any time by visiting your device's <strong>Settings &gt; Apps &gt; Sangfy &gt; Permissions</strong>.</p>
         </div>
     </div>
 
