@@ -592,21 +592,21 @@
                     <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
                         Default Meta Title
                     </label>
-                    <input type="text" name="meta_title" value="{{ old('meta_title', $settings['meta_title'] ?? 'Sangfy — Social Media, Stories, Nearby People & Private HD Calling') }}" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                    <input type="text" name="meta_title" value="{{ old('meta_title', $settings['meta_title'] ?? 'Sangfy — India\'s #1 Social Media & Dating App | Indian Instagram & Nearby Friends') }}" class="w-full text-sm px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
                         SEO Meta Description
                     </label>
-                    <textarea name="meta_description" rows="3" class="w-full text-xs px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 leading-relaxed">{{ old('meta_description', $settings['meta_description'] ?? 'Official Sangfy Android App (com.prahlix.sangfy). Share image/video posts, post 24h stories, discover nearby people with custom filters, and enjoy end-to-end encrypted messaging and HD calls with zero ads.') }}</textarea>
+                    <textarea name="meta_description" rows="3" class="w-full text-xs px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 leading-relaxed">{{ old('meta_description', $settings['meta_description'] ?? 'Sangfy is India\'s fast-growing social media platform, Indian Instagram alternative & free dating app. Share photos & 24h stories, find nearby singles & friends, and enjoy private encrypted HD calls with zero ads. Download free Android APK.') }}</textarea>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold uppercase text-slate-700 tracking-wider mb-2">
-                        Meta Keywords <span class="text-slate-400 font-normal">(Comma separated)</span>
+                        Meta Keywords <span class="text-slate-400 font-normal">(Comma separated — Includes Sangfy, Indian social media, Indian Instagram, Dating app)</span>
                     </label>
-                    <input type="text" name="meta_keywords" value="{{ old('meta_keywords', $settings['meta_keywords'] ?? 'Sangfy, Sangfy Android App, com.prahlix.sangfy, private messaging, heart to heart, HD calling, Agora RTC, zero ads') }}" class="w-full text-xs px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
+                    <input type="text" name="meta_keywords" value="{{ old('meta_keywords', $settings['meta_keywords'] ?? 'Sangfy, Sangfy App, indian social media, indian instagram, datting app, dating app, indian dating app, best dating app in india, free dating app without payment, indian social network, made in india social media, desi social app, meet nearby people, find singles india, indian photo sharing app, indian reels app, private messaging app india, sangfy apk download, free video call app, india ka apna social media, ladki se baat karne wala app, bharat social media, safe dating app for indian women') }}" class="w-full text-xs px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900">
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">

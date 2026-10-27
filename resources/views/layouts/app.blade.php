@@ -3,21 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', $siteSettings['meta_title'] ?? (($siteName ?? 'Sangfy') . ' — Private Messaging & HD Calls'))</title>
-    <meta name="description" content="@yield('meta_description', $siteSettings['meta_description'] ?? 'Official Sangfy Android App (com.prahlix.sangfy). Private conversations from the heart, crystal-clear HD voice & video calls, disappearing media, and zero ads.')">
-    <meta name="keywords" content="{{ $siteSettings['meta_keywords'] ?? 'Sangfy, Sangfy Android App, com.prahlix.sangfy, private messaging, heart to heart, HD calling, Agora RTC, zero ads' }}">
+    <title>@yield('title', $siteSettings['meta_title'] ?? 'Sangfy — India\'s #1 Social Media & Dating App | Indian Instagram & Nearby Friends')</title>
+    <meta name="description" content="@yield('meta_description', $siteSettings['meta_description'] ?? 'Sangfy is India\'s fast-growing social media platform, Indian Instagram alternative & free dating app. Share photos & 24h stories, find nearby singles & friends, and enjoy private encrypted HD calls with zero ads. Download free Android APK.')">
+    <meta name="keywords" content="@yield('meta_keywords', $siteSettings['meta_keywords'] ?? 'Sangfy, Sangfy App, indian social media, indian instagram, datting app, dating app, indian dating app, best dating app in india, free dating app without payment, indian social network, made in india social media, desi social app, meet nearby people, find singles india, indian photo sharing app, indian reels app, private messaging app india, sangfy apk download, free video call app, india ka apna social media, ladki se baat karne wala app, bharat social media, safe dating app for indian women')">
+    <link rel="canonical" href="{{ url()->current() }}">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="author" content="Sangfy">
+    <meta name="publisher" content="Sangfy">
+    <meta name="application-name" content="Sangfy">
+    <meta name="apple-mobile-web-app-title" content="Sangfy">
     <meta name="color-scheme" content="light">
     
-    <!-- OpenGraph & Twitter Cards -->
-    <meta property="og:title" content="@yield('title', $siteSettings['meta_title'] ?? (($siteName ?? 'Sangfy') . ' — Private Messaging & HD Calls'))">
-    <meta property="og:description" content="@yield('meta_description', $siteSettings['meta_description'] ?? 'Private conversations from the heart, crystal-clear HD voice & video calls, and zero ads.')">
+    <!-- Geo Targeting for India -->
+    <meta name="geo.region" content="IN">
+    <meta name="geo.placename" content="India">
+    <meta name="language" content="English, Hindi">
+
+    <!-- OpenGraph & Facebook / WhatsApp Rich Cards -->
+    <meta property="og:site_name" content="{{ $siteName ?? 'Sangfy' }}">
+    <meta property="og:locale" content="en_IN">
+    <meta property="og:title" content="@yield('title', $siteSettings['meta_title'] ?? 'Sangfy — India\'s #1 Social Media & Dating App')">
+    <meta property="og:description" content="@yield('meta_description', $siteSettings['meta_description'] ?? 'Share photos & 24h stories, meet nearby singles & friends, and enjoy private encrypted HD calls with zero ads.')">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="{{ $siteLogo ?? asset('assets/images/logo.png') }}">
+    <meta property="og:image:alt" content="{{ $siteName ?? 'Sangfy' }} — Indian Social Media & Dating App">
+
+    <!-- Twitter / X Cards -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', $siteSettings['meta_title'] ?? 'Sangfy — India\'s #1 Social Media & Dating App')">
+    <meta name="twitter:description" content="@yield('meta_description', $siteSettings['meta_description'] ?? 'India\'s own social media & dating app. Share feed posts, 24h stories, and meet verified people nearby.')">
+    <meta name="twitter:image" content="{{ $siteLogo ?? asset('assets/images/logo.png') }}">
     
     <!-- Favicon using official Logo -->
     <link rel="icon" type="image/png" href="{{ $siteFavicon ?? asset('assets/images/favicon.png') }}">
+
+    <!-- Structured Data JSON-LD Schemas (Google Rich Snippets & Search Graph) -->
+    <script type="application/ld+json">
+    {!! json_encode([
+      '@' . 'context' => 'https://schema.org',
+      '@' . 'graph' => [
+        [
+          '@' . 'type' => 'WebSite',
+          '@' . 'id' => url('/') . '/#website',
+          'url' => url('/'),
+          'name' => $siteName ?? 'Sangfy',
+          'description' => "India's premier social media, Indian Instagram alternative, and nearby dating app.",
+          'inLanguage' => 'en-IN',
+          'potentialAction' => [
+            '@' . 'type' => 'SearchAction',
+            'target' => url('/') . '/?s={search_term_string}',
+            'query-input' => 'required name=search_term_string'
+          ]
+        ],
+        [
+          '@' . 'type' => 'Organization',
+          '@' . 'id' => url('/') . '/#organization',
+          'name' => $siteName ?? 'Sangfy',
+          'url' => url('/'),
+          'logo' => [
+            '@' . 'type' => 'ImageObject',
+            'url' => asset('assets/images/logo.png')
+          ],
+          'foundingLocation' => [
+            '@' . 'type' => 'Country',
+            'name' => 'India'
+          ],
+          'contactPoint' => [
+            '@' . 'type' => 'ContactPoint',
+            'email' => 'support@prahlix.com',
+            'contactType' => 'customer support'
+          ]
+        ],
+        [
+          '@' . 'type' => 'SoftwareApplication',
+          '@' . 'id' => url('/') . '/#app',
+          'name' => 'Sangfy',
+          'operatingSystem' => 'Android 8.0 and higher',
+          'applicationCategory' => 'SocialNetworkingApplication',
+          'downloadUrl' => route('download.apk'),
+          'description' => 'Indian social media, Instagram alternative, and nearby dating & private HD calling application.',
+          'offers' => [
+            '@' . 'type' => 'Offer',
+            'price' => '0',
+            'priceCurrency' => 'INR'
+          ],
+          'aggregateRating' => [
+            '@' . 'type' => 'AggregateRating',
+            'ratingValue' => '4.8',
+            'ratingCount' => '2850',
+            'bestRating' => '5',
+            'worstRating' => '1'
+          ]
+        ]
+      ]
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+    </script>
+    @stack('schema')
 
     <!-- Font Awesome 6.6.0 Pro/Free Icon Library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -131,6 +213,7 @@
             <nav class="hidden md:flex items-center space-x-7 text-sm font-semibold text-slate-600">
                 <a href="{{ route('home') }}" class="transition hover:text-brand-600 {{ request()->routeIs('home') ? 'text-brand-600' : '' }}">Home</a>
                 <a href="{{ route('features') }}" class="transition hover:text-brand-600 {{ request()->routeIs('features') ? 'text-brand-600' : '' }}">Features</a>
+                <a href="{{ route('about') }}" class="transition hover:text-brand-600 {{ request()->routeIs('about') ? 'text-brand-600' : '' }}">About Us</a>
                 <a href="{{ route('download.page') }}" class="transition hover:text-brand-600 {{ request()->routeIs('download.page') ? 'text-brand-600' : '' }}">Download App</a>
                 <a href="{{ route('legal.guidelines') }}" class="transition hover:text-brand-600 {{ request()->routeIs('legal.guidelines') ? 'text-brand-600' : '' }}">Guidelines</a>
                 <a href="{{ route('legal.privacy') }}" class="transition hover:text-brand-600 {{ request()->routeIs('legal.privacy') ? 'text-brand-600' : '' }}">Privacy Policy</a>
@@ -156,6 +239,7 @@
         <div x-show="mobileMenuOpen" x-transition class="md:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-6 space-y-2 shadow-lg" style="display:none;">
             <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('home') ? 'bg-purple-50 text-brand-600' : 'text-slate-700 hover:bg-slate-50' }}">Home</a>
             <a href="{{ route('features') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('features') ? 'bg-purple-50 text-brand-600' : 'text-slate-700 hover:bg-slate-50' }}">Features</a>
+            <a href="{{ route('about') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('about') ? 'bg-purple-50 text-brand-600' : 'text-slate-700 hover:bg-slate-50' }}">About Us</a>
             <a href="{{ route('download.page') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('download.page') ? 'bg-purple-50 text-brand-600' : 'text-slate-700 hover:bg-slate-50' }}">Download APK</a>
             <a href="{{ route('legal.guidelines') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('legal.guidelines') ? 'bg-purple-50 text-brand-600' : 'text-slate-700 hover:bg-slate-50' }}">Community Guidelines</a>
             <a href="{{ route('legal.privacy') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('legal.privacy') ? 'bg-purple-50 text-brand-600' : 'text-slate-700 hover:bg-slate-50' }}">Privacy Policy</a>
@@ -311,6 +395,7 @@
                     <ul class="space-y-2 text-slate-600">
                         <li><a href="{{ route('home') }}" class="hover:text-brand-600 transition">Home Overview</a></li>
                         <li><a href="{{ route('features') }}" class="hover:text-brand-600 transition">All Features</a></li>
+                        <li><a href="{{ route('about') }}" class="hover:text-brand-600 transition">About Sangfy</a></li>
                         <li><a href="{{ route('download.page') }}" class="hover:text-brand-600 transition font-semibold text-brand-600">Download Page</a></li>
                         <li><a href="{{ route('contact') }}" class="hover:text-brand-600 transition">App Support Desk</a></li>
                     </ul>

@@ -78,7 +78,7 @@ class SiteSettingController extends Controller
             // 6. SEO & Scripts
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:1000',
-            'meta_keywords' => 'nullable|string|max:500',
+            'meta_keywords' => 'nullable|string|max:1000',
             'google_analytics_id' => 'nullable|string|max:50',
             'custom_head_code' => 'nullable|string|max:5000',
 

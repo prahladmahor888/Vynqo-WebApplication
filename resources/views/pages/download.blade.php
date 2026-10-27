@@ -1,23 +1,24 @@
 @extends('layouts.app')
 
-@section('title', 'Download Sangfy for Android — Free, Simple & Private Messaging')
-@section('meta_description', 'Download the official Sangfy app for Android. 100% free, private messaging, HD voice & video calls, and zero advertisements.')
+@section('title', 'Download Sangfy APK — India\'s #1 Social Media, Indian Instagram & Dating App')
+@section('meta_description', 'Download official Sangfy Android APK. India\'s fastest growing social media, Indian Instagram alternative & nearby dating app. Post photos, 24h stories, meet singles, and enjoy private HD calls. Zero ads.')
+@section('meta_keywords', 'Sangfy apk download, sangfy android app, download indian social media app, indian instagram apk, indian dating app apk, free dating app download india, best dating app in india without payment, free video call app download, made in india app apk, sangfy latest version')
 
 @section('content')
 <section class="py-16 sm:py-24 bg-white border-b border-slate-100 hero-glow-bg">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold mb-6">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold mb-6">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>Official Safe Download</span>
+            <span>Official Safe Download • Made in India 🇮🇳</span>
         </div>
 
         <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-            Get Sangfy for Android
+            Download Sangfy for Android
         </h1>
         
-        <p class="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
-            Stay close with the people who matter most. Unlimited free messaging, crystal-clear voice and video calls, with zero ads.
+        <p class="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            India's own social media &amp; dating app. Share feed posts &amp; 24h stories like an Indian Instagram, discover real singles nearby, and enjoy 100% private encrypted HD video calls with zero ads.
         </p>
 
         <!-- Main Download Highlight Card -->

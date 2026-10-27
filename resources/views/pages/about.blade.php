@@ -1,21 +1,22 @@
 @extends('layouts.app')
 
-@section('title', 'About Us — Why We Built Sangfy')
-@section('meta_description', 'Learn why Sangfy was built: to give everyone a simple, private, and ad-free messaging app where your personal conversations stay truly yours.')
+@section('title', 'About Sangfy — India\'s Premier Social Media & Dating Platform | Our Story')
+@section('meta_description', 'Discover the story behind Sangfy: India\'s homegrown social media, Indian Instagram alternative & free dating app. Built with pride for 1.4 billion Indians to share, connect, and date safely without ads.')
+@section('meta_keywords', 'About Sangfy, indian social media, indian instagram, dating app, indian dating app, made in india social network, sangfy story, desi social app')
 
 @section('content')
 <!-- Hero Section -->
 <section class="py-16 sm:py-24 bg-white border-b border-slate-100 hero-glow-bg">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-indigo-50 border border-indigo-100 text-brand-700 text-xs font-semibold">
-            <i class="fa-solid fa-star text-brand-600"></i>
-            <span>Our Story</span>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200/80 text-brand-700 text-xs font-semibold">
+            <i class="fa-solid fa-flag text-brand-600"></i>
+            <span>Proudly Made in India 🇮🇳</span>
         </div>
         <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-            Your Private Conversations Belong Only to You
+            India's Own Platform for Sharing Moments, Dating &amp; Real Connection
         </h1>
         <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            We built Sangfy because we believe staying in touch with friends and family should be simple, fast, and completely free from ads and surveillance.
+            We built Sangfy to give India an authentic social media experience and a genuine nearby dating app — free from commercial advertisements, fake profiles, and corporate data tracking.
         </p>
     </div>
 </section>
@@ -26,29 +27,33 @@
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div class="space-y-4">
-                <h2 class="text-2xl font-bold text-slate-900">Why Another Messaging App?</h2>
+                <h2 class="text-2xl font-bold text-slate-900">Why We Built Sangfy for India</h2>
                 <p class="text-sm text-slate-600 leading-relaxed">
-                    Most modern chat apps have become cluttered with advertisements, news feeds, and promotional messages. Worse, many platforms track who you talk to and what you search for to show you targeted ads.
+                    Over the last decade, global social media and foreign dating platforms have lost their soul. Feeds are saturated with sponsored ads, creators are suppressed by opaque commercial algorithms, and popular dating apps demand expensive weekly subscription paywalls just to say hello to someone nearby.
                 </p>
                 <p class="text-sm text-slate-600 leading-relaxed">
-                    We wanted something cleaner and more honest. An app that simply does what it's supposed to do: deliver your messages instantly, connect your calls in crystal clear HD, and protect your privacy without compromise.
+                    We envisioned something better: an <strong>Indian social media</strong> app and <strong>Indian Instagram alternative</strong> where sharing moments is joyful and organic, meeting new friends and dating matches nearby is completely free and safe, and your conversations are protected with military-grade 256-bit End-to-End Encryption.
                 </p>
             </div>
             
-            <div class="bg-slate-50 border border-slate-200 rounded-lg p-6 space-y-4 shadow-xs">
-                <div class="text-xs text-brand-600 font-bold uppercase tracking-wider">Our Core Commitments</div>
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 space-y-4 shadow-xs">
+                <div class="text-xs text-brand-600 font-bold uppercase tracking-wider">The Sangfy Difference</div>
                 <ul class="space-y-3 text-xs text-slate-700">
                     <li class="flex items-start gap-2.5">
                         <i class="fa-solid fa-circle-check text-emerald-500 text-sm mt-0.5"></i>
-                        <span><strong>Zero Advertisements:</strong> We will never interrupt your conversations with ads, banners, or popups.</span>
+                        <span><strong>Zero Advertisements:</strong> We will never interrupt your feed, stories, or chats with sponsored popups or banner ads.</span>
                     </li>
                     <li class="flex items-start gap-2.5">
                         <i class="fa-solid fa-circle-check text-emerald-500 text-sm mt-0.5"></i>
-                        <span><strong>Total Privacy:</strong> Only you and your friends can read your messages. Even Sangfy cannot see them.</span>
+                        <span><strong>Free Nearby Dating Match Radar:</strong> Find real singles and friends within 1 km to 50 km in your Indian city without paying a single rupee.</span>
                     </li>
                     <li class="flex items-start gap-2.5">
                         <i class="fa-solid fa-circle-check text-emerald-500 text-sm mt-0.5"></i>
-                        <span><strong>100% Free:</strong> Unlimited text, voice notes, photos, and HD voice/video calls without hidden fees.</span>
+                        <span><strong>Total Privacy &amp; Ghost Mode:</strong> Exact GPS coordinates are never revealed. Encrypted chats stay locked on your device.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-emerald-500 text-sm mt-0.5"></i>
+                        <span><strong>Homegrown Indian Innovation:</strong> Built with pride for 1.4 billion Indian hearts.</span>
                     </li>
                 </ul>
             </div>

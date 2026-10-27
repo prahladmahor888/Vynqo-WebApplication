@@ -1,8 +1,30 @@
 # ==============================================================================
-# Sangfy Official Robots.txt — Bot Traffic & Crawler Directives
+# Sangfy Official Robots.txt — Search Engine Crawlers & Bot Directives
 # ==============================================================================
 
-# Disallow known aggressive scrapers & bots
+# Search Engine Crawlers (Google, Bing, Yahoo, DuckDuckGo)
+User-agent: Googlebot
+User-agent: Googlebot-Image
+User-agent: Googlebot-Mobile
+User-agent: Bingbot
+User-agent: Slurp
+User-agent: DuckDuckBot
+User-agent: Baiduspider
+User-agent: YandexBot
+Allow: /
+Allow: /features
+Allow: /about
+Allow: /download
+Allow: /contact
+Allow: /community-guidelines
+Allow: /privacy-policy
+Allow: /terms-of-service
+Allow: /security
+Allow: /assets/
+Disallow: /admin/
+Disallow: /login
+
+# Disallow aggressive third-party scrapers & vulnerability probes
 User-agent: SemrushBot
 User-agent: SemrushBot-SA
 User-agent: AhrefsBot
@@ -25,13 +47,14 @@ Disallow: /*.env$
 Disallow: /*.git$
 
 Allow: /
-Allow: /app-ads.txt
 Allow: /features
+Allow: /about
 Allow: /download
 Allow: /contact
 Allow: /privacy-policy
 Allow: /terms-of-service
 Allow: /community-guidelines
 Allow: /security
+Allow: /app-ads.txt
 
 Sitemap: https://sangfy.prahlix.com/sitemap.xml

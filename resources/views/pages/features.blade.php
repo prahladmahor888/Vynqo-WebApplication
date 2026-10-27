@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Sangfy App Features — Feed Posts, 24h Stories, Nearby Radar & HD Calling')
-@section('meta_description', 'Explore Sangfy Android App features: Post photos and videos, share 24-hour stories, find nearby people with distance filters, end-to-end encrypted chats, and HD voice/video calls.')
+@section('title', 'Sangfy App Features — Indian Instagram Alternative, Dating App & HD Calling')
+@section('meta_description', 'Explore Sangfy features: India\'s premier social media & free dating app. Post photos & 24h stories like an Indian Instagram, meet nearby singles with custom distance filters, and chat with private E2EE and HD video calls.')
+@section('meta_keywords', 'Sangfy features, indian social media, indian instagram, datting app, dating app, indian dating app, best dating app in india, free dating app without payment, indian social network, meet nearby singles, 24h stories, private video call app india, photo sharing app india, made in india social media')
 
 @section('content')
 <!-- Hero Section -->
@@ -9,13 +10,13 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-50 border border-purple-200/80 text-brand-700 text-xs font-semibold">
             <img src="{{ $siteLogo ?? asset('assets/images/logo.png') }}" alt="{{ $siteName ?? 'Sangfy' }}" class="w-4 h-4 object-contain">
-            <span>Official {{ $siteName ?? 'Sangfy' }} App Feature Guide</span>
+            <span>India's Premier Social Media &amp; Dating App Guide 🇮🇳</span>
         </div>
         <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
-            Connect, Share, and Call with Complete Freedom
+            Indian Social Media, Dating Radar &amp; HD Calling — In One Free App
         </h1>
         <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Everything you need in one modern Android app: social media feed posts, 24-hour stories, nearby people discovery, and end-to-end encrypted messaging & calls.
+            Everything you need in one modern Android app: an Indian Instagram alternative with 24-hour stories, a smart nearby dating radar to meet singles, and 100% private encrypted chats &amp; HD calls.
         </p>
     </div>
 </section>
@@ -24,16 +25,16 @@
 <section class="py-20 bg-white border-b border-slate-200">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
         
-        <!-- Feature 1: Feed Posts & 24h Stories -->
+        <!-- Feature 1: Indian Instagram Alternative (Feed & 24h Stories) -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div class="lg:col-span-6 space-y-4">
                 <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-purple-50 text-brand-700 text-xs font-bold uppercase tracking-wider">
                     <i class="fa-solid fa-camera-retro"></i>
-                    <span>Social Feed & Stories</span>
+                    <span>Indian Instagram Alternative</span>
                 </div>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Post Photos, Videos & 24h Stories</h2>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Post Photos, Videos &amp; 24h Stories Like an Indian Instagram</h2>
                 <p class="text-sm text-slate-600 leading-relaxed">
-                    Share your favorite moments with your friends and followers. Post high-resolution photos and video clips with rich captions, hashtags, likes, and real-time comments. Plus, share quick 24-hour stories that automatically disappear after a day.
+                    Share your favorite moments with your friends and followers on a clean chronological feed. Post high-resolution photos and video clips with rich captions, Indian trending hashtags, real-time likes, and comment threads — with zero commercial ads. Plus, post 24-hour disappearing stories that vanish automatically.
                 </p>
                 <div class="space-y-2.5 pt-2">
                     <div class="flex items-center gap-2.5 text-xs font-medium text-slate-700">
@@ -46,50 +47,50 @@
                     </div>
                     <div class="flex items-center gap-2.5 text-xs font-medium text-slate-700">
                         <i class="fa-solid fa-circle-check text-pink-600 text-sm"></i>
-                        <span>Real-time likes, emojis, comment threads, and profile galleries</span>
+                        <span>Real-time likes, emojis, comment threads, and creator profile galleries</span>
                     </div>
                 </div>
             </div>
             <div class="lg:col-span-6">
                 <div class="sangfy-card p-6 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
                     <div class="flex items-center justify-between text-xs text-slate-500 pb-2 border-b border-slate-200">
-                        <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-photo-film text-pink-600"></i> Moments & Feed</span>
-                        <span class="bg-pink-50 text-pink-700 px-2 py-0.5 rounded font-bold">Social Suite</span>
+                        <span class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-photo-film text-pink-600"></i> Moments &amp; Feed</span>
+                        <span class="bg-pink-50 text-pink-700 px-2 py-0.5 rounded font-bold">Indian Social Suite</span>
                     </div>
                     <div class="p-3 bg-white rounded border border-slate-200 text-xs space-y-1">
                         <div class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-hourglass-half text-brand-600 text-[11px]"></i> Ephemeral 24h Stories</div>
                         <p class="text-slate-600 text-[11px]">Post quick updates, daily snapshots, and short clips that keep your feed fresh and authentic.</p>
                     </div>
                     <div class="p-3 bg-white rounded border border-slate-200 text-xs space-y-1">
-                        <div class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-palette text-brand-600 text-[11px]"></i> Rich Media Feed</div>
+                        <div class="font-bold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-palette text-brand-600 text-[11px]"></i> Pure Chronological Feed</div>
                         <p class="text-slate-600 text-[11px]">Clean chronological feed with no sponsored advertisements or commercial algorithms.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Feature 2: Find Nearby People (Discovery Radar) -->
+        <!-- Feature 2: Indian Dating App & Nearby Radar -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div class="lg:col-span-6 lg:order-2 space-y-4">
-                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-emerald-50 text-emerald-700 text-xs font-bold uppercase tracking-wider">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span>Nearby Discovery</span>
+                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-rose-50 text-rose-700 text-xs font-bold uppercase tracking-wider">
+                    <i class="fa-solid fa-heart"></i>
+                    <span>Indian Dating App &amp; Nearby Radar</span>
                 </div>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Discover & Connect with People Nearby</h2>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Find Dating Matches &amp; Friends Nearby Across India</h2>
                 <p class="text-sm text-slate-600 leading-relaxed">
-                    Looking to meet new people who share your hobbies nearby? Sangfy's Nearby People feature lets you find active users around your area based on customizable distance preferences (e.g. 1 km to 25 km) and interest tags.
+                    Looking for a real Indian dating app without paywalls and fake bots? Sangfy's Nearby Radar lets you find active singles and new friends around your area based on customizable distance preferences (1 km to 50 km) and shared interests.
                 </p>
                 <div class="space-y-2.5 pt-2">
                     <div class="flex items-center gap-2.5 text-xs font-medium text-slate-700">
-                        <i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>
-                        <span>Find genuine people nearby based on custom distance & hobby filters</span>
+                        <i class="fa-solid fa-circle-check text-rose-600 text-sm"></i>
+                        <span>Find genuine singles nearby based on custom distance &amp; hobby filters</span>
                     </div>
                     <div class="flex items-center gap-2.5 text-xs font-medium text-slate-700">
-                        <i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>
+                        <i class="fa-solid fa-circle-check text-rose-600 text-sm"></i>
                         <span>Location Privacy: Exact GPS coordinates are never publicly shared</span>
                     </div>
                     <div class="flex items-center gap-2.5 text-xs font-medium text-slate-700">
-                        <i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>
+                        <i class="fa-solid fa-circle-check text-rose-600 text-sm"></i>
                         <span>Ghost / Incognito Mode toggle to browse privately without appearing on radar</span>
                     </div>
                 </div>

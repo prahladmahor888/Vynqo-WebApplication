@@ -22,6 +22,7 @@ use App\Http\Controllers\SiteSettingController;
 // Landing & Product Showcase
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/features', [HomeController::class, 'features'])->name('features');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
 
 // APK Download & Release Info
 Route::get('/download', [DownloadController::class, 'index'])->name('download.page');
