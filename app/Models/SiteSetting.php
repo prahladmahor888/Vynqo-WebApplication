@@ -121,7 +121,8 @@ class SiteSetting extends Model
     {
         $defaults = self::defaults();
 
-        return \Illuminate\Support\Facades\Cache::remember('site_settings_all', 86400, function () use ($defaults) {
+        try {
+            return \Illuminate\Support\Facades\Cache::remember('site_settings_all', 86400, function () use ($defaults) {
             try {
                 if (Schema::hasTable('site_settings')) {
                     // Ensure every default key exists in the database table
@@ -197,6 +198,9 @@ class SiteSetting extends Model
 
             return $defaults;
         });
+        } catch (\Throwable $e) {
+            return $defaults;
+        }
     }
 
     /**

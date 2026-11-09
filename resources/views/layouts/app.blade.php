@@ -406,6 +406,7 @@
                     <h4 class="font-bold uppercase tracking-wider text-slate-900">Safety & Legal</h4>
                     <ul class="space-y-2 text-slate-600">
                         <li><a href="{{ route('legal.privacy') }}" class="hover:text-brand-600 transition">Privacy Policy</a></li>
+                        <li><a href="{{ url('/child-safety') }}" class="text-rose-600 hover:text-rose-700 font-semibold transition">Child Safety Standards</a></li>
                         <li><a href="{{ route('legal.guidelines') }}" class="hover:text-brand-600 transition">Community Guidelines</a></li>
                         <li><a href="{{ route('legal.terms') }}" class="hover:text-brand-600 transition">Terms of Service</a></li>
                         <li><a href="{{ route('legal.security') }}" class="hover:text-brand-600 transition">Security Architecture</a></li>
@@ -463,6 +464,7 @@
                 <p>{{ $siteSettings['footer_copyright'] ?? ('© ' . date('Y') . ' ' . ($siteName ?? 'Sangfy') . ' App (' . ($siteSettings['android_package_name'] ?? 'com.prahlix.sangfy') . '). All rights reserved.') }}</p>
                 <div class="flex items-center space-x-6">
                     <a href="{{ route('legal.privacy') }}" class="hover:text-slate-900 transition">Privacy</a>
+                    <a href="{{ url('/child-safety') }}" class="hover:text-rose-600 transition">Child Safety</a>
                     <a href="{{ route('legal.guidelines') }}" class="hover:text-slate-900 transition">Guidelines</a>
                     <a href="{{ route('legal.terms') }}" class="hover:text-slate-900 transition">Terms</a>
                     <a href="{{ route('contact') }}" class="hover:text-slate-900 transition">Support</a>

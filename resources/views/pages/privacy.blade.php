@@ -9,7 +9,7 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold">
             <i class="fa-solid fa-shield-halved text-emerald-600"></i>
-            <span>Android App Data Safety & Privacy</span>
+            <span>Android App Data Safety &amp; Privacy</span>
         </div>
         <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
             {{ $document->title ?? 'Sangfy Privacy Policy' }}
@@ -20,11 +20,11 @@
         <div class="flex flex-wrap items-center justify-center gap-3 text-xs text-slate-500 font-mono pt-1">
             <span>App: <strong>Sangfy (com.prahlix.sangfy)</strong></span>
             <span>•</span>
-            <span>Version: <strong>v{{ $document->version ?? '1.0.0' }}</strong></span>
+            <span>Version: <strong>v{{ $document->version ?? '2.0.0' }}</strong></span>
             <span>•</span>
-            <span>Effective Date: <strong>{{ $document->effective_date ?? 'September 17, 2026' }}</strong></span>
+            <span>Effective Date: <strong>{{ $document->effective_date ?? 'November 2026' }}</strong></span>
             <span>•</span>
-            <span>GDPR, DPDP & Google Play Compliant</span>
+            <span>GDPR, DPDP &amp; Google Play Compliant</span>
         </div>
     </div>
 </section>
@@ -93,11 +93,14 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
         <h3 class="text-base font-bold text-slate-900">Questions or Data Deletion Requests?</h3>
         <p class="text-xs text-slate-500">
-            You can delete your account directly within the Sangfy Android App under <em>Settings &rarr; Account &rarr; Delete Account</em>, or contact our Data Privacy Officer.
+            You can delete your account directly within the Sangfy Android App under <em>Settings &rarr; Account &rarr; Delete Account</em>, or email our Privacy Desk at <a href="mailto:privacy@prahlix.com" class="text-brand-600 font-semibold underline">privacy@prahlix.com</a>.
         </p>
         <div class="pt-2 flex items-center justify-center gap-4">
             <a href="{{ route('contact') }}" class="px-5 py-2.5 text-xs font-bold text-slate-800 bg-white border border-slate-200 rounded-md hover:bg-slate-100 transition shadow-xs">
                 Contact Privacy Desk
+            </a>
+            <a href="{{ url('/child-safety') }}" class="px-5 py-2.5 text-xs font-bold text-rose-700 bg-rose-50 border border-rose-200 rounded-md hover:bg-rose-100 transition shadow-xs">
+                Child Safety Standards
             </a>
             <a href="{{ route('download.page') }}" class="px-5 py-2.5 text-xs font-bold text-white btn-sangfy rounded-md shadow-xs">
                 Download Official APK

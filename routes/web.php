@@ -30,7 +30,21 @@ Route::get('/download/apk', [DownloadController::class, 'downloadApk'])->name('d
 
 // Legal & Security Policies (Android Studio & App Store Compliance)
 Route::get('/community-guidelines', [LegalController::class, 'guidelines'])->name('legal.guidelines');
+
 Route::get('/privacy-policy', [LegalController::class, 'privacy'])->name('legal.privacy');
+
+Route::get('/privacy', function () {
+    return redirect('/privacy-policy', 301);
+});
+
+Route::get('/child-safety', function () {
+    return view('child-safety');
+})->name('child-safety');
+
+Route::get('/child-safety-standards', function () {
+    return redirect('/child-safety', 301);
+});
+
 Route::get('/terms-of-service', [LegalController::class, 'terms'])->name('legal.terms');
 Route::get('/security', [LegalController::class, 'security'])->name('legal.security');
 
@@ -42,6 +56,11 @@ Route::post('/contact', [ContactController::class, 'submit'])->middleware('throt
 Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->middleware('throttle:5,1')->name('admin.login.submit');
+Route::get('/admin/captcha/refresh', [AdminAuthController::class, 'refreshCaptcha'])->name('admin.captcha.refresh');
+Route::get('/admin/2fa', [AdminAuthController::class, 'showTwoFactorForm'])->name('admin.2fa.show');
+Route::post('/admin/2fa', [AdminAuthController::class, 'verifyTwoFactor'])->middleware('throttle:5,1')->name('admin.2fa.verify');
+Route::post('/admin/2fa/resend', [AdminAuthController::class, 'resendTwoFactor'])->middleware('throttle:3,1')->name('admin.2fa.resend');
+Route::get('/admin/2fa/cancel', [AdminAuthController::class, 'cancelTwoFactor'])->name('admin.2fa.cancel');
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
 // Protected Admin Panel Routes (Requires Authentication Middleware)

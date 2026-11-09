@@ -81,9 +81,9 @@ class LegalDocument extends Model
                 'slug' => 'privacy',
                 'title' => 'Official Privacy Policy & Data Safety',
                 'subtitle' => 'Comprehensive Data Safety, Device Permissions, End-to-End Encryption, and Privacy Compliance for Sangfy (com.prahlix.sangfy).',
-                'version' => '1.5.0',
-                'effective_date' => 'October 2026',
-                'summary' => 'Official Privacy Policy for Sangfy. Complete disclosure on data collection, Android permissions, zero-knowledge Signal Protocol E2EE messaging, transient Agora RTC voice/video calling, nearby radar privacy, DPDP Act 2023 & GDPR compliance, and permanent account deletion rights.',
+                'version' => '2.0.0',
+                'effective_date' => 'November 2026',
+                'summary' => 'Official Privacy Policy for Sangfy. Complete disclosure on data collection, Android permissions, zero-knowledge Signal Protocol E2EE messaging, transient Agora RTC voice/video calling, third-party advertising SDKs (AdMob, Yandex), DPDP Act 2023 & GDPR compliance, child safety standards, and permanent web-based account deletion rights.',
                 'content' => <<<'HTML'
 <div class="space-y-10 text-slate-700">
     <!-- Section 1: Overview & Scope -->
@@ -313,23 +313,52 @@ class LegalDocument extends Model
     <!-- Section 4: Real-Time Calling (Agora RTC) -->
     <div class="space-y-3">
         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
-            <span>4. REAL-TIME HD CALLING: AGORA RTC</span>
+            <span>4. REAL-TIME HD CALLING: AGORA RTC ENGINE</span>
         </h2>
-        <p class="text-slate-600">Sangfy integrates the <strong>Agora Real-Time Engagement (RTC) Engine</strong> to power sub-100ms ultra-low latency voice and video calling. Streams are encrypted in transit via <strong>DTLS-SRTP</strong>.</p>
+        <p class="text-slate-600">Sangfy integrates the <strong>Agora Real-Time Engagement (RTC) Engine</strong> to power sub-100ms ultra-low latency voice and video calling. Streams are encrypted in transit via <strong>DTLS-SRTP / WebRTC</strong>.</p>
         
         <div class="p-4 bg-purple-50/70 border border-purple-200 rounded-2xl space-y-1.5 text-xs text-slate-700">
             <div class="font-bold text-brand-800 flex items-center gap-1.5">
                 <i class="fa-solid fa-shield-halved text-brand-600"></i>
-                <span>Zero Server Call Recording Guarantee</span>
+                <span>Strictly Transient Streams — Zero Call Recording Guarantee</span>
             </div>
-            <p>Voice and video call packets flow transiently directly between call participants. Sangfy and Agora do <strong>not record, tap, save, or store audio/video call contents</strong> on any server under any operational circumstances.</p>
+            <p>All voice and video calling streams are <strong>strictly transient and ephemeral</strong>. Media frames pass directly between call participants and <strong>are NEVER recorded, tapped, transcribed, intercepted, or archived</strong> on Sangfy servers or Agora servers at any time.</p>
         </div>
     </div>
 
-    <!-- Section 5: End-to-End Encryption -->
+    <!-- Section 5: Third-Party Advertising SDKs Disclosure -->
     <div class="space-y-3">
         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
-            <span>5. END-TO-END ENCRYPTED (E2EE) MESSAGING</span>
+            <span>5. THIRD-PARTY ADVERTISING SDKS DISCLOSURE</span>
+        </h2>
+        <p class="text-slate-600">To maintain and develop the Sangfy Android application, we partner with trusted third-party advertising networks in compliance with Google Play Developer Policies:</p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                <div class="font-bold text-slate-900 flex items-center gap-1.5">
+                    <i class="fa-brands fa-google text-blue-600"></i>
+                    <span>Google AdMob (Google LLC)</span>
+                </div>
+                <p class="text-slate-600 leading-relaxed">Displays contextual and interest-based mobile advertisements. AdMob may process device identifiers (such as Google Advertising ID / AAID), IP address, and ad telemetry.</p>
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline font-semibold block">Google Privacy Policy &rarr;</a>
+            </div>
+
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                <div class="font-bold text-slate-900 flex items-center gap-1.5">
+                    <i class="fa-solid fa-bullseye text-rose-600"></i>
+                    <span>Yandex Mobile Ads (Yandex LLC)</span>
+                </div>
+                <p class="text-slate-600 leading-relaxed">Delivers mediated display ads and impressions. Yandex may process pseudonymous device telemetry, app interaction signals, and general coarse location.</p>
+                <a href="https://yandex.com/legal/confidential/" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline font-semibold block">Yandex Privacy Policy &rarr;</a>
+            </div>
+        </div>
+        <p class="text-xs text-slate-500">You can reset or opt out of personalized ad tracking anytime in Android: <em>Settings &gt; Google &gt; Ads &gt; Delete or Reset advertising ID</em>.</p>
+    </div>
+
+    <!-- Section 6: End-to-End Encryption -->
+    <div class="space-y-3">
+        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
+            <span>6. END-TO-END ENCRYPTED (E2EE) MESSAGING</span>
         </h2>
         <p class="text-slate-600">1-on-1 private text chats and voice notes are cryptographically secured using the <strong>Signal Protocol</strong>:</p>
         <ul class="list-disc list-inside space-y-2 text-xs text-slate-700 pl-2">
@@ -339,10 +368,10 @@ class LegalDocument extends Model
         </ul>
     </div>
 
-    <!-- Section 6: Data Non-Commercialization -->
+    <!-- Section 7: Data Non-Commercialization -->
     <div class="space-y-3">
         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
-            <span>6. DATA SHARING &amp; NON-COMMERCIALIZATION</span>
+            <span>7. DATA SHARING &amp; NON-COMMERCIALIZATION</span>
         </h2>
         <ul class="list-disc list-inside space-y-2 text-xs text-slate-700 pl-2">
             <li><strong class="text-slate-900">No Selling of Data:</strong> We do not sell, rent, monetize, or trade your personal data to advertisers, data aggregators, or brokers.</li>
@@ -351,29 +380,41 @@ class LegalDocument extends Model
         </ul>
     </div>
 
-    <!-- Section 7: Account Deletion -->
+    <!-- Section 8: Account Deletion -->
     <div class="space-y-3">
         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
-            <span>7. DATA RETENTION &amp; PERMANENT ACCOUNT DELETION</span>
+            <span>8. DATA RETENTION &amp; PERMANENT ACCOUNT DELETION (IN-APP &amp; WEB REQUEST)</span>
         </h2>
-        <p class="text-slate-600">You maintain complete control over your data lifecycle:</p>
-        <ul class="list-disc list-inside space-y-2 text-xs text-slate-700 pl-2">
-            <li><strong class="text-slate-900">Content Deletion:</strong> You can delete any post, reel, comment, or story at any moment directly from the application.</li>
-            <li><strong class="text-slate-900">Permanent Account Deletion:</strong> You can permanently delete your account at any time via <code>Settings &gt; Account &gt; Delete Account</code>. This action initiates an automated cryptographic wipe that permanently purges your profile, posts, media assets, and message logs from all database clusters within seconds.</li>
-        </ul>
+        <p class="text-slate-600">You maintain complete sovereign control over your data lifecycle with two deletion pathways:</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                <strong class="text-slate-900 block font-bold">A. In-App Instant Deletion</strong>
+                <p class="text-slate-600">Open Sangfy &gt; <em>Settings &gt; Account &gt; Delete Account</em>. Confirmed with password/OTP; your profile, posts, media, and keys are permanently purged immediately.</p>
+            </div>
+            <div class="p-3.5 bg-emerald-50/60 border border-emerald-200 rounded-xl space-y-1.5">
+                <strong class="text-emerald-900 block font-bold">B. Web / Email Deletion Request (If Uninstalled)</strong>
+                <p class="text-slate-700">If you have uninstalled the app or lost device access, email <a href="mailto:privacy@prahlix.com" class="text-brand-600 font-bold underline">privacy@prahlix.com</a> or <a href="mailto:support@prahlix.com" class="text-brand-600 font-bold underline">support@prahlix.com</a> with subject "Account Deletion Request". Permanent erasure is completed within <strong>48 to 72 hours</strong>.</p>
+            </div>
+        </div>
     </div>
 
-    <!-- Section 8: Minor Protection -->
+    <!-- Section 9: Minor Protection & Child Safety -->
     <div class="space-y-3">
         <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2">
-            <span>8. MINOR PROTECTION &amp; ZERO TOLERANCE</span>
+            <span>9. MINOR PROTECTION &amp; CHILD SAFETY STANDARDS</span>
         </h2>
-        <div class="p-4 bg-rose-50 border border-rose-200 rounded-2xl space-y-1.5 text-xs text-rose-900">
+        <div class="p-4 bg-rose-50 border border-rose-200 rounded-2xl space-y-2 text-xs text-rose-900">
             <div class="font-bold flex items-center gap-1.5 text-rose-800">
                 <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
-                <span>Strict 13+ Age Policy &amp; Child Safety</span>
+                <span>Strict Minor Protection &amp; Zero Tolerance for CSAE / CSAM</span>
             </div>
-            <p>Sangfy is strictly intended for individuals aged 13 and above. We enforce an absolute zero-tolerance policy against Child Sexual Abuse Material (CSAM), grooming, or exploitation. Violations trigger immediate permanent account erasure, hardware blacklisting, and reporting to NCMEC and legal authorities.</p>
+            <p>Sangfy enforces absolute zero tolerance against Child Sexual Abuse Material (CSAM) and Child Sexual Exploitation and Abuse (CSAE). We proactively deploy Google Cloud Vision SafeSearch AI screening, perceptual hash matching, air-gapped quarantine storage, and mandatorily report violations to NCMEC and law enforcement.</p>
+            <div class="pt-1">
+                <a href="/child-safety" class="inline-flex items-center gap-1.5 font-bold text-rose-700 hover:text-rose-900 underline">
+                    <i class="fa-solid fa-shield-heart text-xs"></i>
+                    <span>Read our full public Child Safety Standards &rarr;</span>
+                </a>
+            </div>
         </div>
     </div>
 

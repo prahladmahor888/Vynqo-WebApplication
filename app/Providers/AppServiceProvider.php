@@ -57,10 +57,17 @@ class AppServiceProvider extends ServiceProvider
                 $allReleases = collect([$latestRelease]);
             }
 
-            $siteSettings = SiteSetting::getAll();
-            $siteLogo = SiteSetting::getLogoUrl();
-            $siteFavicon = SiteSetting::getFaviconUrl();
-            $siteName = $siteSettings['site_name'] ?? 'Sangfy';
+            try {
+                $siteSettings = SiteSetting::getAll();
+                $siteLogo = SiteSetting::getLogoUrl();
+                $siteFavicon = SiteSetting::getFaviconUrl();
+                $siteName = $siteSettings['site_name'] ?? 'Sangfy';
+            } catch (\Throwable $e) {
+                $siteSettings = SiteSetting::defaults();
+                $siteLogo = asset('assets/images/logo.png');
+                $siteFavicon = asset('assets/images/favicon.png');
+                $siteName = 'Sangfy';
+            }
 
             $view->with([
                 'latestRelease' => $latestRelease,
